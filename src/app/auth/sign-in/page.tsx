@@ -1,32 +1,10 @@
-import AuthForm from "@/components/AuthForm";
+import AuthForm from "@/components/SignInForm";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "public/flourish.svg";
-
-import { Crimson_Text } from "next/font/google";
-
-const crimsonText = Crimson_Text({
-  weight: ["400", "600", "700"],
-  subsets: ["latin"],
-});
+import { crimsonText } from "@/libs/fonts";
 
 const Auth = () => {
-  // const createUser = async (): Promise<void> => {
-  //   try {
-  //     await createUserWithEmailAndPassword(auth, email, pwd);
-  //   } catch (err: any) {
-  //     alert(err.message);
-  //   }
-  // };
-
-  const logIn = async (): Promise<void> => {
-    // try {
-    //   await signInWithEmailAndPassword(auth, email, pwd);
-    // } catch (err: any) {
-    //   alert(err.message);
-    // }
-  };
-
   return (
     <div className="flex flex-col justify-center items-center gap-4 flex-1">
       <div className="flex gap-2 rounded-lg px-4 py-1 bg-sky-800 text-slate-50">
@@ -39,10 +17,10 @@ const Auth = () => {
           Flourish Education
         </h1>
       </div>
-      <AuthForm isSigningUp={false} />
+      <AuthForm />
       <p>
         Click{" "}
-        <Link href="/sign-up" className="text-rose-800 hover:underline">
+        <Link href="/auth/sign-up" className="text-rose-800 hover:underline">
           here
         </Link>{" "}
         to create an account.

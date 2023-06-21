@@ -10,7 +10,7 @@ export interface ClassDoc extends Document {
 
 const ClassSchema = new mongoose.Schema<ClassDoc>(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     lessons: [
       {
         type: mongoose.Types.ObjectId,

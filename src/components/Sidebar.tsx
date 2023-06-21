@@ -1,35 +1,33 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { ClassDoc } from "@/models/Class";
 
-// type SidebarProps = {
-//   classes: ClassProps[];
-//   selectedClass: number;
-//   handleAddClass: HandleFunction;
-//   handleClassClick: HandleFunction;
-//   handleDeleteClass: HandleFunction;
-// };
+interface SidebarProps {
+  classes: ClassDoc[];
+  // selectedClass: string;
+  addClass: (name: string) => void;
+  deleteClass: (id: string) => void;
+  // handleClassClick: () => void;
+}
 
-function Sidebar({ selectedClass }: { selectedClass: string }) {
-  const [editing, setEditing] = useState<boolean>(false);
-  const [newClassName, setNewClassName] = useState<string>("");
+function Sidebar({ classes, addClass, deleteClass }: SidebarProps) {
+  const [editing, setEditing] = useState(false);
+  const [newClassName, setNewClassName] = useState("");
+
   const formRef = useRef() as React.MutableRefObject<HTMLFormElement>;
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewClassName(e.target.value);
-  };
-
-  const handleFormSubmit = (e: React.SyntheticEvent): void => {
+  const handleSubmit = (e: React.SyntheticEvent): void => {
     if (newClassName === "") return;
     e.preventDefault();
-    // handleAddClass(newClassName);
+    addClass(newClassName);
     setNewClassName("");
     setEditing(false);
     formRef.current.style.display = "none";
   };
 
-  const handleOpenForm = (): void => {
+  const handleOpenForm = () => {
     setEditing(true);
     formRef.current.style.display = "flex";
     inputRef.current.focus();
@@ -52,40 +50,24 @@ function Sidebar({ selectedClass }: { selectedClass: string }) {
       </ul>
       <h1 className="font-bold text-lg my-4">My Classes</h1>
       <ul>
-        <a href="#">
-          <li className="mb-2 px-3 py-1 rounded-lg hover:underline">
-            Year 3 Computing
-          </li>
-        </a>
-        <li className="mb-2 px-3 py-1 rounded-lg hover:underline">
-          <a href="#">Year 4 Maths</a>
-        </li>
-        <li className="mb-2 px-3 py-1 rounded-lg hover:underline">
-          <a href="#">Year 6 Philosophy</a>
-        </li>
-        {/* {classes.map((c, index) => (
-          <li key={c.name}>
-            <a
-              href="#"
-              className={
-                selectedClass !== -1 && c.name === classes[selectedClass].name
-                  ? "active"
-                  : ""
-              }
-              onClick={() => handleClassClick(index)}>
+        {classes.map((c, index) => (
+          <li
+            key={c._id}
+            className="flex justify-between mb-2 px-3 py-1 rounded-lg">
+            <a href="#" className="hover:underline" onClick={() => {}}>
               {c.name}
             </a>
             <button
-              className="delete-class-button"
-              onClick={() => handleDeleteClass(c.id)}>
+              className="text-rose-800 hover:text-red-500"
+              onClick={() => deleteClass(c._id)}>
               &times;
             </button>
           </li>
-        ))} */}
+        ))}
       </ul>
       <form
         ref={formRef}
-        onSubmit={handleFormSubmit}
+        onSubmit={handleSubmit}
         className="gap-3"
         style={{ display: "none" }}>
         <input
@@ -93,7 +75,9 @@ function Sidebar({ selectedClass }: { selectedClass: string }) {
           id=""
           type="text"
           value={newClassName}
-          onChange={handleInputChange}
+          onChange={(e) => {
+            setNewClassName(e.target.value);
+          }}
           className="px-2 py-1 border-solid border-[1px] rounded-md border-black"
         />
         <button className="btn-primary">Add</button>

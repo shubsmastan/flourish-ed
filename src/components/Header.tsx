@@ -1,18 +1,20 @@
 "use client";
 
+import { useState } from "react";
+import { signOut, useSession } from "next-auth/react";
+import Loading from "./Loading";
 import Image from "next/image";
 import logo from "public/flourish.svg";
-
-import { Crimson_Text } from "next/font/google";
-
-const crimsonText = Crimson_Text({
-  weight: ["400", "600", "700"],
-  subsets: ["latin"],
-});
-
-// type HeaderPropTypes = { handleLogout: () => void };
+import { crimsonText } from "@/libs/fonts";
 
 const Header = () => {
+  const [open, setOpen] = useState(false);
+
+  const logOut = () => {
+    setOpen(true);
+    signOut({ redirect: true, callbackUrl: "/auth/sign-in" });
+  };
+
   return (
     <header className="flex justify-start items-center gap-4 p-2 bg-sky-800 text-slate-50 shadow-md">
       <a href="#" className="flex item-center gap-2">
@@ -28,7 +30,10 @@ const Header = () => {
       <nav className="flex gap-4">
         <ul></ul>
       </nav>
-      <button className="btn-primary ms-auto">Sign Out</button>
+      <button onClick={logOut} className="btn-primary ms-auto">
+        Sign Out
+      </button>
+      <Loading open={open} />
     </header>
   );
 };

@@ -1,10 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import classroom from "public/classroom.jpg";
 import meeting from "public/meeting.jpg";
 import learn from "public/learn.jpg";
 import logo from "public/flourish.svg";
-import { Crimson_Text } from "next/font/google";
+import { signIn } from "next-auth/react";
+import { crimsonText } from "@/libs/fonts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSchool,
@@ -15,17 +18,17 @@ import {
 import { faHandshake, faClock } from "@fortawesome/free-regular-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 
-const crimsonText = Crimson_Text({
-  weight: ["400", "600", "700"],
-  subsets: ["latin"],
-});
-
 const About = () => {
   return (
     <>
       <header className="flex justify-between items-center gap-4 p-4 h-20 bg-sky-800 text-slate-50 shadow-slate-900/50 shadow-md sm:p-8 lg:py-8 lg:px-10 2xl:px-72">
         <a href="#" className="flex item-center gap-3">
-          <Image src={logo} alt="" width={25} className="mb-1" />
+          <Image
+            src={logo}
+            alt=""
+            style={{ width: "25px", height: "auto" }}
+            className="mb-1"
+          />
           <h1 className={`text-2xl font-semibold ${crimsonText.className}`}>
             Flourish Education
           </h1>
@@ -48,9 +51,13 @@ const About = () => {
               className="rounded-md hover:bg-sky-700 px-5 py-1">
               Register
             </Link>
-            <Link href="/auth/sign-in" className="btn-primary px-5 py-1">
+            <button
+              onClick={() => {
+                signIn();
+              }}
+              className="btn-primary px-5 py-1">
               Sign In
-            </Link>
+            </button>
           </ul>
         </nav>
       </header>
@@ -60,7 +67,7 @@ const About = () => {
         </h1>
         <div className="flex flex-col justify-around items-center gap-8 text-center md:flex-row lg:gap-16">
           <div>
-            <Image src={classroom} alt="" className="mb-4" />
+            <Image priority={false} src={classroom} alt="" className="mb-4" />
             <p className="text-lg">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores
               itaque accusantium fugit. Fugiat obcaecati soluta dolorum,

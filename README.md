@@ -15,20 +15,21 @@ App created using Next.js, React, MongoDB, and TypeScript.
 
 ## History
 
+- 0.0.2 (23/06/2023)
+  - Complete API for users and classes and implement frontend to use it
 - 0.0.1 (19/06/2023)
   - Built basic route structure
 
 <!-- ## Next Steps/Ideas
 
-- Edit class name
+- Edit class name/user details?
 - Modal for adding/editing lessons instead of inline
-- Improve appearance of lessons on page (+ responsiveness)
-- Convert date from string to Date object and use calendar to input
-- Have filters on top of class list (e.g. "Today", "This week") to show specific lesons
-- Have filters on top of class page to filter by week/half-term/term
-- Split classes into half-termly/weekly subsections (have lessons in different arrays?)
-- Or would it be better for classes to be just a list of names and lessons to be added into DB indivdually (and rendered through filtering?)
-- Have a page with termly/yearly outline -->
+- Improve appearance of lessons on page + responsiveness of dashboard
+- Convert date from string to Date object and use calendar to input (date lib?)
+- Correctly use filters on top of class list to show specific lesons
+- Have filters on top of class page to filter by week/half-term/term?
+- OR: only see future lessons (button to filter past lessons)?
+- Have a page for termly/yearly outline -->
 
 ## Copyright
 
