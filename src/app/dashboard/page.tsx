@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import Main from "@/components/Main";
 import Loading from "@/components/Loading";
+import Toast from "@/components/Toast";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
@@ -19,6 +20,8 @@ const Dashboard = () => {
 
   const [classes, setClasses] = useState([]);
   const [open, setOpen] = useState(false);
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
 
   useEffect(() => {
     const getClasses = async () => {
@@ -31,8 +34,17 @@ const Dashboard = () => {
         );
         setClasses(data);
         setOpen(false);
-      } catch (err) {
+      } catch (err: any) {
+        if (err.response) {
+          setOpen(false);
+          setToastMsg(err.response.data.errors[0]);
+          setToastOpen(true);
+          return;
+        }
         console.log(err);
+        setOpen(false);
+        setToastMsg("Error fetching classes.");
+        setToastOpen(true);
       }
     };
     getClasses();
@@ -50,8 +62,19 @@ const Dashboard = () => {
       );
       setClasses(data);
       setOpen(false);
-    } catch (err) {
+      setToastMsg("New class added successfully.");
+      setToastOpen(true);
+    } catch (err: any) {
+      if (err.response) {
+        setOpen(false);
+        setToastMsg(err.response.data.errors[0]);
+        setToastOpen(true);
+        return;
+      }
       console.log(err);
+      setOpen(false);
+      setToastMsg("Something went wrong. Please try again.");
+      setToastOpen(true);
     }
   };
 
@@ -64,9 +87,30 @@ const Dashboard = () => {
       );
       setClasses(data);
       setOpen(false);
-    } catch (err) {
+      setToastOpen(true);
+      setToastMsg("Class deleted.");
+    } catch (err: any) {
+      if (err.response) {
+        setToastMsg(err.response.data.errors[0]);
+        setToastOpen(true);
+        setOpen(false);
+        return;
+      }
       console.log(err);
+      setOpen(false);
+      setToastMsg("Something went wrong. Please try again.");
+      setToastOpen(true);
     }
+  };
+
+  const handleToastClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setToastOpen(false);
   };
 
   if (status === "unauthenticated") {
@@ -105,6 +149,11 @@ const Dashboard = () => {
         <Main />
       </div>
       <Loading open={open} />
+      <Toast
+        open={toastOpen}
+        message={toastMsg}
+        handleClose={handleToastClose}
+      />
     </>
   );
 };

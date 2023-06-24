@@ -18,7 +18,7 @@ function Sidebar({ classes, addClass, deleteClass }: SidebarProps) {
   const formRef = useRef() as React.MutableRefObject<HTMLFormElement>;
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
-  const handleSubmit = (e: React.SyntheticEvent): void => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     if (newClassName === "") return;
     e.preventDefault();
     addClass(newClassName);
@@ -50,7 +50,7 @@ function Sidebar({ classes, addClass, deleteClass }: SidebarProps) {
       </ul>
       <h1 className="font-bold text-lg my-4">My Classes</h1>
       <ul>
-        {classes.map((c, index) => (
+        {classes.map((c) => (
           <li
             key={c._id}
             className="flex justify-between mb-2 px-3 py-1 rounded-lg">

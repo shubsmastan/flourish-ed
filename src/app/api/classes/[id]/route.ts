@@ -65,7 +65,7 @@ export async function POST(
     const foundClass = await Class.findOne({ name });
     if (foundClass) {
       return NextResponse.json(
-        { errors: "You already have a class with that name." },
+        { errors: ["A class with that name already exists."] },
         { status: 400 }
       );
     }
