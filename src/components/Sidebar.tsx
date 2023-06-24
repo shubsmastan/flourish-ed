@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 import Loading from "@/components/Loading";
 import Toast from "@/components/Toast";
 import axios from "axios";
+import Link from "next/link";
 
 function Sidebar() {
   const { data: session, status } = useSession();
@@ -130,16 +131,16 @@ function Sidebar() {
   return (
     <aside className="flex flex-col px-6 py-10 bg-amber-50 shadow-md w-80">
       <ul>
-        <a href="#">
+        <Link href="/dashboard/today">
           <li className="mb-2 px-3 py-1 rounded-lg hover:underline bg-amber-300">
             Today
           </li>
-        </a>
+        </Link>
         <li className="mb-2 px-3 py-1 rounded-lg  hover:underline">
-          <a href="#">This Week</a>
+          <Link href="#">This Week</Link>
         </li>
         <li className="mb-2 px-3 py-1 rounded-lg hover:underline">
-          <a href="#">Oustanding</a>
+          <Link href="#">Oustanding</Link>
         </li>
       </ul>
       <h1 className="font-bold text-lg my-4">My Classes</h1>
@@ -148,9 +149,12 @@ function Sidebar() {
           <li
             key={c._id}
             className="flex justify-between mb-2 px-3 py-1 rounded-lg">
-            <a href="#" className="hover:underline" onClick={() => {}}>
+            <Link
+              href={`/dashboard/classes/${c._id}`}
+              className="hover:underline"
+              onClick={() => {}}>
               {c.name}
-            </a>
+            </Link>
             <button
               className="text-rose-800 hover:text-red-500"
               onClick={() => deleteClass(c._id)}>

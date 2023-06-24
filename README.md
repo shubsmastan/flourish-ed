@@ -22,14 +22,17 @@ App created using Next.js, React, MongoDB, and TypeScript.
 
 <!-- ## Next Steps/Ideas
 
-- Edit class name/user details?
-- Modal for adding/editing lessons instead of inline
+- Configure API routes for CRUD lessons (try PUT requests - who can edit?)
+- Modal for adding/editing lessons + configure their appearance on screen (cards?)
 - Improve appearance of lessons on page + responsiveness of dashboard
+- See other todo apps for ideas on last two
+- Edit class name and user details (ensure only owner of class can edit)
 - Convert date from string to Date object and use calendar to input (date lib?)
-- Correctly use filters on top of class list to show specific lesons
+- Correctly use date filters in sidebar to show specific lesons
+- IF TIME:
 - Have filters on top of class page to filter by week/half-term/term?
 - OR: only see future lessons (button to filter past lessons)?
-- Have a page for termly/yearly outline -->
+- Have a page for termly/yearly outline? -->
 
 ## Copyright
 
