@@ -1,22 +1,116 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ClassDoc } from "@/models/Class";
+import { useSession } from "next-auth/react";
+import Loading from "@/components/Loading";
+import Toast from "@/components/Toast";
+import axios from "axios";
 
-interface SidebarProps {
-  classes: ClassDoc[];
-  // selectedClass: string;
-  addClass: (name: string) => void;
-  deleteClass: (id: string) => void;
-  // handleClassClick: () => void;
-}
-
-function Sidebar({ classes, addClass, deleteClass }: SidebarProps) {
+function Sidebar() {
+  const { data: session, status } = useSession();
+  const user = session?.user;
+  const id = user?._id;
+  const token = user?.accessToken;
+  const [classes, setClasses] = useState<ClassDoc[]>([]);
+  const [open, setOpen] = useState(true);
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
   const [editing, setEditing] = useState(false);
   const [newClassName, setNewClassName] = useState("");
 
   const formRef = useRef() as React.MutableRefObject<HTMLFormElement>;
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+
+  useEffect(() => {
+    const getClasses = async () => {
+      try {
+        if (!id) return;
+        setOpen(true);
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes/${id}`,
+          { headers: { Authorization: token } }
+        );
+        setClasses(data);
+        setOpen(false);
+      } catch (err: any) {
+        if (err.response) {
+          setOpen(false);
+          setToastMsg(err.response.data.errors[0]);
+          setToastOpen(true);
+          return;
+        }
+        console.log(err);
+        setOpen(false);
+        setToastMsg("Error fetching classes.");
+        setToastOpen(true);
+      }
+    };
+    getClasses();
+  }, [id, token, classes.length]);
+
+  const addClass = async (name: string) => {
+    try {
+      setOpen(true);
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes/${id}`,
+        { name },
+        {
+          headers: { Authorization: token },
+        }
+      );
+      setClasses(data);
+      setOpen(false);
+      setToastMsg("New class added successfully.");
+      setToastOpen(true);
+    } catch (err: any) {
+      if (err.response) {
+        setOpen(false);
+        setToastMsg(err.response.data.errors[0]);
+        setToastOpen(true);
+        return;
+      }
+      console.log(err);
+      setOpen(false);
+      setToastMsg("Something went wrong. Please try again.");
+      setToastOpen(true);
+    }
+  };
+
+  const deleteClass = async (classId: string) => {
+    try {
+      setOpen(true);
+      const { data } = await axios.delete(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes/${id}`,
+        { params: { class: classId }, headers: { Authorization: token } }
+      );
+      setClasses(data);
+      setOpen(false);
+      setToastOpen(true);
+      setToastMsg("Class deleted.");
+    } catch (err: any) {
+      if (err.response) {
+        setToastMsg(err.response.data.errors[0]);
+        setToastOpen(true);
+        setOpen(false);
+        return;
+      }
+      console.log(err);
+      setOpen(false);
+      setToastMsg("Something went wrong. Please try again.");
+      setToastOpen(true);
+    }
+  };
+
+  const handleToastClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setToastOpen(false);
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     if (newClassName === "") return;
@@ -87,6 +181,12 @@ function Sidebar({ classes, addClass, deleteClass }: SidebarProps) {
         onClick={handleOpenForm}>
         + New Class
       </button>
+      <Loading open={open} />
+      <Toast
+        open={toastOpen}
+        message={toastMsg}
+        handleClose={handleToastClose}
+      />
     </aside>
   );
 }
