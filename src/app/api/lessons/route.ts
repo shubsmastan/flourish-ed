@@ -1,9 +1,8 @@
 import { Lesson } from "@/models/Lesson";
 import { dbConnect } from "@/libs/dbConnect";
-import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: Request) {
   return NextResponse.json("respond with a lesson");
 }
 
