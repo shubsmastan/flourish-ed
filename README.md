@@ -1,8 +1,7 @@
 # Flourish Education (Pre Alpha)
 
-<!-- [Live preview]().<br /><br /> -->
+[Live preview](https://flourish-ed.vercel.app).<br />
 
-Live preview coming soon.<br /><br />
 A web application for teachers to plan, save and view upcoming lessons. Currently in pre alpha stage.
 
 ## Description
