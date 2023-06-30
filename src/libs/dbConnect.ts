@@ -7,16 +7,15 @@ if (!process.env.MONGO_URI) {
 export const dbConnect = async () => {
   if (mongoose.connection.readyState === 1) {
     const db = mongoose.connection.asPromise();
-    console.log("Talking to database.");
     return db;
   }
   try {
     const db = await mongoose.connect(process.env.MONGO_URI!, {
       dbName: "flourish-academy",
     });
-    console.log("Conntected to database.");
     return db;
   } catch (err) {
+    console.log(err);
     throw new Error("Could not connect to database.");
   }
 };

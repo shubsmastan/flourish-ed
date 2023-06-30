@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     if (!foundUser || !match) {
       return NextResponse.json(
         {
-          errors: ["Incorrect username and password combination."],
+          error: "Incorrect username and password combination.",
         },
         { status: 401 }
       );
@@ -34,9 +34,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ user });
   } catch (err) {
     console.log(err);
-    return NextResponse.json(
-      { errors: ["Problem signing in."] },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Problem signing in." }, { status: 500 });
   }
 }

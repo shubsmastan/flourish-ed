@@ -39,8 +39,8 @@ const AuthForm = () => {
       );
       setIsLoading(false);
       setOpen(false);
-      if (data.errors) {
-        setError(data.errors[0]);
+      if (data.error) {
+        setError(data.error);
         return;
       }
       push("/auth/sign-in");

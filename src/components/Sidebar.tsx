@@ -9,7 +9,7 @@ import axios from "axios";
 import Link from "next/link";
 
 function Sidebar() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const user = session?.user;
   const id = user?._id;
   const token = user?.accessToken;
@@ -23,13 +23,15 @@ function Sidebar() {
   const formRef = useRef() as React.MutableRefObject<HTMLFormElement>;
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
+  console.log(classes);
+
   useEffect(() => {
     const getClasses = async () => {
       try {
         if (!id) return;
         setOpen(true);
         const { data } = await axios.get(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes/${id}`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes`,
           { headers: { Authorization: token } }
         );
         setClasses(data);
@@ -37,7 +39,7 @@ function Sidebar() {
       } catch (err: any) {
         if (err.response) {
           setOpen(false);
-          setToastMsg(err.response.data.errors[0]);
+          setToastMsg(err.response.data.error);
           setToastOpen(true);
           return;
         }
@@ -54,7 +56,7 @@ function Sidebar() {
     try {
       setOpen(true);
       const { data } = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes/${id}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes`,
         { name },
         {
           headers: { Authorization: token },
@@ -67,7 +69,7 @@ function Sidebar() {
     } catch (err: any) {
       if (err.response) {
         setOpen(false);
-        setToastMsg(err.response.data.errors[0]);
+        setToastMsg(err.response.data.error);
         setToastOpen(true);
         return;
       }
@@ -82,8 +84,8 @@ function Sidebar() {
     try {
       setOpen(true);
       const { data } = await axios.delete(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes/${id}`,
-        { params: { class: classId }, headers: { Authorization: token } }
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes/${classId}`,
+        { headers: { Authorization: token } }
       );
       setClasses(data);
       setOpen(false);
@@ -91,7 +93,7 @@ function Sidebar() {
       setToastMsg("Class deleted.");
     } catch (err: any) {
       if (err.response) {
-        setToastMsg(err.response.data.errors[0]);
+        setToastMsg(err.response.data.error);
         setToastOpen(true);
         setOpen(false);
         return;

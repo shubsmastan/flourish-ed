@@ -11,7 +11,7 @@ export async function POST(req: Request) {
     const userExists = await User.findOne({ email }).exec();
     if (userExists) {
       return NextResponse.json(
-        { errors: ["Email already in use."] },
+        { error: "Email already in use." },
         { status: 400 }
       );
     }
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     console.log(err);
     return NextResponse.json(
       {
-        errors: ["There was a problem. Please try again."],
+        error: "There was a problem. Please try again.",
       },
       { status: 500 }
     );

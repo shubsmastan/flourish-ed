@@ -1,13 +1,42 @@
 import { Class } from "@/models/Class";
-import { User } from "@/models/User";
 import { dbConnect } from "@/libs/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyJwt } from "@/libs/jwtHelper";
+import { User } from "@/models/User";
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest) {
+  try {
+    const token = req.headers.get("Authorization");
+    let verified;
+    if (token) {
+      verified = verifyJwt(token);
+    }
+    if (!token || !verified) {
+      return NextResponse.json(
+        {
+          error: "Not authorised to make this request.",
+        },
+        { status: 401 }
+      );
+    }
+    await dbConnect();
+    const user = await User.findById(verified._id).populate({
+      path: "classes",
+    });
+    const classes = user.classes;
+    return NextResponse.json(classes);
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json(
+      {
+        error: "Server error.",
+      },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(req: Request) {
   const body = await req.json();
   const { name } = body;
   try {
@@ -24,60 +53,29 @@ export async function PUT(
         { status: 401 }
       );
     }
-    dbConnect();
-    const { id: classId } = params;
-    const cls = await Class.findById(classId);
-    cls.name = name;
-    await cls.save();
-    return NextResponse.json(cls);
-  } catch (err) {
-    console.log(err);
-    return NextResponse.json(
-      {
-        error: "Server error.",
-      },
-      { status: 500 }
-    );
-  }
-}
-
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const token = req.headers.get("Authorization");
-    let verified;
-    if (token) {
-      verified = verifyJwt(token);
-    }
-    if (!token || !verified) {
+    if (!name) {
       return NextResponse.json(
-        {
-          error: "Not authorised to make this request.",
-        },
-        { status: 401 }
+        { error: "Please provide a class name." },
+        { status: 400 }
       );
     }
-    dbConnect();
-    const { id: classId } = params;
-    const cls = await Class.findById(classId);
-    if (!cls) {
+    await dbConnect();
+    const foundClass = await Class.findOne({ name });
+    if (foundClass) {
       return NextResponse.json(
-        {
-          error: "That class does not exist.",
-        },
+        { error: "A class with that name already exists." },
         { status: 400 }
       );
     }
     const user = await User.findById(verified._id).populate({
       path: "classes",
     });
-    user.classes.pull({ _id: classId });
+    const newClass = await Class.create({
+      name,
+      teachers: [user._id],
+    });
+    user.classes.push(newClass._id);
     await user.save();
-    cls.teachers.pull({ _id: user._id });
-    await cls.save();
-    if (cls.teachers.length === 0) await Class.deleteOne({ _id: classId });
     const classes = user.classes;
     return NextResponse.json(classes);
   } catch (err) {

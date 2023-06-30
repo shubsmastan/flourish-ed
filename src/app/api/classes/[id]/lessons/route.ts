@@ -24,6 +24,6 @@ export async function POST(req: Request) {
     return NextResponse.json(newLesson);
   } catch (err) {
     console.log(err);
-    return NextResponse.json({ errors: ["Problem creating lesson."] });
+    return NextResponse.json({ error: "Server error." });
   }
 }
