@@ -13,6 +13,7 @@ function Sidebar() {
   const user = session?.user;
   const id = user?._id;
   const token = user?.accessToken;
+
   const [classes, setClasses] = useState<ClassDoc[]>([]);
   const [open, setOpen] = useState(true);
   const [toastOpen, setToastOpen] = useState(false);
@@ -22,8 +23,6 @@ function Sidebar() {
 
   const formRef = useRef() as React.MutableRefObject<HTMLFormElement>;
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-
-  console.log(classes);
 
   useEffect(() => {
     const getClasses = async () => {

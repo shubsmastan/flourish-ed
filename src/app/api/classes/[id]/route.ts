@@ -3,6 +3,55 @@ import { User } from "@/models/User";
 import { dbConnect } from "@/libs/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyJwt } from "@/libs/jwtHelper";
+import mongoose from "mongoose";
+
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const token = req.headers.get("Authorization");
+    let verified;
+    if (token) {
+      verified = verifyJwt(token);
+    }
+    if (!token || !verified) {
+      return NextResponse.json(
+        {
+          error: "Not authorised to make this request.",
+        },
+        { status: 401 }
+      );
+    }
+    await dbConnect();
+    const { id: classId } = params;
+    if (!mongoose.Types.ObjectId.isValid(classId)) {
+      return NextResponse.json(
+        { error: "Not a valid class ID." },
+        { status: 404 }
+      );
+    }
+    const cls = await Class.findById(classId);
+    if (!cls) {
+      return NextResponse.json(
+        {
+          error: "That class does not exist.",
+        },
+        { status: 404 }
+      );
+    }
+    if (!cls.teachers.includes(verified._id)) {
+      return NextResponse.json(
+        { error: "You are not a member of that class." },
+        { status: 403 }
+      );
+    }
+    return NextResponse.json(cls);
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json({ error: "Server error." }), { status: 500 };
+  }
+}
 
 export async function PUT(
   req: NextRequest,
@@ -26,7 +75,21 @@ export async function PUT(
     }
     dbConnect();
     const { id: classId } = params;
+    if (!mongoose.Types.ObjectId.isValid(classId)) {
+      return NextResponse.json(
+        { error: "Not a valid class ID." },
+        { status: 404 }
+      );
+    }
     const cls = await Class.findById(classId);
+    if (!cls) {
+      return NextResponse.json(
+        {
+          error: "That class does not exist.",
+        },
+        { status: 404 }
+      );
+    }
     cls.name = name;
     await cls.save();
     return NextResponse.json(cls);
@@ -61,13 +124,19 @@ export async function DELETE(
     }
     dbConnect();
     const { id: classId } = params;
+    if (!mongoose.Types.ObjectId.isValid(classId)) {
+      return NextResponse.json(
+        { error: "Not a valid class ID." },
+        { status: 404 }
+      );
+    }
     const cls = await Class.findById(classId);
     if (!cls) {
       return NextResponse.json(
         {
           error: "That class does not exist.",
         },
-        { status: 400 }
+        { status: 404 }
       );
     }
     const user = await User.findById(verified._id).populate({

@@ -1,6 +1,5 @@
 "use client";
 
-// import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,8 +8,6 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 const Today = () => {
   const { data: session, status } = useSession();
   const user = session?.user;
-  const id = user?._id;
-  const token = user?.accessToken;
 
   if (status === "unauthenticated") {
     return (
