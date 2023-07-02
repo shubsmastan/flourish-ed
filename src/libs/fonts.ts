@@ -1,13 +1,14 @@
-import { Crimson_Text } from "next/font/google";
-import { Lato } from "next/font/google";
+import { Ysabeau } from "next/font/google";
+import { Figtree } from "next/font/google";
 
-export const crimsonText = Crimson_Text({
-  weight: ["400", "600", "700"],
-  subsets: ["latin"],
+export const ysabeau = Ysabeau({
+  weight: ["200", "300", "400", "500", "600"],
+  style: ["normal", "italic"],
+  subsets: ["latin-ext"],
 });
 
-export const lato = Lato({
-  weight: ["100", "300", "400", "700", "900"],
+export const figtree = Figtree({
+  weight: ["300", "400", "500", "600", "700", "800"],
   style: ["normal", "italic"],
   subsets: ["latin-ext"],
 });

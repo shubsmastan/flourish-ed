@@ -20,6 +20,7 @@ function Sidebar() {
   const [toastMsg, setToastMsg] = useState("");
   const [editing, setEditing] = useState(false);
   const [newClassName, setNewClassName] = useState("");
+  const [active, setActive] = useState("today");
 
   const formRef = useRef() as React.MutableRefObject<HTMLFormElement>;
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -130,38 +131,52 @@ function Sidebar() {
   };
 
   return (
-    <aside className="flex flex-col px-6 py-10 bg-amber-50 shadow-md w-80">
+    <aside className="flex flex-col px-4 py-4 bg-slate-100 shadow-md w-64 text-sm sticky top-[48px] h-[calc(100vh-48px)]">
       <ul>
-        <Link href="/dashboard/today">
-          <li className="mb-2 px-3 py-1 rounded-lg hover:underline bg-amber-300">
-            Today
-          </li>
+        <Link
+          href="/dashboard/today"
+          onClick={() => {
+            setActive("today");
+          }}
+          className={`sidebar-item ${active === "today" ? "active" : ""}`}>
+          <li>Today</li>
         </Link>
-        <li className="mb-2 px-3 py-1 rounded-lg  hover:underline">
-          <Link href="#">This Week</Link>
-        </li>
-        <li className="mb-2 px-3 py-1 rounded-lg hover:underline">
-          <Link href="#">Oustanding</Link>
-        </li>
+        <Link
+          href="#"
+          onClick={() => {
+            setActive("this-week");
+          }}
+          className={`sidebar-item ${active === "this-week" ? "active" : ""}`}>
+          <li>This Week</li>
+        </Link>
+        <Link
+          href="#"
+          onClick={() => {
+            setActive("outstanding");
+          }}
+          className={`sidebar-item ${
+            active === "outstanding" ? "active" : ""
+          }`}>
+          <li>Oustanding</li>
+        </Link>
       </ul>
-      <h1 className="font-bold text-lg my-4">My Classes</h1>
+      <h1 className="font-bold text-lg my-2 px-1">My Classes</h1>
       <ul>
         {classes.map((c) => (
-          <li
+          <Link
             key={c._id}
-            className="flex justify-between mb-2 px-3 py-1 rounded-lg">
-            <Link
-              href={`/dashboard/classes/${c._id}`}
-              className="hover:underline"
-              onClick={() => {}}>
-              {c.name}
-            </Link>
+            href={`/dashboard/classes/${c._id}`}
+            onClick={() => {
+              setActive(c._id);
+            }}
+            className={`sidebar-item ${active === c._id ? "active" : ""}`}>
+            <li>{c.name}</li>
             <button
               className="text-rose-800 hover:text-red-500"
               onClick={() => deleteClass(c._id)}>
               &times;
             </button>
-          </li>
+          </Link>
         ))}
       </ul>
       <form

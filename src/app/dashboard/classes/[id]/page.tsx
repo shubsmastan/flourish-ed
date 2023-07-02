@@ -5,20 +5,25 @@ import { useSession } from "next-auth/react";
 import { ClassDoc } from "@/models/Class";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import Lesson from "@/components/Lesson";
+import LessonForm from "@/components/LessonForm";
 
 const Class = () => {
   const { data: session } = useSession();
   const user = session?.user;
   const id = user?._id;
   const token = user?.accessToken;
+  const classId = window.location.href.split("classes/")[1];
 
   const [currentClass, setCurrentClass] = useState<ClassDoc | null>(null);
   const [isFetching, setIsFetching] = useState(true);
   const [error, setError] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingIndex, setEditingIndex] = useState(-1);
 
   useEffect(() => {
-    const classId = window.location.href.split("classes/")[1];
     const getData = async () => {
       try {
         if (!id) return;
@@ -40,28 +45,73 @@ const Class = () => {
       }
     };
     getData();
-  }, [id, token]);
+  }, [id, classId, token]);
+
+  const handleClose = () => {
+    setIsFormOpen(false);
+  };
 
   if (isFetching) {
     return (
-      <div className="px-20 py-10">
+      <>
         <FontAwesomeIcon icon={faSpinner} size="xl" color="#0f172a" spin />
-      </div>
+      </>
     );
   }
 
   if (!currentClass) {
     return (
-      <div className="px-20 py-10">
+      <>
         <p>{error}</p>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="px-20 py-10">
-      <h1>{currentClass.name}</h1>
-    </div>
+    <>
+      <div className="flex justify-between pb-3 border-b-slate-500 border-b-[0.5px]">
+        <h1 className="ml-5 text-2xl font-bold">{currentClass.name}</h1>
+        <div className="relative">
+          <button
+            className="btn-primary mr-5"
+            onClick={() => {
+              setIsFormOpen(true);
+            }}>
+            New Lesson
+          </button>
+          <button
+            className="mr-5"
+            onClick={() => {
+              setIsMenuOpen(!isMenuOpen);
+            }}>
+            <FontAwesomeIcon icon={faEllipsis} size="xl" />
+          </button>
+          <div
+            className={`text-left text-sm absolute w-56 right-0 bg-white rounded-2xl drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)] p-4 z-50 ${
+              isMenuOpen ? "block" : "hidden"
+            }`}>
+            <button className="block mb-3">Edit name</button>
+            <button className="block">Delete class</button>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-3 py-8 px-5 gap-5">
+        {currentClass.lessons.map((lesson, index) => {
+          console.log(lesson);
+          return (
+            <>
+              <Lesson key={index} lesson={lesson} index={index} />
+            </>
+          );
+        })}
+      </div>
+      <LessonForm
+        lesson={editingIndex === -1 ? null : currentClass.lessons[editingIndex]}
+        classId={classId}
+        open={isFormOpen}
+        handleClose={handleClose}
+      />
+    </>
   );
 };
 

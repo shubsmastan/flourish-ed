@@ -1,7 +1,4 @@
-import { forwardRef } from "react";
 import Snackbar from "@mui/material/Snackbar";
-import { lato } from "@/libs/fonts";
-import { ThemeProvider, createTheme } from "@mui/material";
 
 interface ToastProps {
   open: boolean;
@@ -9,22 +6,15 @@ interface ToastProps {
   handleClose: () => void;
 }
 
-const theme = createTheme({
-  typography: {
-    fontFamily: ["Lato", "sans-serif"].join(","),
-  },
-});
-
 const Toast = ({ open, message, handleClose }: ToastProps) => {
   return (
-    <ThemeProvider theme={theme}>
-      <Snackbar
-        open={open}
-        autoHideDuration={3000}
-        onClose={handleClose}
-        message={message}
-      />
-    </ThemeProvider>
+    <Snackbar
+      open={open}
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      autoHideDuration={3000}
+      onClose={handleClose}
+      message={message}
+    />
   );
 };
 

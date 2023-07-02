@@ -5,7 +5,7 @@ import { signOut, useSession } from "next-auth/react";
 import Loading from "./Loading";
 import Image from "next/image";
 import logo from "public/flourish.svg";
-import { crimsonText } from "@/libs/fonts";
+import { ysabeau } from "@/libs/fonts";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -16,14 +16,14 @@ const Header = () => {
   };
 
   return (
-    <header className="flex justify-start items-center gap-4 p-2 bg-sky-800 text-slate-50 shadow-md">
+    <header className="flex justify-start items-center gap-4 p-2 bg-sky-800 text-slate-50 shadow-md sticky top-0 z-10">
       <a href="#" className="flex item-center gap-2">
         <Image
           src={logo}
           alt=""
           style={{ width: "28px", marginBottom: "3px" }}
         />
-        <h1 className={`text-lg font-semibold ${crimsonText.className}`}>
+        <h1 className={`text-lg font-semibold ${ysabeau.className}`}>
           Flourish Education
         </h1>
       </a>

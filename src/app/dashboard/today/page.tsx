@@ -2,41 +2,39 @@
 
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from "react";
 
 const Today = () => {
   const { data: session, status } = useSession();
   const user = session?.user;
 
-  if (status === "unauthenticated") {
-    return (
-      <div className="flex flex-col gap-3 items-center my-auto bg-slate-50 text-slate-900 text-lg">
-        <p>You must be signed in to view this page.</p>
-        <p>
-          <Link href="/auth/sign-in" className="text-rose-800 hover:underline">
-            Sign in
-          </Link>
-          .
-        </p>
-      </div>
-    );
-  }
+  const [quote, setQuote] = useState(-1);
+  const quotes = [
+    "You are an educational rockstar.",
+    "You don't just teach - you inspire.",
+    "Creativity is intelligence having fun.",
+    "Education is a tool to change the future.",
+    "Change the world, one child at a time.",
+    "The best teachers are the best learners.",
+  ];
+
+  useEffect(() => {
+    setQuote(Math.floor(Math.random() * quotes.length));
+  }, []);
 
   if (status === "loading") {
-    return (
-      <div className="flex flex-col gap-3 items-center my-auto bg-slate-50 text-slate-900 text-lg">
-        {/* <div>
-          <FontAwesomeIcon icon={faSpinner} size="xl" color="#0f172a" spin />
-        </div> */}
-      </div>
-    );
+    return <></>;
   }
 
   return (
     <>
-      <div className="px-20 py-10">
-        <h1>Hi {user?.firstName}! Let&apos;s get ready to educate.</h1>
+      <div className="mb-5 border-b-slate-500 border-b-[0.5px]">
+        <h1 className="text-sm">Hi {user?.firstName}!</h1>
+        <p className="text-lg font-semibold mb-2">{quotes[quote]}</p>
+      </div>
+
+      <div>
+        <h1 className="text-2xl font-bold">Today&apos;s Lessons</h1>
       </div>
       {/* <Toast
         open={toastOpen}

@@ -7,7 +7,7 @@ import meeting from "public/meeting.jpg";
 import learn from "public/learn.jpg";
 import logo from "public/flourish.svg";
 import { signIn } from "next-auth/react";
-import { crimsonText } from "@/libs/fonts";
+import { ysabeau } from "@/libs/fonts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSchool,
@@ -23,13 +23,8 @@ const About = () => {
     <>
       <header className="flex justify-between items-center gap-4 p-4 h-20 bg-sky-800 text-slate-50 shadow-slate-900/50 shadow-md sm:p-8 lg:py-8 lg:px-10 2xl:px-72">
         <a href="#" className="flex item-center gap-3">
-          <Image
-            src={logo}
-            alt=""
-            style={{ width: "25px", height: "auto" }}
-            className="mb-1"
-          />
-          <h1 className={`text-2xl font-semibold ${crimsonText.className}`}>
+          <Image src={logo} alt="" style={{ width: "25px", height: "auto" }} />
+          <h1 className={`text-2xl font-semibold ${ysabeau.className}`}>
             Flourish Education
           </h1>
         </a>

@@ -1,5 +1,6 @@
 import { Class } from "@/models/Class";
 import { User } from "@/models/User";
+import { Lesson } from "@/models/Lesson";
 import { dbConnect } from "@/libs/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyJwt } from "@/libs/jwtHelper";
@@ -31,7 +32,10 @@ export async function GET(
         { status: 404 }
       );
     }
-    const cls = await Class.findById(classId);
+    const cls = await Class.findById(classId).populate({
+      path: "lessons",
+    });
+    console.log(cls);
     if (!cls) {
       return NextResponse.json(
         {
@@ -141,6 +145,7 @@ export async function DELETE(
     }
     const user = await User.findById(verified._id).populate({
       path: "classes",
+      model: Lesson,
     });
     user.classes.pull({ _id: classId });
     await user.save();

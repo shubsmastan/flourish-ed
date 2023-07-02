@@ -2,20 +2,20 @@ import mongoose, { Document } from "mongoose";
 import { ClassDoc } from "./Class";
 
 export interface LessonDoc extends Document {
-  className: ClassDoc;
+  classId: ClassDoc;
   date: Date;
   objective: string;
-  resources?: string[];
+  resources?: string;
   content: string;
   differentiation?: string;
 }
 
 const LessonSchema = new mongoose.Schema<LessonDoc>(
   {
-    className: { type: mongoose.Types.ObjectId, ref: "Class", required: true },
+    classId: { type: mongoose.Types.ObjectId, ref: "Class", required: true },
     date: { type: Date, required: true },
     objective: { type: String, required: true },
-    resources: { type: [String] },
+    resources: { type: String },
     content: { type: String, required: true },
     differentiation: { type: String },
   },

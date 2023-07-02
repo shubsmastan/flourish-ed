@@ -1,5 +1,5 @@
 import "./globals.css";
-import { lato } from "@/libs/fonts";
+import { figtree } from "@/libs/fonts";
 import Provider from "@/components/Provider";
 
 export const metadata = {
@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`flex flex-col min-h-screen text-slate-900 bg-slate-50 ${lato.className} antialiased`}>
+        className={`flex flex-col min-h-screen text-slate-900 bg-slate-50 ${figtree.className} antialiased`}>
         <Provider>{children}</Provider>
       </body>
     </html>
