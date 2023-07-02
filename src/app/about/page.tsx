@@ -21,29 +21,29 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 const About = () => {
   return (
     <>
-      <header className="flex justify-between items-center gap-4 p-4 h-20 bg-sky-800 text-slate-50 shadow-slate-900/50 shadow-md sm:p-8 lg:py-8 lg:px-10 2xl:px-72">
-        <a href="#" className="flex item-center gap-3">
+      <header className="flex h-20 items-center justify-between gap-4 bg-sky-800 p-4 text-slate-50 shadow-md shadow-slate-900/50 sm:p-8 lg:px-10 lg:py-8 2xl:px-72">
+        <a href="#" className="item-center flex gap-3">
           <Image src={logo} alt="" style={{ width: "25px", height: "auto" }} />
           <h1 className={`text-2xl font-semibold ${ysabeau.className}`}>
             Flourish Education
           </h1>
         </a>
-        <nav className="flex align-center justify-center gap-2">
-          <ul className="flex align-center justify-center gap-2 border-r-2 border-r-sky-700">
-            <Link href="#" className="rounded-md hover:bg-sky-700 px-5 py-1">
+        <nav className="align-center flex justify-center gap-2">
+          <ul className="align-center flex justify-center gap-2 border-r-2 border-r-sky-700">
+            <Link href="#" className="rounded-md px-5 py-1 hover:bg-sky-700">
               Features
             </Link>
-            <Link href="#" className="rounded-md hover:bg-sky-700 px-5 py-1">
+            <Link href="#" className="rounded-md px-5 py-1 hover:bg-sky-700">
               Resources
             </Link>
-            <Link href="#" className="rounded-md hover:bg-sky-700 px-5 py-1">
+            <Link href="#" className="rounded-md px-5 py-1 hover:bg-sky-700">
               About
             </Link>
           </ul>
-          <ul className="flex align-center justify-center gap-2">
+          <ul className="align-center flex justify-center gap-2">
             <Link
               href="/auth/sign-up"
-              className="rounded-md hover:bg-sky-700 px-5 py-1">
+              className="rounded-md px-5 py-1 hover:bg-sky-700">
               Register
             </Link>
             <button
@@ -56,11 +56,11 @@ const About = () => {
           </ul>
         </nav>
       </header>
-      <section className="text-slate-900 py-6 px-12 shadow-slate-900/50 shadow-md sm:p-8 lg:py-10 lg:px-32 2xl:px-72">
-        <h1 className="text-3xl font-bold mb-6 leading-[2.75rem] text-center mx-auto max-w-[400px] lg:text-4xl lg:mb-8 lg:leading-[3rem]">
+      <section className="px-12 py-6 text-slate-900 shadow-md shadow-slate-900/50 sm:p-8 lg:px-32 lg:py-10 2xl:px-72">
+        <h1 className="mx-auto mb-6 max-w-[400px] text-center text-3xl font-bold leading-[2.75rem] lg:mb-8 lg:text-4xl lg:leading-[3rem]">
           Organise your lessons, all in one place
         </h1>
-        <div className="flex flex-col justify-around items-center gap-8 text-center md:flex-row lg:gap-16">
+        <div className="flex flex-col items-center justify-around gap-8 text-center md:flex-row lg:gap-16">
           <div>
             <Image priority={false} src={classroom} alt="" className="mb-4" />
             <p className="text-lg">
@@ -90,50 +90,50 @@ const About = () => {
           </div>
         </div>
       </section>
-      <section className="bg-sky-200 text-slate-900 py-6 px-12 sm:p-8 lg:py-10 lg:px-32 2xl:px-72">
-        <h1 className="text-3xl font-bold mb-6 leading-[2.75rem] text-center mx-auto max-w-[400px] lg:text-4xl lg:mb-8 lg:leading-[3rem]">
+      <section className="bg-sky-200 px-12 py-6 text-slate-900 sm:p-8 lg:px-32 lg:py-10 2xl:px-72">
+        <h1 className="mx-auto mb-6 max-w-[400px] text-center text-3xl font-bold leading-[2.75rem] lg:mb-8 lg:text-4xl lg:leading-[3rem]">
           Trusted by schools all over the UK
         </h1>
         <div className="mb-8">
-          <p className="italic text-xl mb-3">
+          <p className="mb-3 text-xl italic">
             &quot;Lorem ipsum dolor sit amet consectetur adipisicing elit.
             Maiores itaque accusantium fugit. Fugiat obcaecati soluta dolorum,
             exercitationem veniam quisquam debitis corporis, deleniti ad sint
             est.&quot;
           </p>
-          <p className="text-lg text-right">
+          <p className="text-right text-lg">
             -- Headteacher at Grange Hill School
           </p>
         </div>
         <div className="mb-8">
-          <p className="italic text-xl mb-3">
+          <p className="mb-3 text-xl italic">
             &quot;Lorem ipsum dolor sit amet consectetur adipisicing elit.
             Maiores itaque accusantium fugit. Fugiat obcaecati soluta dolorum,
             exercitationem veniam quisquam debitis corporis, deleniti ad sint
             est.&quot;
           </p>
-          <p className="text-lg text-right">
+          <p className="text-right text-lg">
             -- Assistant Head Academic at Frinden House Prep
           </p>
         </div>
         <div className="mb-8">
-          <p className="italic text-xl mb-3">
+          <p className="mb-3 text-xl italic">
             &quot;Lorem ipsum dolor sit amet consectetur adipisicing elit.
             Maiores itaque accusantium fugit. Fugiat obcaecati soluta dolorum,
             exercitationem veniam quisquam debitis corporis, deleniti ad sint
             est.&quot;
           </p>
-          <p className="text-lg text-right">
+          <p className="text-right text-lg">
             -- Senior Leader at Elmcroft School
           </p>
         </div>
       </section>
-      <section className="text-slate-900 py-6 px-12 shadow-slate-900/50 shadow-md sm:p-8 lg:py-10 lg:px-32 2xl:px-72">
-        <h1 className="text-3xl font-bold mb-6 leading-[2.75rem] text-center mx-auto max-w-[400px] lg:text-4xl lg:mb-8 lg:leading-[3rem]">
+      <section className="px-12 py-6 text-slate-900 shadow-md shadow-slate-900/50 sm:p-8 lg:px-32 lg:py-10 2xl:px-72">
+        <h1 className="mx-auto mb-6 max-w-[400px] text-center text-3xl font-bold leading-[2.75rem] lg:mb-8 lg:text-4xl lg:leading-[3rem]">
           Features to speed up your planning
         </h1>
-        <div className="text-center md:flex-row lg:gap-16 md:grid md:grid-cols-2 md:gap-8">
-          <div className="justify-self-center mb-4">
+        <div className="text-center md:grid md:grid-cols-2 md:flex-row md:gap-8 lg:gap-16">
+          <div className="mb-4 justify-self-center">
             <FontAwesomeIcon
               icon={faSchool}
               style={{
@@ -146,7 +146,7 @@ const About = () => {
             <h2 className="text-lg font-semibold">Teacher designed</h2>
             <p>Lorem ipsum dolor sit amet consectetur</p>
           </div>
-          <div className="justify-self-center mb-4">
+          <div className="mb-4 justify-self-center">
             <FontAwesomeIcon
               icon={faLock}
               style={{
@@ -159,7 +159,7 @@ const About = () => {
             <h2 className="text-lg font-semibold">Secured data</h2>
             <p>Lorem ipsum dolor sit amet consectetur</p>
           </div>
-          <div className="justify-self-center mb-4">
+          <div className="mb-4 justify-self-center">
             <FontAwesomeIcon
               icon={faHandshake}
               style={{
@@ -172,7 +172,7 @@ const About = () => {
             <h2 className="text-lg font-semibold">Collaboration</h2>
             <p>Lorem ipsum dolor sit amet consectetur</p>
           </div>
-          <div className="justify-self-center mb-4">
+          <div className="mb-4 justify-self-center">
             <FontAwesomeIcon
               icon={faClock}
               style={{
@@ -185,7 +185,7 @@ const About = () => {
             <h2 className="text-lg font-semibold">Future proof</h2>
             <p>Lorem ipsum dolor sit amet consectetur</p>
           </div>
-          <div className="justify-self-center mb-4">
+          <div className="mb-4 justify-self-center">
             <FontAwesomeIcon
               icon={faBriefcase}
               style={{
@@ -198,7 +198,7 @@ const About = () => {
             <h2 className="text-lg font-semibold">Inspection ready</h2>
             <p>Lorem ipsum dolor sit amet consectetur</p>
           </div>
-          <div className="justify-self-center mb-4">
+          <div className="mb-4 justify-self-center">
             <FontAwesomeIcon
               icon={faChildren}
               style={{
@@ -213,9 +213,9 @@ const About = () => {
           </div>
         </div>
       </section>
-      <section className="flex flex-col justify-around gap-8 bg-sky-200 text-slate-900 py-6 px-12 sm:p-8 md:flex-row lg:py-10 lg:px-32 2xl:px-72">
+      <section className="flex flex-col justify-around gap-8 bg-sky-200 px-12 py-6 text-slate-900 sm:p-8 md:flex-row lg:px-32 lg:py-10 2xl:px-72">
         <nav>
-          <p className="font-bold mb-6">Features</p>
+          <p className="mb-6 font-bold">Features</p>
           <ul>
             <li className="mb-3">
               <a href="#">How It Works</a>
@@ -232,7 +232,7 @@ const About = () => {
           </ul>
         </nav>
         <nav>
-          <p className="font-bold mb-6">Resources</p>
+          <p className="mb-6 font-bold">Resources</p>
           <ul>
             <li className="mb-3">
               <a href="#">Help Center</a>
@@ -249,7 +249,7 @@ const About = () => {
           </ul>
         </nav>
         <nav>
-          <p className="font-bold mb-6">About Us</p>
+          <p className="mb-6 font-bold">About Us</p>
           <ul>
             <li className="mb-3">
               <a href="#">Company</a>
@@ -260,7 +260,7 @@ const About = () => {
           </ul>
         </nav>
       </section>
-      <footer className="flex flex-start gap-5 bg-sky-800 text-slate-50 shadow-slate-900/50 py-2 px-6 shadow-md lg:px-32 2xl:px-72">
+      <footer className="flex-start flex gap-5 bg-sky-800 px-6 py-2 text-slate-50 shadow-md shadow-slate-900/50 lg:px-32 2xl:px-72">
         <p className="text-xs">
           <a href="https://github.com/ShubsMastan">Security</a>
           &nbsp;&nbsp;|&nbsp;&nbsp;

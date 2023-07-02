@@ -11,50 +11,58 @@ import Link from "next/link";
 function Sidebar() {
   const { data: session } = useSession();
   const user = session?.user;
-  const id = user?._id;
+  const userId = user?._id;
   const token = user?.accessToken;
 
   const [classes, setClasses] = useState<ClassDoc[]>([]);
-  const [open, setOpen] = useState(true);
-  const [toastOpen, setToastOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isToastOpen, setIsToastOpen] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
-  const [editing, setEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [newClassName, setNewClassName] = useState("");
-  const [active, setActive] = useState("today");
+  const [active, setActive] = useState("");
 
   const formRef = useRef() as React.MutableRefObject<HTMLFormElement>;
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
   useEffect(() => {
+    if (window.location.href.includes("classes")) {
+      setActive(window.location.href.split("classes/")[1]);
+    } else {
+      setActive(window.location.href.split("dashboard/")[1]);
+    }
+  }, []);
+
+  useEffect(() => {
     const getClasses = async () => {
       try {
-        if (!id) return;
-        setOpen(true);
+        if (!userId) return;
+        setIsModalOpen(true);
         const { data } = await axios.get(
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes`,
           { headers: { Authorization: token } }
         );
         setClasses(data);
-        setOpen(false);
+        setIsModalOpen(false);
       } catch (err: any) {
         if (err.response) {
-          setOpen(false);
+          setIsModalOpen(false);
           setToastMsg(err.response.data.error);
-          setToastOpen(true);
+          setIsToastOpen(true);
           return;
         }
         console.log(err);
-        setOpen(false);
+        setIsModalOpen(false);
         setToastMsg("Error fetching classes.");
-        setToastOpen(true);
+        setIsToastOpen(true);
       }
     };
     getClasses();
-  }, [id, token, classes.length]);
+  }, [userId, token, classes.length]);
 
   const addClass = async (name: string) => {
     try {
-      setOpen(true);
+      setIsModalOpen(true);
       const { data } = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes`,
         { name },
@@ -63,45 +71,45 @@ function Sidebar() {
         }
       );
       setClasses(data);
-      setOpen(false);
+      setIsModalOpen(false);
       setToastMsg("New class added successfully.");
-      setToastOpen(true);
+      setIsToastOpen(true);
     } catch (err: any) {
       if (err.response) {
-        setOpen(false);
+        setIsModalOpen(false);
         setToastMsg(err.response.data.error);
-        setToastOpen(true);
+        setIsToastOpen(true);
         return;
       }
       console.log(err);
-      setOpen(false);
+      setIsModalOpen(false);
       setToastMsg("Something went wrong. Please try again.");
-      setToastOpen(true);
+      setIsToastOpen(true);
     }
   };
 
   const deleteClass = async (classId: string) => {
     try {
-      setOpen(true);
+      setIsModalOpen(true);
       const { data } = await axios.delete(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes/${classId}`,
         { headers: { Authorization: token } }
       );
       setClasses(data);
-      setOpen(false);
-      setToastOpen(true);
+      setIsModalOpen(false);
+      setIsToastOpen(true);
       setToastMsg("Class deleted.");
     } catch (err: any) {
       if (err.response) {
         setToastMsg(err.response.data.error);
-        setToastOpen(true);
-        setOpen(false);
+        setIsToastOpen(true);
+        setIsModalOpen(false);
         return;
       }
       console.log(err);
-      setOpen(false);
+      setIsModalOpen(false);
       setToastMsg("Something went wrong. Please try again.");
-      setToastOpen(true);
+      setIsToastOpen(true);
     }
   };
 
@@ -112,7 +120,7 @@ function Sidebar() {
     if (reason === "clickaway") {
       return;
     }
-    setToastOpen(false);
+    setIsToastOpen(false);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -120,21 +128,22 @@ function Sidebar() {
     e.preventDefault();
     addClass(newClassName);
     setNewClassName("");
-    setEditing(false);
+    setIsEditing(false);
     formRef.current.style.display = "none";
   };
 
   const handleOpenForm = () => {
-    setEditing(true);
+    setIsEditing(true);
     formRef.current.style.display = "flex";
     inputRef.current.focus();
   };
 
   return (
-    <aside className="flex flex-col px-4 py-4 bg-slate-100 shadow-md w-64 text-sm sticky top-[48px] h-[calc(100vh-48px)]">
+    <aside className="sticky top-[48px] flex h-[calc(100vh-48px)] w-64 flex-col bg-slate-100 px-4 py-4 text-sm shadow-md">
       <ul>
         <Link
           href="/dashboard/today"
+          passHref
           onClick={() => {
             setActive("today");
           }}
@@ -143,6 +152,7 @@ function Sidebar() {
         </Link>
         <Link
           href="#"
+          passHref
           onClick={() => {
             setActive("this-week");
           }}
@@ -151,6 +161,7 @@ function Sidebar() {
         </Link>
         <Link
           href="#"
+          passHref
           onClick={() => {
             setActive("outstanding");
           }}
@@ -160,12 +171,13 @@ function Sidebar() {
           <li>Oustanding</li>
         </Link>
       </ul>
-      <h1 className="font-bold text-lg my-2 px-1">My Classes</h1>
+      <h1 className="my-2 px-1 text-lg font-bold">My Classes</h1>
       <ul>
         {classes.map((c) => (
           <Link
             key={c._id}
             href={`/dashboard/classes/${c._id}`}
+            passHref
             onClick={() => {
               setActive(c._id);
             }}
@@ -192,18 +204,18 @@ function Sidebar() {
           onChange={(e) => {
             setNewClassName(e.target.value);
           }}
-          className="px-2 py-1 border-solid border-[1px] rounded-md border-black"
+          className="rounded-md border-[1px] border-solid border-black px-2 py-1"
         />
         <button className="btn-primary">Add</button>
       </form>
       <button
-        className="btn-primary mx-auto mt-auto w-30"
+        className="btn-primary w-30 mx-auto mt-auto"
         onClick={handleOpenForm}>
         + New Class
       </button>
-      <Loading open={open} />
+      <Loading open={isModalOpen} />
       <Toast
-        open={toastOpen}
+        open={isToastOpen}
         message={toastMsg}
         handleClose={handleToastClose}
       />

@@ -62,35 +62,35 @@ const AuthForm = () => {
           signUp();
         }}>
         <input
-          className="block mx-auto px-2 py-1 border-solid border-[1px] rounded-md border-black"
+          className="mx-auto block rounded-md border-[1px] border-solid border-black px-2 py-1"
           type="text"
           placeholder="First Name"
           required={true}
           onChange={(e) => setFirstName(e.target.value)}
         />
         <input
-          className="block mx-auto px-2 py-1 border-solid border-[1px] rounded-md border-black"
+          className="mx-auto block rounded-md border-[1px] border-solid border-black px-2 py-1"
           type="text"
           placeholder="Surname"
           required={true}
           onChange={(e) => setLastName(e.target.value)}
         />
         <input
-          className="block mx-auto px-2 py-1 border-solid border-[1px] rounded-md border-black"
+          className="mx-auto block rounded-md border-[1px] border-solid border-black px-2 py-1"
           type="email"
           placeholder="Email"
           required={true}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          className="block mx-auto px-2 py-1 border-solid border-[1px] rounded-md border-black"
+          className="mx-auto block rounded-md border-[1px] border-solid border-black px-2 py-1"
           type="password"
           placeholder="Password"
           required={true}
           onChange={(e) => setPwd(e.target.value)}
         />
         <input
-          className="block mx-auto px-2 py-1 border-solid border-[1px] rounded-md border-black"
+          className="mx-auto block rounded-md border-[1px] border-solid border-black px-2 py-1"
           type="password"
           placeholder="Confirm Password"
           required={true}

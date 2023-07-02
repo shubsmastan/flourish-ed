@@ -2,6 +2,7 @@ import mongoose, { Document } from "mongoose";
 import { ClassDoc } from "./Class";
 
 export interface UserDoc extends Document {
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;

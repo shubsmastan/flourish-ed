@@ -5,7 +5,6 @@ const jwt_secret = process.env.JWT_SECRET!;
 export function verifyJwt(token: string) {
   try {
     const decoded = jwt.verify(token, jwt_secret);
-    // console.log("token decoded:", decoded);
     return decoded as JwtPayload;
   } catch (err) {
     console.log(err);

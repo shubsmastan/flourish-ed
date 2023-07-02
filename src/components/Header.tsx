@@ -16,8 +16,8 @@ const Header = () => {
   };
 
   return (
-    <header className="flex justify-start items-center gap-4 p-2 bg-sky-800 text-slate-50 shadow-md sticky top-0 z-10">
-      <a href="#" className="flex item-center gap-2">
+    <header className="sticky top-0 z-10 flex items-center justify-start gap-4 bg-sky-800 p-2 text-slate-50 shadow-md">
+      <a href="#" className="item-center flex gap-2">
         <Image
           src={logo}
           alt=""

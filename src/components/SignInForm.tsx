@@ -45,14 +45,14 @@ const AuthForm = () => {
       <p>Please log in to continue.</p>
       <form className="flex flex-col gap-4" onSubmit={logIn}>
         <input
-          className="block mx-auto px-2 py-1 border-solid border-[1px] rounded-md border-black"
+          className="mx-auto block rounded-md border-[1px] border-solid border-black px-2 py-1"
           type="text"
           placeholder="Email"
           required={true}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          className="block mx-auto px-2 py-1 border-solid border-[1px] rounded-md border-black"
+          className="mx-auto block rounded-md border-[1px] border-solid border-black px-2 py-1"
           type="password"
           placeholder="Password"
           required={true}

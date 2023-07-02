@@ -2,6 +2,7 @@ import mongoose, { Document } from "mongoose";
 import { ClassDoc } from "./Class";
 
 export interface LessonDoc extends Document {
+  _id: string;
   classId: ClassDoc;
   date: Date;
   objective: string;

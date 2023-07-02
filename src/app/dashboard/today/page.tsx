@@ -1,7 +1,6 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const Today = () => {
@@ -20,17 +19,17 @@ const Today = () => {
 
   useEffect(() => {
     setQuote(Math.floor(Math.random() * quotes.length));
-  }, []);
+  }, [quotes.length]);
 
   if (status === "loading") {
     return <></>;
   }
 
   return (
-    <>
-      <div className="mb-5 border-b-slate-500 border-b-[0.5px]">
+    <div className="flex-1 px-7 py-5 text-slate-900">
+      <div className="mb-5 border-b-[0.5px] border-b-slate-500">
         <h1 className="text-sm">Hi {user?.firstName}!</h1>
-        <p className="text-lg font-semibold mb-2">{quotes[quote]}</p>
+        <p className="mb-2 text-lg font-semibold">{quotes[quote]}</p>
       </div>
 
       <div>
@@ -41,7 +40,7 @@ const Today = () => {
         message={toastMsg}
         handleClose={handleToastClose}
       /> */}
-    </>
+    </div>
   );
 };
 

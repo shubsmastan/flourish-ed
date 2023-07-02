@@ -17,7 +17,7 @@ export default function RootLayout({
       <Header />
       <div className="flex flex-1">
         <Sidebar />
-        <div className="flex-1 px-7 py-5 text-slate-900">{children}</div>
+        {children}
       </div>
     </>
   );

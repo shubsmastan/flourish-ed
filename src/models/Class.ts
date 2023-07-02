@@ -3,6 +3,7 @@ import { LessonDoc } from "./Lesson";
 import { UserDoc } from "./User";
 
 export interface ClassDoc extends Document {
+  _id: string;
   name: string;
   lessons: LessonDoc[];
   teachers: UserDoc[];

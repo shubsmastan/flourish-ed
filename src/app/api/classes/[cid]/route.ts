@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { cid: string } }
 ) {
   try {
     const token = req.headers.get("Authorization");
@@ -25,7 +25,7 @@ export async function GET(
       );
     }
     await dbConnect();
-    const { id: classId } = params;
+    const { cid: classId } = params;
     if (!mongoose.Types.ObjectId.isValid(classId)) {
       return NextResponse.json(
         { error: "Not a valid class ID." },
@@ -35,7 +35,6 @@ export async function GET(
     const cls = await Class.findById(classId).populate({
       path: "lessons",
     });
-    console.log(cls);
     if (!cls) {
       return NextResponse.json(
         {
@@ -59,7 +58,7 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { cid: string } }
 ) {
   const body = await req.json();
   const { name } = body;
@@ -78,7 +77,7 @@ export async function PUT(
       );
     }
     dbConnect();
-    const { id: classId } = params;
+    const { cid: classId } = params;
     if (!mongoose.Types.ObjectId.isValid(classId)) {
       return NextResponse.json(
         { error: "Not a valid class ID." },
@@ -110,7 +109,7 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { cid: string } }
 ) {
   try {
     const token = req.headers.get("Authorization");
@@ -127,7 +126,7 @@ export async function DELETE(
       );
     }
     dbConnect();
-    const { id: classId } = params;
+    const { cid: classId } = params;
     if (!mongoose.Types.ObjectId.isValid(classId)) {
       return NextResponse.json(
         { error: "Not a valid class ID." },
