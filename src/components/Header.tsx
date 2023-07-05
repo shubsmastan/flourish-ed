@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Loading from "./Loading";
 import Image from "next/image";
 import logo from "public/flourish.svg";
@@ -30,7 +30,7 @@ const Header = () => {
       <nav className="flex gap-4">
         <ul></ul>
       </nav>
-      <button onClick={logOut} className="btn-primary ms-auto">
+      <button onClick={logOut} className="btn-primary ms-auto text-sm">
         Sign Out
       </button>
       <Loading open={open} />

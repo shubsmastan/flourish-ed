@@ -5,7 +5,11 @@ import { useSession } from "next-auth/react";
 import { ClassDoc } from "@/models/Class";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEllipsis,
+  faSpinner,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import LessonCard from "@/components/LessonCard";
 import LessonForm from "@/components/LessonForm";
 import ClassForm from "@/components/ClassForm";
@@ -61,10 +65,7 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
 
   useEffect(() => {
     const callback = (e: MouseEvent) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(e.target as HTMLElement)
-      ) {
+      if (menuRef.current && e.target !== menuRef.current) {
         setIsMenuOpen(false);
       }
     };
@@ -103,8 +104,10 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
           <button
             className="btn-primary mr-5"
             onClick={() => {
+              setIsDeleting(false);
               setIsLessonFormOpen(true);
             }}>
+            <FontAwesomeIcon className="mr-2" icon={faPlus} color="#0f172a" />
             New Lesson
           </button>
           <button
@@ -126,6 +129,7 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
             <button
               className="mb-3 block"
               onClick={() => {
+                setIsMenuOpen(false);
                 setIsDeleting(false);
                 setIsClassFormOpen(true);
               }}>
@@ -134,6 +138,7 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
             <button
               className="block"
               onClick={() => {
+                setIsMenuOpen(false);
                 setIsDeleting(true);
                 setIsClassFormOpen(true);
               }}>
@@ -183,6 +188,7 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
         }
         open={isLessonFormOpen}
         handleClose={handleClose}
+        deleting={isDeleting}
       />
     </div>
   );

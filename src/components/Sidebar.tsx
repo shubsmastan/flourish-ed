@@ -7,6 +7,10 @@ import Loading from "@/components/Loading";
 import Toast from "@/components/Toast";
 import axios from "axios";
 import Link from "next/link";
+import ClassForm from "./ClassForm";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsis, faPlus } from "@fortawesome/free-solid-svg-icons";
+import SidebarLink from "./SidebarLink";
 
 function Sidebar() {
   const { data: session } = useSession();
@@ -19,11 +23,15 @@ function Sidebar() {
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [isClassFormOpen, setIsClassFormOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [newClassName, setNewClassName] = useState("");
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState("today");
+  const [activeEditing, setActiveEditing] = useState<ClassDoc | null>(null);
 
   const formRef = useRef() as React.MutableRefObject<HTMLFormElement>;
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const menuRef = useRef() as React.MutableRefObject<HTMLDivElement>;
 
   useEffect(() => {
     if (window.location.href.includes("classes")) {
@@ -58,7 +66,7 @@ function Sidebar() {
       }
     };
     getClasses();
-  }, [userId, token, classes.length]);
+  }, [userId, token, isClassFormOpen]);
 
   const addClass = async (name: string) => {
     try {
@@ -88,31 +96,6 @@ function Sidebar() {
     }
   };
 
-  const deleteClass = async (classId: string) => {
-    try {
-      setIsModalOpen(true);
-      const { data } = await axios.delete(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes/${classId}`,
-        { headers: { Authorization: token } }
-      );
-      setClasses(data);
-      setIsModalOpen(false);
-      setIsToastOpen(true);
-      setToastMsg("Class deleted.");
-    } catch (err: any) {
-      if (err.response) {
-        setToastMsg(err.response.data.error);
-        setIsToastOpen(true);
-        setIsModalOpen(false);
-        return;
-      }
-      console.log(err);
-      setIsModalOpen(false);
-      setToastMsg("Something went wrong. Please try again.");
-      setIsToastOpen(true);
-    }
-  };
-
   const handleToastClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -123,6 +106,11 @@ function Sidebar() {
     setIsToastOpen(false);
   };
 
+  const handleFormClose = () => {
+    setIsClassFormOpen(false);
+    setActiveEditing(null);
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     if (newClassName === "") return;
     e.preventDefault();
@@ -130,12 +118,6 @@ function Sidebar() {
     setNewClassName("");
     setIsEditing(false);
     formRef.current.style.display = "none";
-  };
-
-  const handleOpenForm = () => {
-    setIsEditing(true);
-    formRef.current.style.display = "flex";
-    inputRef.current.focus();
   };
 
   return (
@@ -151,7 +133,7 @@ function Sidebar() {
           <li>Today</li>
         </Link>
         <Link
-          href="#"
+          href="/dashboard/this-week"
           passHref
           onClick={() => {
             setActive("this-week");
@@ -160,35 +142,30 @@ function Sidebar() {
           <li>This Week</li>
         </Link>
         <Link
-          href="#"
+          href="/dashboard/past"
           passHref
           onClick={() => {
-            setActive("outstanding");
+            setActive("past");
           }}
           className={`sidebar-item ${
             active === "outstanding" ? "active" : ""
           }`}>
-          <li>Oustanding</li>
+          <li>Last Week</li>
         </Link>
       </ul>
       <h1 className="my-2 px-1 text-lg font-bold">My Classes</h1>
       <ul>
-        {classes.map((c) => (
-          <Link
-            key={c._id}
-            href={`/dashboard/classes/${c._id}`}
-            passHref
-            onClick={() => {
-              setActive(c._id);
-            }}
-            className={`sidebar-item ${active === c._id ? "active" : ""}`}>
-            <li>{c.name}</li>
-            <button
-              className="text-rose-800 hover:text-red-500"
-              onClick={() => deleteClass(c._id)}>
-              &times;
-            </button>
-          </Link>
+        {classes.map((cls) => (
+          <li key={cls._id} className="flex">
+            <SidebarLink
+              activeClass={cls}
+              setActive={setActive}
+              active={active}
+              setIsDeleting={setIsDeleting}
+              setIsClassFormOpen={setIsClassFormOpen}
+              setActiveEditing={setActiveEditing}
+            />
+          </li>
         ))}
       </ul>
       <form
@@ -210,14 +187,25 @@ function Sidebar() {
       </form>
       <button
         className="btn-primary w-30 mx-auto mt-auto"
-        onClick={handleOpenForm}>
-        + New Class
+        onClick={() => {
+          setIsDeleting(false);
+          setActiveEditing(null);
+          setIsClassFormOpen(true);
+        }}>
+        <span className="text-md mr-2 font-bold">+</span>New Class
       </button>
       <Loading open={isModalOpen} />
       <Toast
         open={isToastOpen}
         message={toastMsg}
         handleClose={handleToastClose}
+      />
+      <ClassForm
+        currentClass={activeEditing?.name ? activeEditing?.name : undefined}
+        classId={activeEditing?._id ? activeEditing?._id : undefined}
+        open={isClassFormOpen}
+        handleClose={handleFormClose}
+        deleting={isDeleting}
       />
     </aside>
   );

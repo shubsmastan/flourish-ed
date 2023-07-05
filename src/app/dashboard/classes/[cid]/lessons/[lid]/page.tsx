@@ -1,13 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, MutableRefObject } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEllipsis,
+  faSpinner,
+  faChevronLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import LessonForm from "@/components/LessonForm";
 import { LessonDoc } from "@/models/Lesson";
-import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 
 const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
   const { data: session } = useSession();
@@ -16,12 +21,17 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
   const token = user?.accessToken;
   const { cid: classId, lid: lessonId } = params;
 
+  const router = useRouter();
+
+  const menuRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
+
   const [lesson, setLesson] = useState<LessonDoc | null>(null);
   const [className, setClassName] = useState("");
   const [index, setIndex] = useState(0);
   const [isFetching, setIsFetching] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -65,6 +75,21 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
     getData();
   }, [userId, token, classId, lessonId, isFormOpen]);
 
+  useEffect(() => {
+    const callback = (e: MouseEvent) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target as HTMLElement)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", callback);
+    return () => {
+      document.removeEventListener("mousedown", callback);
+    };
+  });
+
   const handleClose = () => {
     setIsFormOpen(false);
   };
@@ -95,9 +120,14 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
           <button
             className="btn-primary mr-5"
             onClick={() => {
-              setIsFormOpen(true);
+              router.push(`/dashboard/classes/${classId}`);
             }}>
-            Edit Lesson
+            <FontAwesomeIcon
+              className="mr-2"
+              icon={faChevronLeft}
+              color="#0f172a"
+            />
+            Back to Class
           </button>
           <button
             className="mr-5"
@@ -107,11 +137,26 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
             <FontAwesomeIcon icon={faEllipsis} size="xl" />
           </button>
           <div
+            ref={menuRef}
             className={`absolute right-0 z-50 w-56 rounded-2xl bg-white p-4 text-left text-sm drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)] ${
               isMenuOpen ? "block" : "hidden"
             }`}>
-            <button className="mb-3 block">Edit lesson</button>
-            <button className="block">Delete lesson</button>
+            <button
+              className="mb-3 block"
+              onClick={() => {
+                setIsDeleting(false);
+                setIsFormOpen(true);
+              }}>
+              Edit lesson
+            </button>
+            <button
+              className="block"
+              onClick={() => {
+                setIsDeleting(true);
+                setIsFormOpen(true);
+              }}>
+              Delete lesson
+            </button>
           </div>
         </div>
       </div>
@@ -122,21 +167,25 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
         </div>
         <div className="mb-5 flex flex-col gap-2">
           <p className="font-semibold">Objective:</p>
-          <p>{lesson.objective}</p>
+          <p className="whitespace-pre-line">{lesson.objective}</p>
         </div>
         <div className="mb-5 flex flex-col gap-2">
           <p className="font-semibold">Content:</p>
-          <p>{lesson.content}</p>
+          <p className="whitespace-pre-line">{lesson.content}</p>
         </div>
         <div className="mb-5 flex flex-col gap-2">
           <div>
             <p className="mb-1 font-semibold">Resources:</p>
-            <p>{lesson.resources ? lesson.resources : "(none)"}</p>
+            <p className="whitespace-pre-line">
+              {lesson.resources ? lesson.resources : "(none)"}
+            </p>
           </div>
         </div>
         <div className="mb-5 flex flex-col gap-2">
           <p className="font-semibold">Differentiation:</p>
-          <p>{lesson.differentiation ? lesson.differentiation : "(none)"}</p>
+          <p className="whitespace-pre-line">
+            {lesson.differentiation ? lesson.differentiation : "(none)"}
+          </p>
         </div>
       </div>
       <LessonForm
@@ -157,6 +206,7 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
         lessonId={lessonId}
         open={isFormOpen}
         handleClose={handleClose}
+        deleting={isDeleting}
       />
     </div>
   );

@@ -24,14 +24,15 @@ App created using Next.js, React, MongoDB, and TypeScript.
 
 <!-- ## Next Steps/Ideas
 
-- Edit/delete classes/lessons from menu options (user details eventually?)
-- Correctly use date filters in sidebar to show specific lesons (third one past lessons?)
+- Use Redux for state mgmt or otherwise get page to reload when class changes
+- Correctly use filters in sidebar to show specific lesons (third one: past lessons)
+- Apply filters on class pages (e.g. by week, month, term, past) and reverse sort?
+- Add icons to menu options and forms (e.g. pencil for edit / bin for delete)
 - Improve responsiveness of dashboard once all UI features implemented
-- See other todo apps for more ideas: Monday.com, Trello
 - Find a styled calendar component for date input?
 - NEXT STEPS:
 - Add an "assessments" feature: input pupils and assessment scores and get a graph from D3
-- Do a Jest/Vitest/Cypress course and learn more about how to use middleware
+- Do a Jest/Vitest/Cypress course for testing and learn more about how to use middleware
 
 ## Copyright
 

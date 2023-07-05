@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import { figtree } from "@/libs/fonts";
@@ -20,6 +21,7 @@ interface LessonFormProps {
   open: boolean;
   classId: string;
   lessonId?: string;
+  deleting: boolean;
   handleClose: () => void;
 }
 
@@ -28,12 +30,15 @@ const LessonForm = ({
   open,
   classId,
   lessonId,
+  deleting,
   handleClose,
 }: LessonFormProps) => {
   const { data: session } = useSession();
   const user = session?.user;
   const id = user?._id;
   const token = user?.accessToken;
+
+  const router = useRouter();
 
   const [lessonData, setLessonData] = useState<LessonType>({
     date: new Date(Date.now()).toISOString().split("T")[0],
@@ -62,38 +67,63 @@ const LessonForm = ({
     }));
   };
 
+  const handleDelete = async () => {
+    try {
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes/${classId}/lessons/${lessonId}`,
+        {
+          headers: { Authorization: token },
+        }
+      );
+      handleClose();
+      setError("");
+    } catch (err: any) {
+      console.log(err);
+      if (err.response.data.error) {
+        setError(err.response.data.error);
+      }
+    }
+  };
+
   const handleSave = async () => {
     try {
       if (!id) return;
-      if (isEditing) {
-        await axios.put(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes/${classId}/lessons/${lessonId}`,
-          {
-            date: lessonData.date,
-            objective: lessonData.objective,
-            content: lessonData.content,
-            resources: lessonData.resources,
-            differentiation: lessonData.differentiation,
-          },
-          {
-            headers: { Authorization: token },
-          }
-        );
-      } else {
-        await axios.post(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes/${classId}/lessons`,
-          {
-            date: lessonData.date,
-            objective: lessonData.objective,
-            content: lessonData.content,
-            resources: lessonData.resources,
-            differentiation: lessonData.differentiation,
-          },
-          {
-            headers: { Authorization: token },
-          }
-        );
+      if (
+        (lessonData.date === "",
+        lessonData.objective === "" || lessonData.content === "")
+      ) {
+        setError("Please enter a date, objective and content for your lesson.");
+        return;
       }
+      isEditing
+        ? await axios.put(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes/${classId}/lessons/${lessonId}`,
+            {
+              date: lessonData.date,
+              objective: lessonData.objective,
+              content: lessonData.content,
+              resources: lessonData.resources,
+              differentiation: lessonData.differentiation,
+            },
+            {
+              headers: { Authorization: token },
+            }
+          )
+        : await axios.post(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes/${classId}/lessons`,
+            {
+              date: lessonData.date,
+              objective: lessonData.objective,
+              content: lessonData.content,
+              resources: lessonData.resources,
+              differentiation: lessonData.differentiation,
+            },
+            {
+              headers: { Authorization: token },
+            }
+          );
+      handleClose();
+      setError("");
       setLessonData({
         date: new Date(Date.now()).toISOString().split("T")[0],
         objective: "",
@@ -110,6 +140,48 @@ const LessonForm = ({
     }
   };
 
+  if (deleting) {
+    return (
+      <Modal open={open} onClose={handleClose}>
+        <Fade in={open}>
+          <div
+            className={`absolute left-1/2 top-1/2 w-[700px] -translate-x-1/2
+          -translate-y-1/2 rounded-md bg-white text-sm outline-none ${figtree.className}`}>
+            <button
+              className="absolute right-5 top-3 text-2xl"
+              onClick={handleClose}>
+              &times;
+            </button>
+            <form className="px-12 pb-5 pt-10">
+              <h1 className="mb-10 text-2xl font-bold">Delete Class</h1>
+              <p className="absolute top-20 text-rose-800">{error}</p>
+              <p className="text-lg">
+                Are you sure you want to delete the class this lesson?
+              </p>
+              <div className="mt-5 flex justify-end gap-5 border-t-[1px] border-t-slate-300">
+                <button
+                  type="button"
+                  className="btn-cancel mt-5"
+                  onClick={handleClose}>
+                  Cancel
+                </button>
+                <button
+                  className="btn-primary mt-5"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleDelete();
+                    router.push(`/dashboard/classes/${classId}`);
+                  }}>
+                  Confirm
+                </button>
+              </div>
+            </form>
+          </div>
+        </Fade>
+      </Modal>
+    );
+  }
+
   return (
     <Modal open={open} onClose={handleClose}>
       <Fade in={open}>
@@ -122,7 +194,9 @@ const LessonForm = ({
             &times;
           </button>
           <form className="px-12 pb-5 pt-10">
-            <h1 className="mb-10 text-2xl font-bold">New Lesson</h1>
+            <h1 className="mb-10 text-2xl font-bold">
+              {isEditing ? "Edit" : "New"} Lesson
+            </h1>
             <p className="absolute top-20 text-rose-800">{error}</p>
             <div className="grid grid-cols-[1fr_6fr] gap-x-3 gap-y-5">
               <label>Date:</label>
@@ -165,11 +239,9 @@ const LessonForm = ({
             </div>
             <div className="mt-5 flex justify-end gap-5 border-t-[1px] border-t-slate-300">
               <button
-                className="btn-primary mt-5"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleClose();
-                }}>
+                type="button"
+                className="btn-cancel mt-5"
+                onClick={handleClose}>
                 Cancel
               </button>
               <button

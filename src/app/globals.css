@@ -4,11 +4,15 @@
 
 @layer components {
   .btn-primary {
-    @apply px-3 py-1 bg-rose-200 text-slate-900 rounded-[5px] hover:bg-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-opacity-75;
+    @apply rounded-[5px] bg-rose-200 px-3 py-1 text-slate-900 hover:bg-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-opacity-75;
+  }
+
+  .btn-cancel {
+    @apply rounded-[5px] border-2 border-rose-200 bg-white px-3 py-1 text-slate-900 hover:border-rose-300 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-opacity-75;
   }
 
   .sidebar-item {
-    @apply flex justify-between px-1 py-2 rounded-md hover:bg-slate-300 hover:cursor-pointer;
+    @apply flex justify-between rounded-md px-1 py-2 hover:cursor-pointer hover:bg-slate-300;
   }
 
   .sidebar-item.active {

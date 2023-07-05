@@ -1,12 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  ChangeEvent,
+  MutableRefObject,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import { figtree } from "@/libs/fonts";
 import axios from "axios";
+import { ClassDoc } from "@/models/Class";
 
 interface ClassFormProps {
   currentClass: string | undefined;
@@ -29,21 +38,21 @@ const ClassForm = ({
   const token = user?.accessToken;
 
   const router = useRouter();
+  const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
 
   const [className, setClassName] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState("");
 
-  console.log(classId);
-
   useEffect(() => {
+    inputRef?.current?.focus();
     if (currentClass) {
       setIsEditing(true);
       setClassName(currentClass);
     }
   }, [currentClass]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setClassName(e.target.value);
   };
 
@@ -122,10 +131,12 @@ const ClassForm = ({
               </p>
               <div className="mt-5 flex justify-end gap-5 border-t-[1px] border-t-slate-300">
                 <button
-                  className="btn-primary mt-5"
-                  onClick={(e) => {
-                    e.preventDefault();
+                  type="button"
+                  className="btn-cancel mt-5"
+                  onClick={() => {
                     handleClose();
+                    setClassName("");
+                    setIsEditing(false);
                   }}>
                   Cancel
                 </button>
@@ -158,11 +169,14 @@ const ClassForm = ({
             &times;
           </button>
           <form className="px-12 pb-5 pt-10">
-            <h1 className="mb-10 text-2xl font-bold">Edit Class</h1>
+            <h1 className="mb-10 text-2xl font-bold">
+              {isEditing ? "Edit" : "New"} Class
+            </h1>
             <p className="absolute top-20 text-rose-800">{error}</p>
             <div className="grid grid-cols-[1fr_6fr] gap-x-3 gap-y-5">
               <label>Name:</label>
               <input
+                ref={inputRef}
                 required
                 type="text"
                 name="name"
@@ -173,10 +187,12 @@ const ClassForm = ({
             </div>
             <div className="mt-5 flex justify-end gap-5 border-t-[1px] border-t-slate-300">
               <button
-                className="btn-primary mt-5"
-                onClick={(e) => {
-                  e.preventDefault();
+                type="button"
+                className="btn-cancel mt-5"
+                onClick={() => {
                   handleClose();
+                  setClassName("");
+                  setIsEditing(false);
                 }}>
                 Cancel
               </button>
