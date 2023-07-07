@@ -5,14 +5,13 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEllipsis,
-  faSpinner,
-  faChevronLeft,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import LessonForm from "@/components/LessonForm";
 import { LessonDoc } from "@/models/Lesson";
+import { toast } from "react-toastify";
+import Spinner from "@/components/Spinner";
+import Dropdown from "@/components/Dropdown";
 
 const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
   const { data: session } = useSession();
@@ -24,6 +23,12 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
   const router = useRouter();
 
   const menuRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
+
+  const notify = (type: "success" | "info" | "error", msg: string) => {
+    if (type === "info") toast.info(msg);
+    if (type === "success") toast.success(msg);
+    if (type === "error") toast.error(msg);
+  };
 
   const [lesson, setLesson] = useState<LessonDoc | null>(null);
   const [className, setClassName] = useState("");
@@ -62,13 +67,15 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
         setLesson(data);
         setIsFetching(false);
       } catch (err: any) {
-        if (err.response) {
+        if (err.response.data.error) {
+          notify("error", err.response.data.error);
           setError(err.response.data.error);
           setIsFetching(false);
           return;
         }
         console.log(err);
-        setError("Error fetching class information.");
+        notify("error", "Error fetching lesson information.");
+        setError("Our server is scratching its head. Please try again.");
         setIsFetching(false);
       }
     };
@@ -97,7 +104,7 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
   if (isFetching) {
     return (
       <div className="px-7 py-5 text-slate-900">
-        <FontAwesomeIcon icon={faSpinner} size="xl" color="#0f172a" spin />
+        <Spinner />
       </div>
     );
   }
@@ -136,27 +143,19 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
             }}>
             <FontAwesomeIcon icon={faEllipsis} size="xl" />
           </button>
-          <div
-            ref={menuRef}
-            className={`absolute right-0 z-50 w-56 rounded-2xl bg-white p-4 text-left text-sm drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)] ${
-              isMenuOpen ? "block" : "hidden"
-            }`}>
-            <button
-              className="mb-3 block"
-              onClick={() => {
+          <div ref={menuRef} className={isMenuOpen ? "block" : "hidden"}>
+            <Dropdown
+              className="right-4 top-7"
+              type="lesson"
+              handleEditClick={() => {
                 setIsDeleting(false);
                 setIsFormOpen(true);
-              }}>
-              Edit lesson
-            </button>
-            <button
-              className="block"
-              onClick={() => {
+              }}
+              handleDeleteClick={() => {
                 setIsDeleting(true);
                 setIsFormOpen(true);
-              }}>
-              Delete lesson
-            </button>
+              }}
+            />
           </div>
         </div>
       </div>

@@ -6,16 +6,14 @@ import {
   useRef,
   ChangeEvent,
   MutableRefObject,
-  Dispatch,
-  SetStateAction,
 } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
+import { toast } from "react-toastify";
 import { figtree } from "@/libs/fonts";
 import axios from "axios";
-import { ClassDoc } from "@/models/Class";
 
 interface ClassFormProps {
   currentClass: string | undefined;
@@ -44,11 +42,20 @@ const ClassForm = ({
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState("");
 
+  const notify = (type: "success" | "info" | "error", msg: string) => {
+    if (type === "info") toast.info(msg);
+    if (type === "success") toast.success(msg);
+    if (type === "error") toast.error(msg);
+  };
+
   useEffect(() => {
     inputRef?.current?.focus();
     if (currentClass) {
-      setIsEditing(true);
       setClassName(currentClass);
+      setIsEditing(true);
+    } else {
+      setClassName("");
+      setIsEditing(false);
     }
   }, [currentClass]);
 
@@ -66,11 +73,14 @@ const ClassForm = ({
       );
       handleClose();
       setError("");
+      notify("info", "Class deleted successfully.");
     } catch (err: any) {
       console.log(err);
       if (err.response.data.error) {
         setError(err.response.data.error);
+        return;
       }
+      notify("error", "Error deleting class.");
     }
   };
 
@@ -102,12 +112,18 @@ const ClassForm = ({
           );
       handleClose();
       setError("");
-      if (currentClass) setClassName(currentClass);
+      notify(
+        "success",
+        `Class ${isEditing ? "changed" : "created"} successfully.`
+      );
+      setClassName("");
     } catch (err: any) {
       console.log(err);
       if (err.response.data.error) {
         setError(err.response.data.error);
+        return;
       }
+      notify("error", "Error creating class.");
     }
   };
 
@@ -182,18 +198,14 @@ const ClassForm = ({
                 name="name"
                 value={className}
                 onChange={handleInputChange}
-                className="flex-1 rounded-sm bg-slate-200 p-1"
+                className="flex-1 rounded-md bg-slate-200 px-2 py-1"
               />
             </div>
             <div className="mt-5 flex justify-end gap-5 border-t-[1px] border-t-slate-300">
               <button
                 type="button"
                 className="btn-cancel mt-5"
-                onClick={() => {
-                  handleClose();
-                  setClassName("");
-                  setIsEditing(false);
-                }}>
+                onClick={handleClose}>
                 Cancel
               </button>
               <button

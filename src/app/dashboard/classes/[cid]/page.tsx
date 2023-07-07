@@ -5,14 +5,13 @@ import { useSession } from "next-auth/react";
 import { ClassDoc } from "@/models/Class";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEllipsis,
-  faSpinner,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 import LessonCard from "@/components/LessonCard";
 import LessonForm from "@/components/LessonForm";
 import ClassForm from "@/components/ClassForm";
+import Spinner from "@/components/Spinner";
+import Dropdown from "@/components/Dropdown";
 
 const ClassPage = ({ params }: { params: { cid: string } }) => {
   const { data: session } = useSession();
@@ -32,6 +31,12 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
   const [editingIndex, setEditingIndex] = useState(-1);
   const [error, setError] = useState("");
 
+  const notify = (type: "success" | "info" | "error", msg: string) => {
+    if (type === "info") toast.info(msg);
+    if (type === "success") toast.success(msg);
+    if (type === "error") toast.error(msg);
+  };
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -50,13 +55,15 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
         setCurrentClass(data);
         setIsFetching(false);
       } catch (err: any) {
-        if (err.response) {
+        if (err.response.data.error) {
+          notify("error", err.response.data.error);
           setError(err.response.data.error);
           setIsFetching(false);
           return;
         }
         console.log(err);
-        setError("Error fetching class information.");
+        notify("error", "Error fetching class information.");
+        setError("Our server is scratching its head. Please try again.");
         setIsFetching(false);
       }
     };
@@ -65,7 +72,10 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
 
   useEffect(() => {
     const callback = (e: MouseEvent) => {
-      if (menuRef.current && e.target !== menuRef.current) {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(e.target as HTMLElement)
+      ) {
         setIsMenuOpen(false);
       }
     };
@@ -83,7 +93,7 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
   if (isFetching) {
     return (
       <div className="px-7 py-5 text-slate-900">
-        <FontAwesomeIcon icon={faSpinner} size="xl" color="#0f172a" spin />
+        <Spinner />
       </div>
     );
   }
@@ -104,6 +114,7 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
           <button
             className="btn-primary mr-5"
             onClick={() => {
+              setEditingIndex(-1);
               setIsDeleting(false);
               setIsLessonFormOpen(true);
             }}>
@@ -121,29 +132,21 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
               size="xl"
             />
           </button>
-          <div
-            ref={menuRef}
-            className={`absolute right-2 z-50 w-56 rounded-2xl bg-white p-4
-            text-left text-sm drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)]
-            ${isMenuOpen ? "block" : "hidden"}`}>
-            <button
-              className="mb-3 block"
-              onClick={() => {
+          <div ref={menuRef} className={isMenuOpen ? "block" : "hidden"}>
+            <Dropdown
+              className="right-4 top-7"
+              type="class"
+              handleEditClick={() => {
                 setIsMenuOpen(false);
                 setIsDeleting(false);
                 setIsClassFormOpen(true);
-              }}>
-              Edit class name
-            </button>
-            <button
-              className="block"
-              onClick={() => {
+              }}
+              handleDeleteClick={() => {
                 setIsMenuOpen(false);
                 setIsDeleting(true);
                 setIsClassFormOpen(true);
-              }}>
-              Delete class
-            </button>
+              }}
+            />
           </div>
         </div>
       </div>
@@ -151,7 +154,13 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
         {currentClass.lessons.map((lesson, index) => {
           return (
             <div key={index}>
-              <LessonCard lesson={lesson} index={index} />
+              <LessonCard
+                lesson={lesson}
+                index={index}
+                setIsDeleting={setIsDeleting}
+                setIsLessonFormOpen={setIsLessonFormOpen}
+                setEditingIndex={setEditingIndex}
+              />
             </div>
           );
         })}
@@ -168,7 +177,9 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
           editingIndex === -1
             ? null
             : {
-                date: currentClass.lessons[editingIndex].date.toString(),
+                date: new Date(currentClass.lessons[editingIndex].date)
+                  .toISOString()
+                  .split("T")[0],
                 objective: currentClass.lessons[editingIndex].objective,
                 content: currentClass.lessons[editingIndex].content,
                 resources: currentClass.lessons[editingIndex].resources

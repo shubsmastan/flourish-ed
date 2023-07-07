@@ -10,6 +10,7 @@ import {
   useRef,
   useState,
 } from "react";
+import Dropdown from "./Dropdown";
 
 interface SidebarLinkProps {
   activeClass: ClassDoc;
@@ -48,7 +49,7 @@ const SidebarLink = ({
   });
 
   return (
-    <li
+    <div
       className={`sidebar-item relative flex w-full ${
         active === activeClass._id ? "active" : ""
       }`}>
@@ -59,7 +60,7 @@ const SidebarLink = ({
           setActive(activeClass._id);
         }}
         className="flex-1">
-        <li>{activeClass.name}</li>
+        <p>{activeClass.name}</p>
       </Link>
       <button
         className="mr-2 rounded px-1 hover:bg-slate-400"
@@ -69,34 +70,21 @@ const SidebarLink = ({
         }}>
         <FontAwesomeIcon icon={faEllipsis} />
       </button>
-      <div
-        ref={menuRef}
-        className={`absolute right-2 top-7 z-50 w-36 rounded-2xl bg-white p-4
-                text-left text-sm drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)]
-                ${isMenuOpen ? "block" : "hidden"}`}>
-        <button
-          className="mb-3 block"
-          onClick={() => {
+      <div ref={menuRef} className={isMenuOpen ? "block" : "hidden"}>
+        <Dropdown
+          className="right-2 top-7"
+          type="class"
+          handleEditClick={() => {
             setIsDeleting(false);
             setIsClassFormOpen(true);
-          }}>
-          Edit class name
-        </button>
-        <button
-          className="block"
-          onClick={() => {
+          }}
+          handleDeleteClick={() => {
             setIsDeleting(true);
             setIsClassFormOpen(true);
-          }}>
-          Delete class
-        </button>
+          }}
+        />
       </div>
-      {/* <button
-                  className="text-rose-800 hover:text-red-500"
-                  onClick={() => deleteClass(c._id)}>
-                  &times;
-                </button> */}
-    </li>
+    </div>
   );
 };
 

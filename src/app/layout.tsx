@@ -1,6 +1,8 @@
 import "./globals.css";
 import { figtree } from "@/libs/fonts";
 import Provider from "@/components/Provider";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const metadata = {
   title: "Flourish Education",
@@ -16,8 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`flex flex-col min-h-screen text-slate-900 bg-slate-50 ${figtree.className} antialiased`}>
+        className={`flex min-h-screen flex-col bg-slate-50 text-slate-900 ${figtree.className} antialiased`}>
         <Provider>{children}</Provider>
+        <ToastContainer
+          bodyClassName={figtree.className}
+          position="bottom-left"
+        />
       </body>
     </html>
   );

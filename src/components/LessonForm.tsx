@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
+import { toast } from "react-toastify";
 import { figtree } from "@/libs/fonts";
 import axios from "axios";
 
@@ -40,6 +41,12 @@ const LessonForm = ({
 
   const router = useRouter();
 
+  const notify = (type: "success" | "info" | "error", msg: string) => {
+    if (type === "info") toast.info(msg);
+    if (type === "success") toast.success(msg);
+    if (type === "error") toast.error(msg);
+  };
+
   const [lessonData, setLessonData] = useState<LessonType>({
     date: new Date(Date.now()).toISOString().split("T")[0],
     objective: "",
@@ -54,11 +61,20 @@ const LessonForm = ({
     if (lesson) {
       setLessonData(lesson);
       setIsEditing(true);
+    } else {
+      setLessonData({
+        date: new Date(Date.now()).toISOString().split("T")[0],
+        objective: "",
+        content: "",
+        resources: "",
+        differentiation: "",
+      });
+      setIsEditing(false);
     }
   }, [lesson]);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setLessonData((prevData) => ({
@@ -77,12 +93,15 @@ const LessonForm = ({
       );
       handleClose();
       setError("");
+      notify("info", "Lesson deleted successfully.");
     } catch (err: any) {
       console.log(err);
       if (err.response.data.error) {
         setError(err.response.data.error);
+        return;
       }
     }
+    notify("error", "Error deleting lesson.");
   };
 
   const handleSave = async () => {
@@ -124,6 +143,10 @@ const LessonForm = ({
           );
       handleClose();
       setError("");
+      notify(
+        "success",
+        `Lesson ${isEditing ? "changed" : "created"} successfully.`
+      );
       setLessonData({
         date: new Date(Date.now()).toISOString().split("T")[0],
         objective: "",
@@ -136,7 +159,9 @@ const LessonForm = ({
       console.log(err);
       if (err.response.data.error) {
         setError(err.response.data.error);
+        return;
       }
+      notify("error", "Error creating class.");
     }
   };
 
@@ -206,7 +231,7 @@ const LessonForm = ({
                 name="date"
                 value={lessonData.date.toString()}
                 onChange={handleInputChange}
-                className="flex-1 rounded-sm bg-slate-200 p-1"
+                className="flex-1 rounded-md bg-slate-200 px-2 py-1"
               />
               <label>Objective:</label>
               <input
@@ -215,7 +240,7 @@ const LessonForm = ({
                 name="objective"
                 value={lessonData.objective}
                 onChange={handleInputChange}
-                className="flex-1 rounded-sm bg-slate-200 p-1"
+                className="flex-1 rounded-md bg-slate-200 px-2 py-1"
               />
               <label>Content:</label>
               <textarea
@@ -223,19 +248,19 @@ const LessonForm = ({
                 name="content"
                 value={lessonData.content}
                 onChange={handleInputChange}
-                className="h-32 flex-1 resize-none rounded-sm bg-slate-200 p-1"></textarea>
+                className="h-32 flex-1 resize-none rounded-md bg-slate-200 px-2 py-1"></textarea>
               <label>Resources:</label>
               <textarea
                 name="resources"
                 value={lessonData.resources}
                 onChange={handleInputChange}
-                className="flex-1 resize-none rounded-sm bg-slate-200 p-1"></textarea>
+                className="flex-1 resize-none rounded-md bg-slate-200 px-2 py-1"></textarea>
               <label>Differentiation:</label>
               <textarea
                 name="differentiation"
                 value={lessonData.differentiation}
                 onChange={handleInputChange}
-                className="flex-1 resize-none rounded-sm bg-slate-200 p-1"></textarea>
+                className="flex-1 resize-none rounded-md bg-slate-200 px-2 py-1"></textarea>
             </div>
             <div className="mt-5 flex justify-end gap-5 border-t-[1px] border-t-slate-300">
               <button
