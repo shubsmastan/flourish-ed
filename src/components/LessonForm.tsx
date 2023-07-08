@@ -100,8 +100,8 @@ const LessonForm = ({
         setError(err.response.data.error);
         return;
       }
+      notify("error", "Error deleting lesson.");
     }
-    notify("error", "Error deleting lesson.");
   };
 
   const handleSave = async () => {
