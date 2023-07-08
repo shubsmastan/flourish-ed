@@ -7,13 +7,13 @@ import {
   ChangeEvent,
   MutableRefObject,
 } from "react";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import { toast } from "react-toastify";
 import { figtree } from "@/libs/fonts";
 import axios from "axios";
+import DeleteForm from "./DeleteForm";
 
 interface ClassFormProps {
   currentClass: string | undefined;
@@ -35,7 +35,6 @@ const ClassForm = ({
   const id = user?._id;
   const token = user?.accessToken;
 
-  const router = useRouter();
   const inputRef = useRef() as MutableRefObject<HTMLInputElement>;
 
   const [className, setClassName] = useState("");
@@ -129,47 +128,13 @@ const ClassForm = ({
 
   if (deleting) {
     return (
-      <Modal open={open} onClose={handleClose}>
-        <Fade in={open}>
-          <div
-            className={`absolute left-1/2 top-1/2 w-[700px] -translate-x-1/2
-          -translate-y-1/2 rounded-md bg-white text-sm outline-none ${figtree.className}`}>
-            <button
-              className="absolute right-5 top-3 text-2xl"
-              onClick={handleClose}>
-              &times;
-            </button>
-            <form className="px-12 pb-5 pt-10">
-              <h1 className="mb-10 text-2xl font-bold">Delete Class</h1>
-              <p className="absolute top-20 text-rose-800">{error}</p>
-              <p className="text-lg">
-                Are you sure you want to delete the class {className}?
-              </p>
-              <div className="mt-5 flex justify-end gap-5 border-t-[1px] border-t-slate-300">
-                <button
-                  type="button"
-                  className="btn-cancel mt-5"
-                  onClick={() => {
-                    handleClose();
-                    setClassName("");
-                    setIsEditing(false);
-                  }}>
-                  Cancel
-                </button>
-                <button
-                  className="btn-primary mt-5"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleDelete();
-                    router.push("/dashboard");
-                  }}>
-                  Confirm
-                </button>
-              </div>
-            </form>
-          </div>
-        </Fade>
-      </Modal>
+      <DeleteForm
+        type="class"
+        open={open}
+        error={error}
+        handleDelete={handleDelete}
+        handleClose={handleClose}
+      />
     );
   }
 
