@@ -14,6 +14,8 @@ App created using Next.js, React, MongoDB, and TypeScript.
 
 ## History
 
+- 1.0.0 (09/07/2023)
+  - First working version released!
 - 0.0.3 (04/07/2023)
   - All API routes functioning and usable on frontend
   - UI redesigned to look more visually appealing
@@ -26,7 +28,6 @@ App created using Next.js, React, MongoDB, and TypeScript.
 
 - Apply filters on class pages (e.g. by week, month, term, past) and reverse sort?
 - Improve responsiveness of dashboard once all UI features implemented
-- Find a styled calendar component for date input?
 - Add an "assessments" feature: input pupils and assessment scores and get a graph from D3 -->
 
 ## Copyright
