@@ -73,7 +73,6 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
         setIsFetching(false);
       } catch (err: any) {
         if (err.response.data.error) {
-          notify("error", err.response.data.error);
           setError(err.response.data.error);
           setIsFetching(false);
           return;

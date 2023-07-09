@@ -12,6 +12,9 @@ import LessonForm from "@/components/LessonForm";
 import ClassForm from "@/components/ClassForm";
 import Spinner from "@/components/Spinner";
 import Dropdown from "@/components/Dropdown";
+import dayjs from "dayjs";
+import isBetween from "dayjs/plugin/isBetween";
+dayjs.extend(isBetween);
 
 const ClassPage = ({ params }: { params: { cid: string } }) => {
   const { data: session } = useSession();
@@ -29,6 +32,7 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
   const [isClassFormOpen, setIsClassFormOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleted, setDeleted] = useState(false);
+  const [filter, setFilter] = useState("this-week");
   const [editingIndex, setEditingIndex] = useState(-1);
   const [error, setError] = useState("");
 
@@ -90,6 +94,35 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
     setIsLessonFormOpen(false);
   };
 
+  const filteredLessons = currentClass?.lessons.filter((lesson) => {
+    if (filter === "past") {
+      return dayjs(lesson.date).isBefore(dayjs(), "day");
+    }
+    let value;
+    switch (filter) {
+      case "this-week":
+        value = 7;
+        break;
+
+      case "this-month":
+        value = 7 * 4;
+        break;
+
+      case "this-term":
+        value = 7 * 4 * 4;
+        break;
+
+      default:
+        value = 365;
+        break;
+    }
+    return dayjs(lesson.date).isBetween(
+      dayjs(),
+      dayjs().add(value, "day"),
+      "day"
+    );
+  });
+
   if (isFetching) {
     return (
       <div className="px-7 py-5 text-slate-900">
@@ -120,7 +153,20 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
   return (
     <div className="flex-1 px-7 py-5 text-slate-900">
       <div className="flex justify-between border-b-[0.5px] border-b-slate-500 pb-3">
-        <h1 className="ml-5 text-2xl font-bold">{currentClass.name}</h1>
+        <div className="flex gap-5">
+          <h1 className="ml-5 text-2xl font-bold">{currentClass.name}</h1>
+          <select
+            value={filter}
+            onChange={(e) => {
+              setFilter(e.target.value);
+            }}
+            className="rounded-md border-2 border-slate-900 px-1">
+            <option value="this-week">This week</option>
+            <option value="this-month">This month</option>
+            <option value="this-term">This term</option>
+            <option value="past">Past lessons</option>
+          </select>
+        </div>
         <div className="relative">
           <button
             className="btn-primary mr-5"
@@ -162,10 +208,10 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
         </div>
       </div>
       <div className="grid grid-cols-3 gap-5 px-5 py-8">
-        {currentClass.lessons.length === 0 && (
-          <p>No lessons in this class yet.</p>
+        {filteredLessons?.length === 0 && (
+          <p>No lessons in selected time period.</p>
         )}
-        {currentClass.lessons.map((lesson, index) => {
+        {filteredLessons?.map((lesson, index) => {
           return (
             <div key={index}>
               <LessonCard

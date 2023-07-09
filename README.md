@@ -14,6 +14,8 @@ App created using Next.js, React, MongoDB, and TypeScript.
 
 ## History
 
+- 1.0.1 (09/07/2023)
+  - Filter lessons by time period
 - 1.0.0 (09/07/2023)
   - First working version released!
 - 0.0.3 (04/07/2023)
@@ -24,12 +26,11 @@ App created using Next.js, React, MongoDB, and TypeScript.
 - 0.0.1 (19/06/2023)
   - Built basic route structure
 
-<!-- Next Steps/Ideas
-
-- Apply filters on class pages (e.g. by week, month, term, past) and reverse sort?
-- Improve responsiveness of dashboard once all UI features implemented
-- Add an "assessments" feature: input pupils and assessment scores and get a graph from D3 -->
-
 ## Copyright
 
 Copyright 2023, ShubsMastan, all rights reserved.
+
+<!-- Next Steps/Ideas
+
+- Improve responsiveness of dashboard once all UI features implemented
+- Add an "assessments" feature: input pupils and assessment scores and get a graph from D3 -->
