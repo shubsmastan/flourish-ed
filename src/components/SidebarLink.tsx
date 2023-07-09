@@ -19,6 +19,7 @@ interface SidebarLinkProps {
   setIsDeleting: Dispatch<SetStateAction<boolean>>;
   setIsClassFormOpen: Dispatch<SetStateAction<boolean>>;
   setActiveEditing: Dispatch<SetStateAction<ClassDoc | null>>;
+  setSidebarOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const SidebarLink = ({
@@ -28,6 +29,7 @@ const SidebarLink = ({
   setIsDeleting,
   setIsClassFormOpen,
   setActiveEditing,
+  setSidebarOpen,
 }: SidebarLinkProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -58,6 +60,7 @@ const SidebarLink = ({
         passHref
         onClick={() => {
           setActive(activeClass._id);
+          setSidebarOpen(false);
         }}
         className="flex-1">
         <p>{activeClass.name}</p>

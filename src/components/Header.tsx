@@ -1,22 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { signOut } from "next-auth/react";
 import Loading from "./Loading";
 import Image from "next/image";
 import logo from "public/flourish.svg";
 import { ysabeau } from "@/libs/fonts";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleUser } from "@fortawesome/free-regular-svg-icons";
+import UserMenu from "./UserMenu";
 
 const Header = () => {
-  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const userRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
 
   const logOut = () => {
-    setOpen(true);
+    setLoading(true);
     signOut({ redirect: true, callbackUrl: "/auth/sign-in" });
   };
 
+  useEffect(() => {
+    const callback = (e: MouseEvent) => {
+      if (
+        userRef.current &&
+        !userRef.current.contains(e.target as HTMLElement)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", callback);
+    return () => {
+      document.removeEventListener("mousedown", callback);
+    };
+  });
+
   return (
-    <header className="sticky top-0 z-10 flex items-center justify-start gap-4 bg-sky-800 p-2 text-slate-50 shadow-md">
+    <header className="sticky top-0 z-20 flex items-center justify-between gap-4 bg-sky-800 px-5 py-2 text-slate-50 shadow-md">
       <a href="#" className="item-center flex gap-2">
         <Image
           src={logo}
@@ -27,13 +48,20 @@ const Header = () => {
           Flourish Education
         </h1>
       </a>
-      <nav className="flex gap-4">
-        <ul></ul>
-      </nav>
-      <button onClick={logOut} className="btn-primary ms-auto text-sm">
-        Sign Out
+      <button
+        onClick={() => {
+          setIsMenuOpen((prevState) => !prevState);
+        }}>
+        <FontAwesomeIcon icon={faCircleUser} size="xl" />
       </button>
-      <Loading open={open} />
+      <div
+        ref={userRef}
+        className={`${
+          isMenuOpen ? "flex" : "hidden"
+        } absolute right-5 top-10 w-64 flex-col rounded-md bg-white px-5 py-3 text-slate-900 drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)]`}>
+        <UserMenu logOut={logOut} open={isMenuOpen} />
+      </div>
+      <Loading open={loading} />
     </header>
   );
 };

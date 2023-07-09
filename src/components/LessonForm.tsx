@@ -192,8 +192,8 @@ const LessonForm = ({
     <Modal open={open} onClose={handleClose}>
       <Fade in={open}>
         <div
-          className={`absolute left-1/2 top-1/2 w-[700px] -translate-x-1/2
-          -translate-y-1/2 rounded-md bg-white text-sm outline-none ${figtree.className}`}>
+          className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+          rounded-md bg-white text-sm outline-none max-sm:w-screen sm:w-[640px] ${figtree.className}`}>
           <button
             className="absolute right-5 top-3 text-2xl"
             onClick={handleClose}>

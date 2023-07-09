@@ -57,7 +57,7 @@ const LessonCard = ({
           <h1 className="text-xl font-semibold">Lesson {index + 1}</h1>
         </Link>
         <button
-          className="mr-5"
+          className="rounded-md px-1 hover:bg-slate-300"
           onClick={() => {
             setIsMenuOpen(true);
           }}>
@@ -88,7 +88,12 @@ const LessonCard = ({
         <p className="font-semibold">Differentiation:</p>
         <p className="truncate">{lesson.differentiation || "(none)"}</p>
       </div>
-      <div ref={menuRef} className={isMenuOpen ? "block" : "hidden"}>
+      <div
+        ref={menuRef}
+        className={`${
+          isMenuOpen ? "block" : "hidden"
+        } absolute right-0 top-10 z-50 w-48 rounded-2xl bg-white p-3 text-left
+            text-sm drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)]`}>
         <Dropdown
           className="right-6 top-10"
           type="lesson"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ClassDoc } from "@/models/Class";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
@@ -10,7 +10,13 @@ import ClassForm from "./ClassForm";
 import SidebarLink from "./SidebarLink";
 import Spinner from "./Spinner";
 
-function Sidebar() {
+function Sidebar({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) {
   const { data: session } = useSession();
   const user = session?.user;
   const userId = user?._id;
@@ -74,14 +80,18 @@ function Sidebar() {
 
   return (
     <aside
-      className="sticky top-[48px] flex h-[calc(100vh-48px)]
-      w-64 flex-col bg-slate-100 px-4 py-4 text-sm shadow-md">
+      className={`${
+        open ? "translate-x-0" : "-translate-x-64"
+      } absolute top-[48px] z-10 flex h-[calc(100vh-48px)]
+      w-64 flex-col bg-slate-100 px-4 py-4 text-sm shadow-md transition-transform
+      duration-200 sm:sticky sm:translate-x-0`}>
       <ul>
         <Link
           href="/dashboard/today"
           passHref
           onClick={() => {
             setActive("today");
+            setOpen(false);
           }}
           className={`sidebar-item ${active === "today" ? "active" : ""}`}>
           <li>Today</li>
@@ -91,6 +101,7 @@ function Sidebar() {
           passHref
           onClick={() => {
             setActive("this-week");
+            setOpen(false);
           }}
           className={`sidebar-item ${active === "this-week" ? "active" : ""}`}>
           <li>This Week</li>
@@ -100,9 +111,20 @@ function Sidebar() {
           passHref
           onClick={() => {
             setActive("past");
+            setOpen(false);
           }}
           className={`sidebar-item ${active === "past" ? "active" : ""}`}>
           <li>Last Week</li>
+        </Link>
+        <Link
+          href="/dashboard/assessment"
+          passHref
+          onClick={() => {
+            setActive("assessment");
+            setOpen(false);
+          }}
+          className={`sidebar-item ${active === "assessment" ? "active" : ""}`}>
+          <li>Assessment</li>
         </Link>
       </ul>
       <h1 className="my-2 px-1 text-lg font-bold">My Classes</h1>
@@ -123,6 +145,7 @@ function Sidebar() {
                   setIsDeleting={setIsDeleting}
                   setIsClassFormOpen={setIsClassFormOpen}
                   setActiveEditing={setActiveEditing}
+                  setSidebarOpen={setOpen}
                 />
               </li>
             ))}

@@ -134,13 +134,13 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
 
   return (
     <div className="flex-1 px-7 py-5 text-slate-900">
-      <div className="flex justify-between border-b-[0.5px] border-b-slate-500 pb-3">
+      <div className="flex flex-col justify-between gap-5 border-b-[0.5px] border-b-slate-500 pb-3 md:flex-row">
         <h1 className="ml-5 text-2xl font-bold">
           {className} Lesson {index}
         </h1>
-        <div className="relative">
+        <div className="relative flex flex-col md:mr-10 md:items-end lg:flex-row">
           <button
-            className="btn-primary mr-5"
+            className="btn-primary mb-3 max-h-10 lg:mb-0"
             onClick={() => {
               router.push(`/dashboard/classes/${classId}`);
             }}>
@@ -152,13 +152,18 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
             Back to Class
           </button>
           <button
-            className="mr-5"
+            className="rounded-md py-1 hover:bg-slate-300 md:w-12"
             onClick={() => {
               setIsMenuOpen(!isMenuOpen);
             }}>
             <FontAwesomeIcon icon={faEllipsis} size="xl" />
           </button>
-          <div ref={menuRef} className={isMenuOpen ? "block" : "hidden"}>
+          <div
+            ref={menuRef}
+            className={`${
+              isMenuOpen ? "block" : "hidden"
+            } absolute right-0 top-20 z-50 w-full rounded-2xl bg-white p-3 text-left text-sm
+            drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)] md:w-48 lg:top-10`}>
             <Dropdown
               className="right-4 top-7"
               type="lesson"

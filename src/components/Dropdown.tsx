@@ -15,10 +15,7 @@ const Dropdown = ({
   handleDeleteClick,
 }: DropdownProps) => {
   return (
-    <div
-      className={`absolute z-50 w-48 rounded-2xl bg-white p-3
-    text-left text-sm drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)]
-    ${className}`}>
+    <div>
       <button
         className="flex w-full items-center gap-2 rounded-md p-2 hover:bg-slate-300"
         onClick={handleEditClick}>

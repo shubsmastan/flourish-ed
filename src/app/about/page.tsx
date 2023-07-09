@@ -14,21 +14,48 @@ import {
   faLock,
   faBriefcase,
   faChildren,
+  faBars,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { faHandshake, faClock } from "@fortawesome/free-regular-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { useState } from "react";
 
 const About = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <>
-      <header className="flex h-20 items-center justify-between gap-4 bg-sky-800 p-4 text-slate-50 shadow-md shadow-slate-900/50 sm:p-8 lg:px-10 lg:py-8 2xl:px-72">
+      <header
+        className="relative flex h-20 items-center justify-between gap-4 bg-sky-800 p-4
+        text-slate-50 shadow-md shadow-slate-900/50 sm:p-8 lg:px-10 lg:py-8 2xl:px-72">
         <a href="#" className="item-center flex gap-3">
           <Image src={logo} alt="" style={{ width: "25px", height: "auto" }} />
           <h1 className={`text-2xl font-semibold ${ysabeau.className}`}>
             Flourish Education
           </h1>
         </a>
-        <nav className="align-center flex justify-center gap-2">
+        <button
+          className="relative lg:hidden"
+          onClick={() => {
+            setIsMenuOpen((prevState) => !prevState);
+          }}>
+          <FontAwesomeIcon
+            icon={faXmark}
+            size="2xl"
+            className={`${
+              isMenuOpen ? "opacity-0" : "opacity-1"
+            } absolute -top-4 right-0 transition-opacity duration-500`}
+          />
+          <FontAwesomeIcon
+            icon={faBars}
+            size="xl"
+            className={`${
+              isMenuOpen ? "opacity-1" : "opacity-0"
+            } absolute -top-3 right-0 transition-opacity duration-500`}
+          />
+        </button>
+        <nav className="align-center hidden justify-center gap-2 lg:flex">
           <ul className="align-center flex justify-center gap-2 border-r-2 border-r-sky-700">
             <Link href="#" className="rounded-md px-5 py-1 hover:bg-sky-700">
               Features
@@ -41,6 +68,51 @@ const About = () => {
             </Link>
           </ul>
           <ul className="align-center flex justify-center gap-2">
+            <Link
+              href="/auth/sign-up"
+              className="rounded-md px-5 py-1 hover:bg-sky-700">
+              Register
+            </Link>
+            <button
+              onClick={() => {
+                signIn();
+              }}
+              className="btn-primary px-5 py-1">
+              Sign In
+            </button>
+          </ul>
+        </nav>
+        <nav
+          className={`${
+            isMenuOpen ? "scale-y-0" : "scale-y-1"
+          } absolute right-0 top-16 flex w-full origin-top flex-col
+          justify-center gap-2 rounded-md bg-sky-800 p-5
+          transition-transform duration-500 lg:hidden`}>
+          <ul
+            className={`${
+              isMenuOpen
+                ? "opacity-0 duration-200"
+                : "opacity-1 delay-300 duration-500"
+            } align-center flex flex-col justify-center gap-2 transition-opacity`}>
+            <Link href="#" className="rounded-md px-5 py-1 hover:bg-sky-700">
+              Features
+            </Link>
+            <Link href="#" className="rounded-md px-5 py-1 hover:bg-sky-700">
+              Resources
+            </Link>
+            <Link
+              href="#"
+              className="mr-3 rounded-md px-5 py-1 hover:bg-sky-700">
+              About
+            </Link>
+          </ul>
+          <ul
+            className={`${
+              isMenuOpen
+                ? "opacity-0 duration-200"
+                : "opacity-1 delay-300 duration-500"
+            } align-center flex flex-col justify-center gap-2 transition-opacity
+            lg:flex-row lg:border-r-2 lg:border-r-sky-700`}>
             <Link
               href="/auth/sign-up"
               className="rounded-md px-5 py-1 hover:bg-sky-700">

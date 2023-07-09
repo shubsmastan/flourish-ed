@@ -14,8 +14,13 @@ App created using Next.js, React, MongoDB, and TypeScript.
 
 ## History
 
+<!-- - 2.0.0 (XX/07/2023)
+  - Added assessment results and graphs feature -->
+
+- 1.0.2 (10/07/2023)
+  - Full responsiveness added for mobile
 - 1.0.1 (09/07/2023)
-  - Filter lessons by time period
+  - Added ability to filter lessons by date
 - 1.0.0 (09/07/2023)
   - First working version released!
 - 0.0.3 (04/07/2023)
@@ -29,8 +34,3 @@ App created using Next.js, React, MongoDB, and TypeScript.
 ## Copyright
 
 Copyright 2023, ShubsMastan, all rights reserved.
-
-<!-- Next Steps/Ideas
-
-- Improve responsiveness of dashboard once all UI features implemented
-- Add an "assessments" feature: input pupils and assessment scores and get a graph from D3 -->

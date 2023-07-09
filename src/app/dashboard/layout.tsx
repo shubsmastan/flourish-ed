@@ -1,22 +1,29 @@
+"use client";
+
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-
-export const metadata = {
-  title: "Flourish Education",
-  description:
-    "A lesson planning app for teachers, created with Next.js, TypeScript and MongoDB.",
-};
+import { useState } from "react";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
     <>
       <Header />
+      <button
+        className="btn-primary absolute left-3 top-2 z-50 h-8 w-48
+      opacity-0 sm:hidden"
+        onClick={() => {
+          setIsSidebarOpen((prevState) => !prevState);
+        }}>
+        I&apos;m a secret button
+      </button>
       <div className="flex flex-1">
-        <Sidebar />
+        <Sidebar open={isSidebarOpen} setOpen={setIsSidebarOpen} />
         {children}
       </div>
     </>
