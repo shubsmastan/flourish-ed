@@ -73,7 +73,12 @@ const SidebarLink = ({
         }}>
         <FontAwesomeIcon icon={faEllipsis} />
       </button>
-      <div ref={menuRef} className={isMenuOpen ? "block" : "hidden"}>
+      <div
+        ref={menuRef}
+        className={`${
+          isMenuOpen ? "block" : "hidden"
+        } absolute right-0 top-8 z-50 w-3/4 rounded-2xl bg-white p-3 text-left text-sm
+            drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)]`}>
         <Dropdown
           className="right-2 top-7"
           type="class"

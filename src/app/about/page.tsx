@@ -44,14 +44,14 @@ const About = () => {
             icon={faXmark}
             size="2xl"
             className={`${
-              isMenuOpen ? "opacity-0" : "opacity-1"
+              isMenuOpen ? "opacity-1" : "opacity-0"
             } absolute -top-4 right-0 transition-opacity duration-500`}
           />
           <FontAwesomeIcon
             icon={faBars}
             size="xl"
             className={`${
-              isMenuOpen ? "opacity-1" : "opacity-0"
+              isMenuOpen ? "opacity-0" : "opacity-1"
             } absolute -top-3 right-0 transition-opacity duration-500`}
           />
         </button>
@@ -84,15 +84,15 @@ const About = () => {
         </nav>
         <nav
           className={`${
-            isMenuOpen ? "scale-y-0" : "scale-y-1"
+            isMenuOpen ? "scale-y-1" : "scale-y-0"
           } absolute right-0 top-16 flex w-full origin-top flex-col
           justify-center gap-2 rounded-md bg-sky-800 p-5
           transition-transform duration-500 lg:hidden`}>
           <ul
             className={`${
               isMenuOpen
-                ? "opacity-0 duration-200"
-                : "opacity-1 delay-300 duration-500"
+                ? "opacity-1 delay-300 duration-500"
+                : "opacity-0 duration-200"
             } align-center flex flex-col justify-center gap-2 transition-opacity`}>
             <Link href="#" className="rounded-md px-5 py-1 hover:bg-sky-700">
               Features
@@ -109,8 +109,8 @@ const About = () => {
           <ul
             className={`${
               isMenuOpen
-                ? "opacity-0 duration-200"
-                : "opacity-1 delay-300 duration-500"
+                ? "opacity-1 delay-300 duration-500"
+                : "opacity-0 duration-200"
             } align-center flex flex-col justify-center gap-2 transition-opacity
             lg:flex-row lg:border-r-2 lg:border-r-sky-700`}>
             <Link

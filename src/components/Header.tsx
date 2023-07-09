@@ -8,7 +8,7 @@ import logo from "public/flourish.svg";
 import { ysabeau } from "@/libs/fonts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-regular-svg-icons";
-import UserMenu from "./UserMenu";
+import UserMenu from "@/components/UserMenu";
 
 const Header = () => {
   const [loading, setLoading] = useState(false);
@@ -37,7 +37,9 @@ const Header = () => {
   });
 
   return (
-    <header className="sticky top-0 z-20 flex items-center justify-between gap-4 bg-sky-800 px-5 py-2 text-slate-50 shadow-md">
+    <header
+      className="sticky top-0 z-20 flex items-center justify-between gap-4 bg-sky-800
+      px-7 py-2 text-slate-50 shadow-md">
       <a href="#" className="item-center flex gap-2">
         <Image
           src={logo}
@@ -58,7 +60,8 @@ const Header = () => {
         ref={userRef}
         className={`${
           isMenuOpen ? "flex" : "hidden"
-        } absolute right-5 top-10 w-64 flex-col rounded-md bg-white px-5 py-3 text-slate-900 drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)]`}>
+        } absolute right-5 top-10 w-64 flex-col rounded-md bg-white px-5 py-3
+        text-slate-900 drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)]`}>
         <UserMenu logOut={logOut} open={isMenuOpen} />
       </div>
       <Loading open={loading} />
