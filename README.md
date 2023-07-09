@@ -24,8 +24,6 @@ App created using Next.js, React, MongoDB, and TypeScript.
 
 <!-- Next Steps/Ideas
 
-- Add a deletion state
-- Add icons to modal forms and card (LO, etc.)
 - Apply filters on class pages (e.g. by week, month, term, past) and reverse sort?
 - Improve responsiveness of dashboard once all UI features implemented
 - Find a styled calendar component for date input?

@@ -6,6 +6,8 @@ import {
   useRef,
   ChangeEvent,
   MutableRefObject,
+  Dispatch,
+  SetStateAction,
 } from "react";
 import { useSession } from "next-auth/react";
 import Modal from "@mui/material/Modal";
@@ -21,6 +23,7 @@ interface ClassFormProps {
   deleting: boolean;
   classId?: string;
   handleClose: () => void;
+  setDeleted?: Dispatch<SetStateAction<boolean>>;
 }
 
 const ClassForm = ({
@@ -29,6 +32,7 @@ const ClassForm = ({
   deleting,
   classId,
   handleClose,
+  setDeleted,
 }: ClassFormProps) => {
   const { data: session } = useSession();
   const user = session?.user;
@@ -134,6 +138,7 @@ const ClassForm = ({
         error={error}
         handleDelete={handleDelete}
         handleClose={handleClose}
+        setDeleted={setDeleted}
       />
     );
   }

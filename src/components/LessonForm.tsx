@@ -30,7 +30,8 @@ interface LessonFormProps {
   lessonId?: string;
   deleting: boolean;
   handleClose: () => void;
-  setEditingIndex: Dispatch<SetStateAction<number>>;
+  setEditingIndex?: Dispatch<SetStateAction<number>>;
+  setDeleted?: Dispatch<SetStateAction<boolean>>;
 }
 
 const LessonForm = ({
@@ -41,6 +42,7 @@ const LessonForm = ({
   deleting,
   handleClose,
   setEditingIndex,
+  setDeleted,
 }: LessonFormProps) => {
   const { data: session } = useSession();
   const user = session?.user;
@@ -181,6 +183,7 @@ const LessonForm = ({
         handleClose={handleClose}
         classId={classId}
         setEditingIndex={setEditingIndex}
+        setDeleted={setDeleted}
       />
     );
   }

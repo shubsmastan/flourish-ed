@@ -5,7 +5,11 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEllipsis,
+  faChevronLeft,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import LessonForm from "@/components/LessonForm";
 import { LessonDoc } from "@/models/Lesson";
@@ -37,6 +41,7 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -114,6 +119,17 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
       <div className="flex-1 px-7 py-5 text-slate-900">
         <p>{error}</p>
       </div>
+    );
+  }
+
+  if (deleted) {
+    return (
+      <>
+        <div className="flex flex-1 flex-col items-center justify-center px-7 py-5 text-slate-900">
+          <p className="mb-4">You deleted this lesson.</p>
+          <FontAwesomeIcon icon={faTrash} size="2xl" />
+        </div>
+      </>
     );
   }
 
@@ -207,6 +223,7 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
         handleClose={handleClose}
         deleting={isDeleting}
         setEditingIndex={setIndex}
+        setDeleted={setDeleted}
       />
     </div>
   );

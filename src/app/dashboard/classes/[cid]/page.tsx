@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { ClassDoc } from "@/models/Class";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsis, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import LessonCard from "@/components/LessonCard";
 import LessonForm from "@/components/LessonForm";
@@ -28,6 +28,7 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
   const [isLessonFormOpen, setIsLessonFormOpen] = useState(false);
   const [isClassFormOpen, setIsClassFormOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [deleted, setDeleted] = useState(false);
   const [editingIndex, setEditingIndex] = useState(-1);
   const [error, setError] = useState("");
 
@@ -56,7 +57,6 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
         setIsFetching(false);
       } catch (err: any) {
         if (err.response.data.error) {
-          notify("error", err.response.data.error);
           setError(err.response.data.error);
           setIsFetching(false);
           return;
@@ -106,6 +106,17 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
     );
   }
 
+  if (deleted) {
+    return (
+      <>
+        <div className="flex flex-1 flex-col items-center justify-center px-7 py-5 text-slate-900">
+          <p className="mb-4">You deleted this class.</p>
+          <FontAwesomeIcon icon={faTrash} size="2xl" />
+        </div>
+      </>
+    );
+  }
+
   return (
     <div className="flex-1 px-7 py-5 text-slate-900">
       <div className="flex justify-between border-b-[0.5px] border-b-slate-500 pb-3">
@@ -151,6 +162,9 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
         </div>
       </div>
       <div className="grid grid-cols-3 gap-5 px-5 py-8">
+        {currentClass.lessons.length === 0 && (
+          <p>No lessons in this class yet.</p>
+        )}
         {currentClass.lessons.map((lesson, index) => {
           return (
             <div key={index}>
@@ -171,6 +185,7 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
         open={isClassFormOpen}
         handleClose={handleClose}
         deleting={isDeleting}
+        setDeleted={setDeleted}
       />
       <LessonForm
         lesson={

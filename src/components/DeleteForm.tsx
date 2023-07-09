@@ -10,7 +10,8 @@ interface DeleteFormProps {
   handleDelete: () => Promise<void>;
   handleClose: () => void;
   classId?: string;
-  setEditingIndex: Dispatch<SetStateAction<number>>;
+  setEditingIndex?: Dispatch<SetStateAction<number>>;
+  setDeleted?: Dispatch<SetStateAction<boolean>>;
 }
 
 const DeleteForm = ({
@@ -21,6 +22,7 @@ const DeleteForm = ({
   handleClose,
   classId,
   setEditingIndex,
+  setDeleted,
 }: DeleteFormProps) => {
   const router = useRouter();
 
@@ -55,7 +57,8 @@ const DeleteForm = ({
                 onClick={(e) => {
                   e.preventDefault();
                   handleDelete();
-                  setEditingIndex(-1);
+                  setEditingIndex && setEditingIndex(-1);
+                  setDeleted && setDeleted(true);
                 }}>
                 Confirm
               </button>
