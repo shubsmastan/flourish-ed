@@ -1,6 +1,12 @@
 "use client";
 
-import { useState, useEffect, ChangeEvent } from "react";
+import {
+  useState,
+  useEffect,
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { useSession } from "next-auth/react";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
@@ -24,6 +30,7 @@ interface LessonFormProps {
   lessonId?: string;
   deleting: boolean;
   handleClose: () => void;
+  setEditingIndex: Dispatch<SetStateAction<number>>;
 }
 
 const LessonForm = ({
@@ -33,6 +40,7 @@ const LessonForm = ({
   lessonId,
   deleting,
   handleClose,
+  setEditingIndex,
 }: LessonFormProps) => {
   const { data: session } = useSession();
   const user = session?.user;
@@ -172,6 +180,7 @@ const LessonForm = ({
         handleDelete={handleDelete}
         handleClose={handleClose}
         classId={classId}
+        setEditingIndex={setEditingIndex}
       />
     );
   }

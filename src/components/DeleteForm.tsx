@@ -1,6 +1,7 @@
 import { figtree } from "@/libs/fonts";
 import { Fade, Modal } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { Dispatch, SetStateAction } from "react";
 
 interface DeleteFormProps {
   type: "lesson" | "class";
@@ -9,6 +10,7 @@ interface DeleteFormProps {
   handleDelete: () => Promise<void>;
   handleClose: () => void;
   classId?: string;
+  setEditingIndex: Dispatch<SetStateAction<number>>;
 }
 
 const DeleteForm = ({
@@ -18,6 +20,7 @@ const DeleteForm = ({
   handleDelete,
   handleClose,
   classId,
+  setEditingIndex,
 }: DeleteFormProps) => {
   const router = useRouter();
 
@@ -52,10 +55,7 @@ const DeleteForm = ({
                 onClick={(e) => {
                   e.preventDefault();
                   handleDelete();
-
-                  type === "class"
-                    ? router.push("/dashboard")
-                    : router.push(`/dashboard/classes/${classId}`);
+                  setEditingIndex(-1);
                 }}>
                 Confirm
               </button>

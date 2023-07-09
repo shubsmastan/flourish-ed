@@ -200,6 +200,7 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
         open={isLessonFormOpen}
         handleClose={handleClose}
         deleting={isDeleting}
+        setEditingIndex={setEditingIndex}
       />
     </div>
   );

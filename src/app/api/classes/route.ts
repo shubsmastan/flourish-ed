@@ -1,4 +1,5 @@
 import { Class } from "@/models/Class";
+import { Lesson } from "@/models/Lesson";
 import { dbConnect } from "@/libs/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyJwt } from "@/libs/jwtHelper";
@@ -22,6 +23,7 @@ export async function GET(req: NextRequest) {
     await dbConnect();
     const user = await User.findById(verified._id).populate({
       path: "classes",
+      populate: { path: "lessons", model: Lesson },
     });
     const classes = user.classes;
     return NextResponse.json(classes);

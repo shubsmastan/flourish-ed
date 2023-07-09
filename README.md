@@ -22,18 +22,15 @@ App created using Next.js, React, MongoDB, and TypeScript.
 - 0.0.1 (19/06/2023)
   - Built basic route structure
 
-<!-- ## Next Steps/Ideas
+<!-- Next Steps/Ideas
 
-- Use Redux for state mgmt or otherwise get page to reload when class changes
-- Correctly use filters in sidebar to show specific lesons (third one: past lessons)
+- Add a deletion state
+- Add icons to modal forms and card (LO, etc.)
 - Apply filters on class pages (e.g. by week, month, term, past) and reverse sort?
-- Add icons to menu options and forms (e.g. pencil for edit / bin for delete)
 - Improve responsiveness of dashboard once all UI features implemented
 - Find a styled calendar component for date input?
-- NEXT STEPS:
-- Add an "assessments" feature: input pupils and assessment scores and get a graph from D3
-- Do a Jest/Vitest/Cypress course for testing and learn more about how to use middleware
+- Add an "assessments" feature: input pupils and assessment scores and get a graph from D3 -->
 
 ## Copyright
 
-Copyright 2023, Shoaib Mastan, all rights reserved.
+Copyright 2023, ShubsMastan, all rights reserved.

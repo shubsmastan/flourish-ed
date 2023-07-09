@@ -49,7 +49,7 @@ const LessonCard = ({
   });
 
   return (
-    <div className="-z-10 flex flex-col gap-2 rounded-md bg-white p-4 text-sm drop-shadow-lg">
+    <div className="flex flex-col gap-2 rounded-md bg-white p-4 text-sm drop-shadow-lg">
       <div className="flex justify-between">
         <Link
           href={`/dashboard/classes/${lesson.classId}/lessons/${lesson._id}`}
