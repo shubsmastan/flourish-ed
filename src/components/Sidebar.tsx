@@ -45,6 +45,13 @@ function Sidebar() {
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes`,
           { headers: { Authorization: token } }
         );
+        data.sort((a: any, b: any) => {
+          const nameA = a.name;
+          const nameB = b.name;
+          if (nameA < nameB) return -1;
+          if (nameB < nameA) return 1;
+          return 0;
+        });
         setClasses(data);
         setIsFetching(false);
       } catch (err: any) {
