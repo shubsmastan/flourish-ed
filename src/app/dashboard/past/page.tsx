@@ -17,7 +17,7 @@ const Past = () => {
   const userId = user?._id;
   const token = user?.accessToken;
 
-  const [lessons, setLessons] = useState<LessonDoc[]>([]);
+  const [lessons, setLessons] = useState<LessonDoc[] | undefined>();
   const [isFetching, setIsFetching] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -86,6 +86,10 @@ const Past = () => {
         <Spinner />
       </div>
     );
+  }
+
+  if (!lessons) {
+    return <></>;
   }
 
   if (lessons.length === 0) {
