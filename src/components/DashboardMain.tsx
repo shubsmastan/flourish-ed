@@ -1,11 +1,11 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import axios from "axios";
-import { toast } from "react-toastify";
 import { ClassDoc } from "@/models/Class";
 import { LessonDoc } from "@/models/Lesson";
+import { toast } from "react-toastify";
 import Spinner from "@/components/Spinner";
 import LessonCard from "@/components/LessonCard";
 import LessonForm from "@/components/LessonForm";
@@ -19,7 +19,7 @@ const Main = ({ filter }: { filter: "today" | "this-week" | "past" }) => {
   const userId = user?._id;
   const token = user?.accessToken;
 
-  const [classes, setClasses] = useState<ClassDoc[] | undefined>();
+  const [classes, setClasses] = useState<ClassDoc[]>([]);
   const [lessons, setLessons] = useState<LessonDoc[] | undefined>();
   const [isFetching, setIsFetching] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -63,12 +63,14 @@ const Main = ({ filter }: { filter: "today" | "this-week" | "past" }) => {
         });
         let myLessons: LessonDoc[] = [];
         data.forEach((cls: ClassDoc) => {
+          let isInUse;
           cls.lessons.forEach((lesson: LessonDoc) => {
             if (
               filter === "today" &&
               dayjs(lesson.date).isSame(dayjs(), "day")
             ) {
               myLessons.push(lesson);
+              isInUse = true;
             }
             if (
               filter === "this-week" &&
@@ -79,17 +81,20 @@ const Main = ({ filter }: { filter: "today" | "this-week" | "past" }) => {
               )
             ) {
               myLessons.push(lesson);
+              isInUse = true;
             }
             if (
               filter === "past" &&
               dayjs(lesson.date).isBefore(dayjs(), "day")
             ) {
               myLessons.push(lesson);
+              isInUse = true;
             }
           });
+          if (isInUse) setClasses((prevClasses) => [cls, ...prevClasses]);
         });
-        setClasses(data);
-        setIsFetching(false);
+        setLessons(myLessons);
+        // setIsFetching(false);
       } catch (err: any) {
         if (err.response?.data.error) {
           notify("error", err.response.data.error);
@@ -102,14 +107,18 @@ const Main = ({ filter }: { filter: "today" | "this-week" | "past" }) => {
       }
     };
     getLessons();
-  }, [userId, token, isFormOpen]);
+  }, [userId, token, isFormOpen, filter]);
 
   const handleClose = () => {
     setIsFormOpen(false);
   };
 
   if (isFetching) {
-    return <Spinner />;
+    return (
+      <main className="px-7 py-5 text-slate-900">
+        <Spinner />
+      </main>
+    );
   }
 
   if (!lessons) {
@@ -118,7 +127,7 @@ const Main = ({ filter }: { filter: "today" | "this-week" | "past" }) => {
 
   if (lessons.length === 0) {
     return (
-      <>
+      <main className="flex flex-1 flex-col items-center justify-center px-7 py-5 text-slate-900">
         <div className="mb-5 border-b-[0.5px] border-b-slate-500">
           <h1 className="text-sm">Hi {user?.firstName}!</h1>
           <p className="mb-2 text-lg font-semibold">{quotes[quote]}</p>
@@ -132,12 +141,12 @@ const Main = ({ filter }: { filter: "today" | "this-week" | "past" }) => {
               : "No recent lessons."}
           </h1>
         </div>
-      </>
+      </main>
     );
   }
 
   return (
-    <>
+    <main className="flex-1 px-7 py-5 text-slate-900">
       <div className="mb-5 border-b-[0.5px] border-b-slate-500">
         <h1 className="text-sm">Hi {user?.firstName}!</h1>
         <p className="mb-2 text-lg font-semibold">{quotes[quote]}</p>
@@ -155,40 +164,20 @@ const Main = ({ filter }: { filter: "today" | "this-week" | "past" }) => {
         <div key={cls._id} className="mb-5">
           <h2 className="ml-1 font-semibold md:ml-5">{cls.name}</h2>
           <div className="grid grid-cols-1 gap-5 py-4 md:grid-cols-2 md:px-5 lg:grid-cols-3 2xl:grid-cols-4">
-            {cls.lessons
-              .filter((lsn) => {
-                if (filter === "today") {
-                  return dayjs(lsn.date).isSame(dayjs(), "day");
-                }
-                if (filter === "this-week") {
-                  return dayjs(lsn.date).isBetween(
-                    dayjs().subtract(1, "day"),
-                    dayjs().add(7, "day"),
-                    "day"
-                  );
-                }
-                if (filter === "past") {
-                  return dayjs(lsn.date).isBefore(dayjs(), "day");
-                }
-              })
-              .sort((a: any, b: any) => {
-                const dateA = a.date;
-                const dateB = b.date;
-                if (dateA < dateB) return -1;
-                if (dateB < dateA) return 1;
-                return 0;
-              })
-              .map((lesson, index) => (
-                <LessonCard
-                  key={lesson._id}
-                  lesson={lesson}
-                  index={index}
-                  displayIndex={index}
-                  setIsDeleting={setIsDeleting}
-                  setIsLessonFormOpen={setIsFormOpen}
-                  setEditingIndex={setEditingIndex}
-                />
-              ))}
+            {lessons.map(
+              (lesson, index) =>
+                (lesson.classId as unknown as string) === cls._id && (
+                  <LessonCard
+                    key={lesson._id}
+                    lesson={lesson}
+                    index={index}
+                    displayIndex={index}
+                    setIsDeleting={setIsDeleting}
+                    setIsLessonFormOpen={setIsFormOpen}
+                    setEditingIndex={setEditingIndex}
+                  />
+                )
+            )}
           </div>
         </div>
       ))}
@@ -213,7 +202,7 @@ const Main = ({ filter }: { filter: "today" | "this-week" | "past" }) => {
         deleting={isDeleting}
         setEditingIndex={setEditingIndex}
       />
-    </>
+    </main>
   );
 };
 
