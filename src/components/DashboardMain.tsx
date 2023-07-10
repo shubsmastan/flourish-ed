@@ -61,6 +61,33 @@ const Main = ({ filter }: { filter: "today" | "this-week" | "past" }) => {
           if (nameB < nameA) return 1;
           return 0;
         });
+        let myLessons: LessonDoc[] = [];
+        data.forEach((cls: ClassDoc) => {
+          cls.lessons.forEach((lesson: LessonDoc) => {
+            if (
+              filter === "today" &&
+              dayjs(lesson.date).isSame(dayjs(), "day")
+            ) {
+              myLessons.push(lesson);
+            }
+            if (
+              filter === "this-week" &&
+              dayjs(lesson.date).isBetween(
+                dayjs().subtract(1, "day"),
+                dayjs().add(7, "day"),
+                "day"
+              )
+            ) {
+              myLessons.push(lesson);
+            }
+            if (
+              filter === "past" &&
+              dayjs(lesson.date).isBefore(dayjs(), "day")
+            ) {
+              myLessons.push(lesson);
+            }
+          });
+        });
         setClasses(data);
         setIsFetching(false);
       } catch (err: any) {
