@@ -17,6 +17,9 @@ App created using Next.js, React, MongoDB, and TypeScript.
 <!-- - 2.0.0 (XX/07/2023)
   - Added assessment results and graphs feature -->
 
+- 1.0.3 (10/07/2023)
+  - Fixed a bug where editing lessons when filtered didn't work correctly
+  - Improved the appearance of lessons on the dashboard to show classes as well
 - 1.0.2 (10/07/2023)
   - Full responsiveness added for mobile
 - 1.0.1 (09/07/2023)

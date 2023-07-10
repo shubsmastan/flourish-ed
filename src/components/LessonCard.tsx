@@ -18,6 +18,8 @@ import {
 interface LessonProps {
   lesson: LessonDoc;
   index: number;
+  displayIndex: number;
+  className?: string;
   setIsDeleting: Dispatch<SetStateAction<boolean>>;
   setIsLessonFormOpen: Dispatch<SetStateAction<boolean>>;
   setEditingIndex: Dispatch<SetStateAction<number>>;
@@ -26,6 +28,8 @@ interface LessonProps {
 const LessonCard = ({
   lesson,
   index,
+  displayIndex,
+  className,
   setIsDeleting,
   setIsLessonFormOpen,
   setEditingIndex,
@@ -49,12 +53,13 @@ const LessonCard = ({
   });
 
   return (
-    <div className="flex flex-col gap-2 rounded-md bg-white p-4 text-sm drop-shadow-lg">
+    <div
+      className={`flex flex-col gap-2 rounded-md bg-white p-4 text-sm drop-shadow-lg ${className}`}>
       <div className="flex justify-between">
         <Link
           href={`/dashboard/classes/${lesson.classId}/lessons/${lesson._id}`}
           passHref>
-          <h1 className="text-xl font-semibold">Lesson {index + 1}</h1>
+          <h1 className="text-xl font-semibold">Lesson {displayIndex + 1}</h1>
         </Link>
         <button
           className="rounded-md px-1 hover:bg-slate-300"

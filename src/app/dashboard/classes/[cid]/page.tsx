@@ -227,7 +227,10 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
             <div key={index}>
               <LessonCard
                 lesson={lesson}
-                index={index}
+                index={currentClass.lessons.findIndex(
+                  (lsn) => lsn._id === lesson._id
+                )}
+                displayIndex={index}
                 setIsDeleting={setIsDeleting}
                 setIsLessonFormOpen={setIsLessonFormOpen}
                 setEditingIndex={setEditingIndex}
