@@ -54,45 +54,48 @@ const Main = ({ filter }: { filter: "today" | "this-week" | "past" }) => {
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes`,
           { headers: { Authorization: token } }
         );
-        data.sort((a: any, b: any) => {
-          const nameA = a.name;
-          const nameB = b.name;
-          if (nameA < nameB) return -1;
-          if (nameB < nameA) return 1;
-          return 0;
-        });
+        let myClasses: ClassDoc[] = [];
         let myLessons: LessonDoc[] = [];
-        data.forEach((cls: ClassDoc) => {
-          let isInUse;
-          cls.lessons.forEach((lesson: LessonDoc) => {
-            if (
-              filter === "today" &&
-              dayjs(lesson.date).isSame(dayjs(), "day")
-            ) {
-              myLessons.push(lesson);
-              isInUse = true;
-            }
-            if (
-              filter === "this-week" &&
-              dayjs(lesson.date).isBetween(
-                dayjs().subtract(1, "day"),
-                dayjs().add(7, "day"),
-                "day"
-              )
-            ) {
-              myLessons.push(lesson);
-              isInUse = true;
-            }
-            if (
-              filter === "past" &&
-              dayjs(lesson.date).isBefore(dayjs(), "day")
-            ) {
-              myLessons.push(lesson);
-              isInUse = true;
-            }
+        data
+          .sort((a: any, b: any) => {
+            const nameA = a.name;
+            const nameB = b.name;
+            if (nameA < nameB) return -1;
+            if (nameB < nameA) return 1;
+            return 0;
+          })
+          .forEach((cls: ClassDoc) => {
+            let isInUse = false;
+            cls.lessons.forEach((lesson: LessonDoc) => {
+              if (
+                filter === "today" &&
+                dayjs(lesson.date).isSame(dayjs(), "day")
+              ) {
+                myLessons.push(lesson);
+                isInUse = true;
+              }
+              if (
+                filter === "this-week" &&
+                dayjs(lesson.date).isBetween(
+                  dayjs().subtract(1, "day"),
+                  dayjs().add(7, "day"),
+                  "day"
+                )
+              ) {
+                myLessons.push(lesson);
+                isInUse = true;
+              }
+              if (
+                filter === "past" &&
+                dayjs(lesson.date).isBefore(dayjs(), "day")
+              ) {
+                myLessons.push(lesson);
+                isInUse = true;
+              }
+            });
+            if (isInUse) myClasses.push(cls);
           });
-          if (isInUse) setClasses((prevClasses) => [cls, ...prevClasses]);
-        });
+        setClasses(myClasses);
         setLessons(myLessons);
         setIsFetching(false);
       } catch (err: any) {
@@ -127,7 +130,7 @@ const Main = ({ filter }: { filter: "today" | "this-week" | "past" }) => {
 
   if (lessons.length === 0) {
     return (
-      <main className="flex flex-1 flex-col items-center justify-center px-7 py-5 text-slate-900">
+      <main className="flex-1 px-7 py-5 text-slate-900">
         <div className="mb-5 border-b-[0.5px] border-b-slate-500">
           <h1 className="text-sm">Hi {user?.firstName}!</h1>
           <p className="mb-2 text-lg font-semibold">{quotes[quote]}</p>
