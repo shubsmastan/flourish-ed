@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, MutableRefObject } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { LessonDoc } from "@/models/Lesson";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,9 +12,8 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { faCalendar } from "@fortawesome/free-regular-svg-icons";
-import LessonForm from "@/components/LessonForm";
-import { LessonDoc } from "@/models/Lesson";
 import { toast } from "react-toastify";
+import LessonForm from "@/components/LessonForm";
 import Spinner from "@/components/Spinner";
 import Dropdown from "@/components/Dropdown";
 
@@ -107,40 +107,38 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
 
   if (isFetching) {
     return (
-      <div className="px-7 py-5 text-slate-900">
+      <main className="px-7 py-5 text-slate-900">
         <Spinner />
-      </div>
+      </main>
     );
   }
 
   if (!lesson) {
     return (
-      <div className="flex-1 px-7 py-5 text-slate-900">
-        <p>{error}</p>
-      </div>
+      <main className="flex-1 px-7 py-5 text-slate-900">
+        <h1>{error}</h1>
+      </main>
     );
   }
 
   if (deleted) {
     return (
-      <>
-        <div className="flex flex-1 flex-col items-center justify-center px-7 py-5 text-slate-900">
-          <p className="mb-4">You deleted this lesson.</p>
-          <FontAwesomeIcon icon={faTrash} size="2xl" className="mb-4" />
-          <button
-            className="btn-primary"
-            onClick={() => {
-              router.push(`/dashboard/classes/${classId}`);
-            }}>
-            Back to class
-          </button>
-        </div>
-      </>
+      <main className="flex flex-1 flex-col items-center justify-center px-7 py-5 text-slate-900">
+        <p className="mb-4">You deleted this lesson.</p>
+        <FontAwesomeIcon icon={faTrash} size="2xl" className="mb-4" />
+        <button
+          className="btn-primary"
+          onClick={() => {
+            router.push(`/dashboard/classes/${classId}`);
+          }}>
+          Back to class
+        </button>
+      </main>
     );
   }
 
   return (
-    <div className="flex-1 px-7 py-5 text-slate-900">
+    <main className="flex-1 px-7 py-5 text-slate-900">
       <div className="flex flex-col justify-between gap-5 border-b-[0.5px] border-b-slate-500 pb-3 md:flex-row">
         <h1 className="ml-5 text-2xl font-bold">
           {className} Lesson {index}
@@ -236,7 +234,7 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
         setEditingIndex={setIndex}
         setDeleted={setDeleted}
       />
-    </div>
+    </main>
   );
 };
 

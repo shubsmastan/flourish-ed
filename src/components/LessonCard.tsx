@@ -1,11 +1,5 @@
 "use client";
 
-import { LessonDoc } from "@/models/Lesson";
-import { faCalendar } from "@fortawesome/free-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
-import Link from "next/link";
-import Dropdown from "./Dropdown";
 import {
   Dispatch,
   MutableRefObject,
@@ -14,6 +8,12 @@ import {
   useRef,
   useState,
 } from "react";
+import Link from "next/link";
+import Dropdown from "./Dropdown";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import { LessonDoc } from "@/models/Lesson";
 
 interface LessonProps {
   lesson: LessonDoc;

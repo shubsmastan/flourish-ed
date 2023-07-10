@@ -24,8 +24,6 @@ const DeleteForm = ({
   setEditingIndex,
   setDeleted,
 }: DeleteFormProps) => {
-  const router = useRouter();
-
   return (
     <Modal open={open} onClose={handleClose}>
       <Fade in={open}>

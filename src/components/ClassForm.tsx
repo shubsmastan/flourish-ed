@@ -15,7 +15,7 @@ import Fade from "@mui/material/Fade";
 import { toast } from "react-toastify";
 import { figtree } from "@/libs/fonts";
 import axios from "axios";
-import DeleteForm from "./DeleteForm";
+import DeleteForm from "@/components/DeleteForm";
 
 interface ClassFormProps {
   currentClass: string | undefined;

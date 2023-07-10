@@ -1,14 +1,14 @@
 "use client";
 
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { ClassDoc } from "@/models/Class";
 import { useSession } from "next-auth/react";
-import { toast } from "react-toastify";
-import axios from "axios";
 import Link from "next/link";
-import ClassForm from "./ClassForm";
-import SidebarLink from "./SidebarLink";
-import Spinner from "./Spinner";
+import axios from "axios";
+import { ClassDoc } from "@/models/Class";
+import { toast } from "react-toastify";
+import ClassForm from "@/components/ClassForm";
+import SidebarLink from "@/components/SidebarLink";
+import Spinner from "@/components/Spinner";
 
 function Sidebar({
   open,

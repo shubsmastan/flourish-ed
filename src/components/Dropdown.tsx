@@ -15,7 +15,7 @@ const Dropdown = ({
   handleDeleteClick,
 }: DropdownProps) => {
   return (
-    <div>
+    <>
       <button
         className="flex w-full items-center gap-2 rounded-md p-2 hover:bg-slate-300"
         onClick={handleEditClick}>
@@ -26,7 +26,7 @@ const Dropdown = ({
         onClick={handleDeleteClick}>
         <FontAwesomeIcon icon={faTrash} size="sm" /> <p>Delete {type}</p>
       </button>
-    </div>
+    </>
   );
 };
 

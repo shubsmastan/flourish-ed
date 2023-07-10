@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef, useEffect, MutableRefObject } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import classroom from "public/classroom.jpg";
@@ -19,7 +20,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faHandshake, faClock } from "@fortawesome/free-regular-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { useState, useRef, useEffect, MutableRefObject } from "react";
 
 const About = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -46,9 +46,7 @@ const About = () => {
 
   return (
     <>
-      <header
-        className="relative flex h-20 items-center justify-between gap-4 bg-sky-800 p-4
-        text-slate-50 shadow-md shadow-slate-900/50 sm:p-8 lg:px-10 lg:py-8 2xl:px-72">
+      <header className="relative flex h-20 items-center justify-between gap-4 bg-sky-800 p-4 text-slate-50 shadow-md shadow-slate-900/50 sm:p-8 lg:px-10 lg:py-8 2xl:px-72">
         <a href="#" className="item-center flex gap-3">
           <Image src={logo} alt="" style={{ width: "25px", height: "auto" }} />
           <h1 className={`text-2xl font-semibold ${ysabeau.className}`}>
@@ -112,9 +110,7 @@ const About = () => {
           ref={navRef}
           className={`${
             isMenuOpen ? "scale-y-1" : "scale-y-0"
-          } absolute right-0 top-16 flex w-full origin-top flex-col
-          justify-center gap-2 rounded-md bg-sky-800 p-5
-          transition-transform duration-500 lg:hidden`}>
+          } absolute right-0 top-16 flex w-full origin-top flex-col justify-center gap-2 rounded-md bg-sky-800 p-5 transition-transform duration-500 lg:hidden`}>
           <ul
             className={`${
               isMenuOpen
@@ -142,8 +138,7 @@ const About = () => {
               isMenuOpen
                 ? "opacity-1 delay-300 duration-500"
                 : "opacity-0 duration-200"
-            } align-center flex flex-col justify-center gap-2 transition-opacity
-            lg:flex-row lg:border-r-2 lg:border-r-sky-700`}>
+            } align-center flex flex-col justify-center gap-2 transition-opacity lg:flex-row lg:border-r-2 lg:border-r-sky-700`}>
             <Link
               href="/auth/sign-up"
               className="rounded-md px-5 py-1 hover:bg-sky-700">

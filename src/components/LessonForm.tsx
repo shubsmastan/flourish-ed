@@ -7,12 +7,12 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
+import axios from "axios";
 import { useSession } from "next-auth/react";
-import Modal from "@mui/material/Modal";
-import Fade from "@mui/material/Fade";
 import { toast } from "react-toastify";
 import { figtree } from "@/libs/fonts";
-import axios from "axios";
+import Modal from "@mui/material/Modal";
+import Fade from "@mui/material/Fade";
 import DeleteForm from "./DeleteForm";
 
 interface LessonType {

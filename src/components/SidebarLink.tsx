@@ -1,7 +1,3 @@
-import { ClassDoc } from "@/models/Class";
-import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
 import {
   Dispatch,
   MutableRefObject,
@@ -10,7 +6,11 @@ import {
   useRef,
   useState,
 } from "react";
-import Dropdown from "./Dropdown";
+import Link from "next/link";
+import { ClassDoc } from "@/models/Class";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
+import Dropdown from "@/components/Dropdown";
 
 interface SidebarLinkProps {
   activeClass: ClassDoc;

@@ -1,6 +1,6 @@
 "use client";
 
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, MutableRefObject } from "react";
 import { signOut } from "next-auth/react";
 import Loading from "./Loading";
 import Image from "next/image";

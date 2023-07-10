@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, MutableRefObject } from "react";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { ClassDoc } from "@/models/Class";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,7 +15,6 @@ import Spinner from "@/components/Spinner";
 import Dropdown from "@/components/Dropdown";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
-import Link from "next/link";
 dayjs.extend(isBetween);
 
 const ClassPage = ({ params }: { params: { cid: string } }) => {
@@ -126,36 +126,34 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
 
   if (isFetching) {
     return (
-      <div className="px-7 py-5 text-slate-900">
+      <main className="px-7 py-5 text-slate-900">
         <Spinner />
-      </div>
+      </main>
     );
   }
 
   if (!currentClass) {
     return (
-      <div className="flex-1 px-7 py-5 text-slate-900">
+      <main className="flex-1 px-7 py-5 text-slate-900">
         <p>{error}</p>
-      </div>
+      </main>
     );
   }
 
   if (deleted) {
     return (
-      <>
-        <div className="flex flex-1 flex-col items-center justify-center px-7 py-5 text-slate-900">
-          <p className="mb-4">You deleted this class.</p>
-          <FontAwesomeIcon icon={faTrash} size="2xl" className="mb-4" />
-          <Link href="/dashboard/today" className="btn-primary">
-            Back to dashboard
-          </Link>
-        </div>
-      </>
+      <main className="flex flex-1 flex-col items-center justify-center px-7 py-5 text-slate-900">
+        <p className="mb-4">You deleted this class.</p>
+        <FontAwesomeIcon icon={faTrash} size="2xl" className="mb-4" />
+        <Link href="/dashboard/today" className="btn-primary">
+          Back to dashboard
+        </Link>
+      </main>
     );
   }
 
   return (
-    <div className="flex-1 px-7 py-5 text-slate-900">
+    <main className="flex-1 px-7 py-5 text-slate-900">
       <div className="flex flex-col justify-between gap-5 border-b-[0.5px] border-b-slate-500 pb-3 md:flex-row">
         <div className="flex flex-col gap-5 md:ml-5 lg:flex-row ">
           <h1 className="text-2xl font-bold">{currentClass.name}</h1>
@@ -277,7 +275,7 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
         deleting={isDeleting}
         setEditingIndex={setEditingIndex}
       />
-    </div>
+    </main>
   );
 };
 
