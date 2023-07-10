@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import LessonForm from "@/components/LessonForm";
 import Spinner from "@/components/Spinner";
 import Dropdown from "@/components/Dropdown";
+import Link from "next/link";
 
 const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
   const { data: session } = useSession();
@@ -126,13 +127,9 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
       <main className="flex flex-1 flex-col items-center justify-center px-7 py-5 text-slate-900">
         <p className="mb-4">You deleted this lesson.</p>
         <FontAwesomeIcon icon={faTrash} size="2xl" className="mb-4" />
-        <button
-          className="btn-primary"
-          onClick={() => {
-            router.push(`/dashboard/classes/${classId}`);
-          }}>
+        <Link className="btn-primary" href={`/dashboard/classes/${classId}`}>
           Back to class
-        </button>
+        </Link>
       </main>
     );
   }
@@ -140,12 +137,10 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
   return (
     <main className="flex-1 px-7 py-5 text-slate-900">
       <div className="flex flex-col justify-between gap-5 border-b-[0.5px] border-b-slate-500 pb-3 md:flex-row">
-        <h1 className="ml-5 text-2xl font-bold">
-          {className} Lesson {index}
-        </h1>
+        <h1 className="ml-5 text-2xl font-bold">{className}</h1>
         <div className="relative flex flex-col md:mr-10 md:items-end lg:flex-row">
           <button
-            className="btn-primary mb-3 max-h-10 lg:mb-0"
+            className="btn-primary mb-3 flex max-h-10 items-center justify-center md:w-[140px] lg:mb-0"
             onClick={() => {
               router.push(`/dashboard/classes/${classId}`);
             }}>
@@ -154,7 +149,7 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
               icon={faChevronLeft}
               color="#0f172a"
             />
-            Back to Class
+            <p>Back to Class</p>
           </button>
           <button
             className="rounded-md py-1 hover:bg-slate-300 md:w-12"
@@ -170,7 +165,6 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
             } absolute right-0 top-20 z-50 w-full rounded-2xl bg-white p-3 text-left text-sm
             drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)] md:w-48 lg:top-10`}>
             <Dropdown
-              className="right-4 top-7"
               type="lesson"
               handleEditClick={() => {
                 setIsDeleting(false);

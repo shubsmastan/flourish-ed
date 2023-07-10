@@ -173,14 +173,14 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
         </div>
         <div className="relative flex flex-col md:mr-10 md:items-end lg:flex-row">
           <button
-            className="btn-primary mb-3 max-h-10 lg:mb-0"
+            className="btn-primary mb-3 flex max-h-10 items-center justify-center md:w-[140px] lg:mb-0"
             onClick={() => {
               setEditingIndex(-1);
               setIsDeleting(false);
               setIsLessonFormOpen(true);
             }}>
             <FontAwesomeIcon className="mr-2" icon={faPlus} color="#0f172a" />
-            New Lesson
+            <p>New Lesson</p>
           </button>
           <button
             className="rounded-md py-1 hover:bg-slate-300 md:w-12"
@@ -200,7 +200,6 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
             } absolute right-0 top-20 z-50 w-full rounded-2xl bg-white p-3 text-left text-sm
             drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)] md:w-48 lg:top-10`}>
             <Dropdown
-              className="right-4 top-7"
               type="class"
               handleEditClick={() => {
                 setIsMenuOpen(false);
