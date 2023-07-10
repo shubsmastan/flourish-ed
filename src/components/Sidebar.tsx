@@ -82,8 +82,8 @@ function Sidebar({
     <aside
       className={`${
         open ? "translate-x-0" : "-translate-x-64"
-      } absolute top-[48px] z-10 flex h-[calc(100vh-48px)]
-      w-64 flex-col bg-slate-100 px-4 py-4 text-sm shadow-md transition-transform
+      } fixed top-[48px] z-10 flex h-[calc(100vh-48px)]
+      w-64 flex-col bg-slate-100 p-4 text-sm shadow-md transition-transform
       duration-200 sm:sticky sm:translate-x-0`}>
       <ul>
         <Link

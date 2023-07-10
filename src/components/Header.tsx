@@ -9,6 +9,7 @@ import { ysabeau } from "@/libs/fonts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-regular-svg-icons";
 import UserMenu from "@/components/UserMenu";
+import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
   const [loading, setLoading] = useState(false);
@@ -39,17 +40,15 @@ const Header = () => {
   return (
     <header
       className="sticky top-0 z-20 flex items-center justify-between gap-4 bg-sky-800
-      px-7 py-2 text-slate-50 shadow-md">
-      <a href="#" className="item-center flex gap-2">
-        <Image
-          src={logo}
-          alt=""
-          style={{ width: "28px", marginBottom: "3px" }}
-        />
-        <h1 className={`text-lg font-semibold ${ysabeau.className}`}>
-          Flourish Education
-        </h1>
-      </a>
+      px-5 py-2 text-slate-50 shadow-md">
+      <div className="align-center flex gap-3">
+        <a href="#" className="flex items-center gap-2">
+          <Image src={logo} alt="" style={{ width: "25px" }} />
+          <h1 className={`text-lg font-semibold ${ysabeau.className}`}>
+            Flourish Education
+          </h1>
+        </a>
+      </div>
       <button
         onClick={() => {
           setIsMenuOpen((prevState) => !prevState);

@@ -126,7 +126,14 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
       <>
         <div className="flex flex-1 flex-col items-center justify-center px-7 py-5 text-slate-900">
           <p className="mb-4">You deleted this lesson.</p>
-          <FontAwesomeIcon icon={faTrash} size="2xl" />
+          <FontAwesomeIcon icon={faTrash} size="2xl" className="mb-4" />
+          <button
+            className="btn-primary"
+            onClick={() => {
+              router.push(`/dashboard/classes/${classId}`);
+            }}>
+            Back to class
+          </button>
         </div>
       </>
     );

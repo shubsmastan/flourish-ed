@@ -60,6 +60,13 @@ const Past = () => {
             }
           });
         });
+        myLessons.sort((a: any, b: any) => {
+          const dateA = a.date;
+          const dateB = b.date;
+          if (dateA < dateB) return -1;
+          if (dateB < dateA) return 1;
+          return 0;
+        });
         setLessons(myLessons);
         setIsFetching(false);
       } catch (err: any) {
@@ -117,7 +124,7 @@ const Past = () => {
         <div>
           <h1 className="text-2xl font-bold">Today&apos;s Lessons</h1>
         </div>
-        <div className="grid grid-cols-3 gap-5 px-5 py-8">
+        <div className="grid grid-cols-1 gap-5 py-8 md:grid-cols-2 md:px-5 lg:grid-cols-3 2xl:grid-cols-4">
           {lessons.map((lesson, index) => (
             <LessonCard
               key={lesson._id}

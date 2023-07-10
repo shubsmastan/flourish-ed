@@ -19,10 +19,30 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faHandshake, faClock } from "@fortawesome/free-regular-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { useState } from "react";
+import { useState, useRef, useEffect, MutableRefObject } from "react";
 
 const About = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const navRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
+
+  useEffect(() => {
+    const callback = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        navRef.current &&
+        !navRef.current.contains(target) &&
+        target?.nodeName !== "HEADER" &&
+        target?.nodeName !== "BUTTON"
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", callback);
+    return () => {
+      document.removeEventListener("mousedown", callback);
+    };
+  });
 
   return (
     <>
@@ -36,7 +56,7 @@ const About = () => {
           </h1>
         </a>
         <button
-          className="relative lg:hidden"
+          className="relative h-10 w-10 rounded-md hover:bg-sky-700 lg:hidden"
           onClick={() => {
             setIsMenuOpen((prevState) => !prevState);
           }}>
@@ -45,25 +65,31 @@ const About = () => {
             size="2xl"
             className={`${
               isMenuOpen ? "opacity-1" : "opacity-0"
-            } absolute -top-4 right-0 transition-opacity duration-500`}
+            } pointer-events-none absolute right-[8.5px] top-[4px] transition-opacity duration-500`}
           />
           <FontAwesomeIcon
             icon={faBars}
             size="xl"
             className={`${
               isMenuOpen ? "opacity-0" : "opacity-1"
-            } absolute -top-3 right-0 transition-opacity duration-500`}
+            } pointer-events-none absolute right-[9px] top-[7.5px] transition-opacity duration-500`}
           />
         </button>
         <nav className="align-center hidden justify-center gap-2 lg:flex">
           <ul className="align-center flex justify-center gap-2 border-r-2 border-r-sky-700">
-            <Link href="#" className="rounded-md px-5 py-1 hover:bg-sky-700">
+            <Link
+              href="https://github.com/ShubsMastan"
+              className="rounded-md px-5 py-1 hover:bg-sky-700">
               Features
             </Link>
-            <Link href="#" className="rounded-md px-5 py-1 hover:bg-sky-700">
+            <Link
+              href="https://github.com/ShubsMastan"
+              className="rounded-md px-5 py-1 hover:bg-sky-700">
               Resources
             </Link>
-            <Link href="#" className="rounded-md px-5 py-1 hover:bg-sky-700">
+            <Link
+              href="https://github.com/ShubsMastan"
+              className="rounded-md px-5 py-1 hover:bg-sky-700">
               About
             </Link>
           </ul>
@@ -83,6 +109,7 @@ const About = () => {
           </ul>
         </nav>
         <nav
+          ref={navRef}
           className={`${
             isMenuOpen ? "scale-y-1" : "scale-y-0"
           } absolute right-0 top-16 flex w-full origin-top flex-col
@@ -94,14 +121,18 @@ const About = () => {
                 ? "opacity-1 delay-300 duration-500"
                 : "opacity-0 duration-200"
             } align-center flex flex-col justify-center gap-2 transition-opacity`}>
-            <Link href="#" className="rounded-md px-5 py-1 hover:bg-sky-700">
+            <Link
+              href="https://github.com/ShubsMastan"
+              className="rounded-md px-5 py-1 hover:bg-sky-700">
               Features
             </Link>
-            <Link href="#" className="rounded-md px-5 py-1 hover:bg-sky-700">
+            <Link
+              href="https://github.com/ShubsMastan"
+              className="rounded-md px-5 py-1 hover:bg-sky-700">
               Resources
             </Link>
             <Link
-              href="#"
+              href="https://github.com/ShubsMastan"
               className="mr-3 rounded-md px-5 py-1 hover:bg-sky-700">
               About
             </Link>
@@ -290,16 +321,16 @@ const About = () => {
           <p className="mb-6 font-bold">Features</p>
           <ul>
             <li className="mb-3">
-              <a href="#">How It Works</a>
+              <a href="https://github.com/ShubsMastan">How It Works</a>
             </li>
             <li className="mb-3">
-              <a href="#">Inspection</a>
+              <a href="https://github.com/ShubsMastan">Inspection</a>
             </li>
             <li className="mb-3">
-              <a href="#">Pricing</a>
+              <a href="https://github.com/ShubsMastan">Pricing</a>
             </li>
             <li className="mb-3">
-              <a href="#">Templates</a>
+              <a href="https://github.com/ShubsMastan">Templates</a>
             </li>
           </ul>
         </nav>
@@ -307,16 +338,16 @@ const About = () => {
           <p className="mb-6 font-bold">Resources</p>
           <ul>
             <li className="mb-3">
-              <a href="#">Help Center</a>
+              <a href="https://github.com/ShubsMastan">Help Center</a>
             </li>
             <li className="mb-3">
-              <a href="#">Productivity</a>
+              <a href="https://github.com/ShubsMastan">Productivity</a>
             </li>
             <li className="mb-3">
-              <a href="#">Developer API</a>
+              <a href="https://github.com/ShubsMastan">Developer API</a>
             </li>
             <li className="mb-3">
-              <a href="#">Feedback</a>
+              <a href="https://github.com/ShubsMastan">Feedback</a>
             </li>
           </ul>
         </nav>
@@ -324,15 +355,15 @@ const About = () => {
           <p className="mb-6 font-bold">About Us</p>
           <ul>
             <li className="mb-3">
-              <a href="#">Company</a>
+              <a href="https://github.com/ShubsMastan">Company</a>
             </li>
             <li className="mb-3">
-              <a href="#">Press</a>
+              <a href="https://github.com/ShubsMastan">Press</a>
             </li>
           </ul>
         </nav>
       </section>
-      <footer className="flex-start flex gap-5 bg-sky-800 px-6 py-2 text-slate-50 shadow-md shadow-slate-900/50 lg:px-32 2xl:px-72">
+      <footer className="flex-start flex items-center gap-5 bg-sky-800 px-8 py-5 text-slate-50 shadow-md shadow-slate-900/50 lg:px-32 2xl:px-72">
         <p className="text-xs">
           <a href="https://github.com/ShubsMastan">Security</a>
           &nbsp;&nbsp;|&nbsp;&nbsp;

@@ -14,6 +14,7 @@ import Spinner from "@/components/Spinner";
 import Dropdown from "@/components/Dropdown";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
+import Link from "next/link";
 dayjs.extend(isBetween);
 
 const ClassPage = ({ params }: { params: { cid: string } }) => {
@@ -32,7 +33,7 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
   const [isClassFormOpen, setIsClassFormOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleted, setDeleted] = useState(false);
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState("future");
   const [editingIndex, setEditingIndex] = useState(-1);
   const [error, setError] = useState("");
 
@@ -117,7 +118,7 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
         break;
     }
     return dayjs(lesson.date).isBetween(
-      dayjs(),
+      dayjs().subtract(1, "day"),
       dayjs().add(value, "day"),
       "day"
     );
@@ -144,7 +145,10 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
       <>
         <div className="flex flex-1 flex-col items-center justify-center px-7 py-5 text-slate-900">
           <p className="mb-4">You deleted this class.</p>
-          <FontAwesomeIcon icon={faTrash} size="2xl" />
+          <FontAwesomeIcon icon={faTrash} size="2xl" className="mb-4" />
+          <Link href="/dashboard/today" className="btn-primary">
+            Back to dashboard
+          </Link>
         </div>
       </>
     );
@@ -161,11 +165,12 @@ const ClassPage = ({ params }: { params: { cid: string } }) => {
               setFilter(e.target.value);
             }}
             className="rounded-md border-2 border-slate-900 px-1 lg:ml-0">
-            <option value="all">-- Filter Lessons --</option>
+            <option value="future">-- Upcoming --</option>
             <option value="this-week">This week</option>
             <option value="this-month">This month</option>
             <option value="this-term">This term</option>
             <option value="past">Past lessons</option>
+            <option value="all">All lessons</option>
           </select>
         </div>
         <div className="relative flex flex-col md:mr-10 md:items-end lg:flex-row">

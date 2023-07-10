@@ -117,7 +117,7 @@ const Today = () => {
         <div>
           <h1 className="text-2xl font-bold">Today&apos;s Lessons</h1>
         </div>
-        <div className="grid grid-cols-3 gap-5 px-5 py-8">
+        <div className="grid grid-cols-1 gap-5 py-8 md:grid-cols-2 md:px-5 lg:grid-cols-3 2xl:grid-cols-4">
           {lessons.map((lesson, index) => (
             <LessonCard
               key={lesson._id}

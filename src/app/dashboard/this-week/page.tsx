@@ -11,6 +11,7 @@ import LessonCard from "@/components/LessonCard";
 import LessonForm from "@/components/LessonForm";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
+dayjs.extend(isBetween);
 
 const Week = () => {
   const { data: session, status } = useSession();
@@ -56,16 +57,22 @@ const Week = () => {
         let myLessons: LessonDoc[] = [];
         data.forEach((cls: ClassDoc) => {
           cls.lessons.forEach((lesson: LessonDoc) => {
-            dayjs.extend(isBetween);
             if (
               dayjs(lesson.date).isBetween(
-                dayjs(),
+                dayjs().subtract(1, "day"),
                 dayjs().add(7, "day"),
                 "day"
               )
             ) {
               myLessons.push(lesson);
             }
+          });
+          myLessons.sort((a: any, b: any) => {
+            const dateA = a.date;
+            const dateB = b.date;
+            if (dateA < dateB) return -1;
+            if (dateB < dateA) return 1;
+            return 0;
           });
         });
         setLessons(myLessons);
@@ -125,7 +132,7 @@ const Week = () => {
         <div>
           <h1 className="text-2xl font-bold">Today&apos;s Lessons</h1>
         </div>
-        <div className="grid grid-cols-3 gap-5 px-5 py-8">
+        <div className="grid grid-cols-1 gap-5 py-8 md:grid-cols-2 md:px-5 lg:grid-cols-3 2xl:grid-cols-4">
           {lessons.map((lesson, index) => (
             <LessonCard
               key={lesson._id}
