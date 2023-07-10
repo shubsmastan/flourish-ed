@@ -1,16 +1,20 @@
-import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faPen,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 
 interface DropdownProps {
   type: "class" | "lesson";
-  className: string;
+
   handleEditClick: () => void;
   handleDeleteClick: () => void;
 }
 
 const Dropdown = ({
   type,
-  className,
   handleEditClick,
   handleDeleteClick,
 }: DropdownProps) => {

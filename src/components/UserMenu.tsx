@@ -10,13 +10,13 @@ const UserMenu = ({ logOut, open }: { logOut: () => void; open: boolean }) => {
 
   return (
     <>
-      <button className="mb-2 grid grid-cols-[32px,_150px] gap-5 rounded-md px-3 py-2 hover:bg-slate-300">
+      <button className="mb-2 grid grid-cols-[32px,_150px] gap-2 rounded-md px-3 py-2 hover:bg-slate-300">
         <FontAwesomeIcon icon={faUser} size="xl" />
         <span className="block text-left">Logged in as: {user?.firstName}</span>
       </button>
       <button
         onClick={logOut}
-        className="mb-2 grid grid-cols-[32px,_150px] gap-5 rounded-md px-3 py-2 hover:bg-slate-300">
+        className="mb-2 grid grid-cols-[32px,_150px] gap-2 rounded-md px-3 py-2 hover:bg-slate-300">
         <FontAwesomeIcon icon={faRightToBracket} size="xl" />
         <span className="block text-left">Sign Out</span>
       </button>

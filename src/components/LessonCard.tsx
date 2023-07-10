@@ -28,7 +28,6 @@ interface LessonProps {
 const LessonCard = ({
   lesson,
   index,
-  displayIndex,
   className,
   setIsDeleting,
   setIsLessonFormOpen,
@@ -57,9 +56,11 @@ const LessonCard = ({
       className={`flex flex-col gap-2 rounded-md bg-white p-4 text-sm drop-shadow-lg ${className}`}>
       <div className="flex justify-between">
         <Link
+          className="flex items-center gap-2 text-sm text-slate-500"
           href={`/dashboard/classes/${lesson.classId}/lessons/${lesson._id}`}
           passHref>
-          <h1 className="text-xl font-semibold">Lesson {displayIndex + 1}</h1>
+          <FontAwesomeIcon style={{ paddingBottom: "2px" }} icon={faCalendar} />
+          <p>{new Date(lesson.date).toDateString()}</p>
         </Link>
         <button
           className="rounded-md px-1 hover:bg-slate-300"
@@ -72,10 +73,6 @@ const LessonCard = ({
             size="xl"
           />
         </button>
-      </div>
-      <div className="flex items-center gap-2 text-sm text-slate-500">
-        <FontAwesomeIcon style={{ paddingBottom: "2px" }} icon={faCalendar} />
-        <p>{new Date(lesson.date).toDateString()}</p>
       </div>
       <div className="flex flex-col gap-1">
         <p className="font-semibold">Objective:</p>
@@ -100,7 +97,6 @@ const LessonCard = ({
         } absolute right-0 top-10 z-50 w-48 rounded-2xl bg-white p-3 text-left
             text-sm drop-shadow-[0_0px_10px_rgba(0,0,0,0.25)]`}>
         <Dropdown
-          className="right-6 top-10"
           type="lesson"
           handleEditClick={() => {
             setEditingIndex(index);
