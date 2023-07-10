@@ -94,7 +94,7 @@ const Main = ({ filter }: { filter: "today" | "this-week" | "past" }) => {
           if (isInUse) setClasses((prevClasses) => [cls, ...prevClasses]);
         });
         setLessons(myLessons);
-        // setIsFetching(false);
+        setIsFetching(false);
       } catch (err: any) {
         if (err.response?.data.error) {
           notify("error", err.response.data.error);
