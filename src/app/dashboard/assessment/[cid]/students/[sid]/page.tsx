@@ -11,14 +11,16 @@ import {
   faPlus,
   faPenToSquare,
   faChartSimple,
+  faChevronLeft,
 } from "@fortawesome/free-solid-svg-icons";
-import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 import { toast } from "react-toastify";
 import StudentForm, { StudentType } from "@/components/StudentForm";
 import AssessmentForm from "@/components/AssessmentForm";
 import Spinner from "@/components/Spinner";
 import Dropdown from "@/components/Dropdown";
 import Link from "next/link";
+import Chart from "@/components/Chart";
 
 const StudentPage = ({ params }: { params: { cid: string; sid: string } }) => {
   const { data: session } = useSession();
@@ -59,6 +61,11 @@ const StudentPage = ({ params }: { params: { cid: string; sid: string } }) => {
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/classes/${classId}`,
           { headers: { Authorization: token } }
         );
+        data.assessments.sort((a: any, b: any) => {
+          if (a.date < b.date) return -1;
+          if (b.date < a.date) return 1;
+          return 0;
+        });
         setClassName(cls.name);
         cls.students.sort((a: any, b: any) => {
           if (a.name < b.name) return -1;
@@ -86,7 +93,14 @@ const StudentPage = ({ params }: { params: { cid: string; sid: string } }) => {
       }
     };
     getData();
-  }, [userId, token, classId, studentId, isStudentFormOpen]);
+  }, [
+    userId,
+    token,
+    classId,
+    studentId,
+    isStudentFormOpen,
+    isAssessmentFormOpen,
+  ]);
 
   useEffect(() => {
     const callback = (e: MouseEvent) => {
@@ -140,24 +154,32 @@ const StudentPage = ({ params }: { params: { cid: string; sid: string } }) => {
     return (
       <main className="flex-1 px-7 py-5 text-slate-900">
         <div className="flex flex-col justify-between gap-5 border-b-[0.5px] border-b-slate-500 pb-3 md:flex-row">
-          <div className="ml-5 flex flex-col gap-5 lg:flex-row lg:items-center">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-center">
             <h1 className="text-2xl font-bold">
               {student.name}&apos;s Assessment Data
             </h1>
             <h2 className="text-">{className}</h2>
           </div>
         </div>
-        <div className="px-10 py-5">
-          <h2 className="mb-5 text-xl font-semibold">
-            Get ready for some graphs!
-          </h2>
-          <button
-            className="btn-primary"
-            onClick={() => {
-              setIsGraphing(false);
-            }}>
-            Back to results.
-          </button>
+        <div className="py-5 md:px-5">
+          <div className="flex justify-start gap-5">
+            <h2 className="mb-5 text-xl font-semibold">
+              {student.name}&apos;s Progress Over Time
+            </h2>
+            <button
+              className="btn-primary flex h-8 items-center"
+              onClick={() => {
+                setIsGraphing(false);
+              }}>
+              <FontAwesomeIcon
+                className="mr-2"
+                icon={faChevronLeft}
+                color="#0f172a"
+              />
+              <p>Back</p>
+            </button>
+          </div>
+          <Chart data={student.assessments.map((ass) => ass.result)} />
         </div>
       </main>
     );
@@ -166,7 +188,7 @@ const StudentPage = ({ params }: { params: { cid: string; sid: string } }) => {
   return (
     <main className="flex-1 px-7 py-5 text-slate-900">
       <div className="flex flex-col justify-between gap-5 border-b-[0.5px] border-b-slate-500 pb-3 md:flex-row">
-        <div className="ml-5 flex flex-col gap-5 lg:flex-row lg:items-center">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-center">
           <h1 className="text-2xl font-bold">
             {student.name}&apos;s Assessment Data
           </h1>
@@ -179,7 +201,7 @@ const StudentPage = ({ params }: { params: { cid: string; sid: string } }) => {
             }}
             className="btn-primary mb-3 flex max-h-10 items-center justify-center md:w-[140px] lg:mb-0">
             <FontAwesomeIcon className="mr-2" icon={faPlus} color="#0f172a" />
-            <p>Add result</p>
+            <p>Add Result</p>
           </button>
           <button
             className="rounded-md py-1 hover:bg-slate-300 md:w-12"
@@ -209,30 +231,32 @@ const StudentPage = ({ params }: { params: { cid: string; sid: string } }) => {
         </div>
       </div>
       <div className="px-5 py-8 text-lg">
-        <button
-          onClick={() => {
-            setIsGraphing(true);
-          }}
-          className="btn-primary ml-5 flex max-h-10 items-center justify-center lg:mb-0">
-          <FontAwesomeIcon
-            className="mr-2"
-            icon={faChartSimple}
-            color="#0f172a"
-          />
-          <p>View Graphs</p>
-        </button>
+        {student.assessments.length > 0 && (
+          <button
+            onClick={() => {
+              setIsGraphing(true);
+            }}
+            className="btn-primary flex max-h-10 items-center justify-center md:ml-5 lg:mb-0">
+            <FontAwesomeIcon
+              className="mr-2"
+              icon={faChartSimple}
+              color="#0f172a"
+            />
+            <p>View Graphs</p>
+          </button>
+        )}
         <div className="mt-5 grid grid-cols-1 gap-5 py-2 md:grid-cols-2 md:px-5 lg:grid-cols-3 2xl:grid-cols-4">
           {student.assessments.map((ass, idx) => (
             <div
               key={idx}
               className="flex flex-col gap-2 rounded-md bg-white p-4 text-sm drop-shadow-lg">
               <h2 className="mb-2 text-lg font-semibold">
-                Assessment {index + 1}
+                Assessment {idx + 1}
               </h2>
               <div className="text-md mb-3 flex items-center gap-2 text-slate-500">
                 <FontAwesomeIcon
                   style={{ paddingBottom: "2px" }}
-                  icon={faCalendar}
+                  icon={faCalendarDays}
                 />
                 <p>{new Date(ass.date).toDateString()}</p>
               </div>
@@ -247,6 +271,16 @@ const StudentPage = ({ params }: { params: { cid: string; sid: string } }) => {
           ))}
         </div>
       </div>
+      <Link
+        href={`/dashboard/assessment/${classId}`}
+        className="btn-primary mb-3 flex max-h-10 items-center justify-center md:ml-10 md:w-[140px] lg:mb-0">
+        <FontAwesomeIcon
+          className="mr-2"
+          icon={faChevronLeft}
+          color="#0f172a"
+        />
+        <p>Back to Class</p>
+      </Link>
       <StudentForm
         student={
           student
