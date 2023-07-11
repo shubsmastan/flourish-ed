@@ -12,7 +12,7 @@ import Link from "next/link";
 import Dropdown from "./Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCalendar,
+  faCalendarDays,
   faEllipsis,
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
@@ -21,7 +21,6 @@ import { StudentDoc } from "@/models/Student";
 interface StudentProps {
   student: StudentDoc;
   index: number;
-  className?: string;
   setIsDeleting: Dispatch<SetStateAction<boolean>>;
   setIsLessonFormOpen: Dispatch<SetStateAction<boolean>>;
   setEditingIndex: Dispatch<SetStateAction<number>>;
@@ -30,7 +29,6 @@ interface StudentProps {
 const StudentCard = ({
   student,
   index,
-  className,
   setIsDeleting,
   setIsLessonFormOpen,
   setEditingIndex,
@@ -55,7 +53,7 @@ const StudentCard = ({
 
   return (
     <div
-      className={`flex flex-col gap-2 rounded-md bg-white p-4 text-sm drop-shadow-lg ${className}`}>
+      className={`flex h-52 flex-col gap-2 rounded-md bg-white p-4 text-sm drop-shadow-lg`}>
       <div className="flex justify-between">
         <Link
           className="text-lg font-semibold"
@@ -92,7 +90,7 @@ const StudentCard = ({
               <div className="text-md mb-3 flex items-center gap-2 text-slate-500">
                 <FontAwesomeIcon
                   style={{ paddingBottom: "2px" }}
-                  icon={faCalendar}
+                  icon={faCalendarDays}
                 />
                 <p>{new Date(ass.date).toDateString()}</p>
               </div>

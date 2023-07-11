@@ -11,7 +11,7 @@ import {
   faChevronLeft,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 import { toast } from "react-toastify";
 import LessonForm from "@/components/LessonForm";
 import Spinner from "@/components/Spinner";
@@ -139,18 +139,16 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
       <div className="flex flex-col justify-between gap-5 border-b-[0.5px] border-b-slate-500 pb-3 md:flex-row">
         <h1 className="ml-5 text-2xl font-bold">{className}</h1>
         <div className="relative flex flex-col md:mr-10 md:items-end lg:flex-row">
-          <button
-            className="btn-primary mb-3 flex max-h-10 items-center justify-center md:w-[140px] lg:mb-0"
-            onClick={() => {
-              router.push(`/dashboard/classes/${classId}`);
-            }}>
+          <Link
+            href={`/dashboard/classes/${classId}`}
+            className="btn-primary mb-3 flex max-h-10 items-center justify-center md:w-[140px] lg:mb-0">
             <FontAwesomeIcon
               className="mr-2"
               icon={faChevronLeft}
               color="#0f172a"
             />
             <p>Back to Class</p>
-          </button>
+          </Link>
           <button
             className="rounded-md py-1 hover:bg-slate-300 md:w-12"
             onClick={() => {
@@ -180,7 +178,10 @@ const LessonPage = ({ params }: { params: { cid: string; lid: string } }) => {
       </div>
       <div className="px-5 py-8 text-lg">
         <div className="text-md mb-3 flex items-center gap-2 text-slate-500">
-          <FontAwesomeIcon style={{ paddingBottom: "2px" }} icon={faCalendar} />
+          <FontAwesomeIcon
+            style={{ paddingBottom: "2px" }}
+            icon={faCalendarDays}
+          />
           <p>{new Date(lesson.date).toDateString()}</p>
         </div>
         <div className="mb-5 flex flex-col gap-2">

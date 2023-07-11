@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import Dropdown from "./Dropdown";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { LessonDoc } from "@/models/Lesson";
 
@@ -19,7 +19,6 @@ interface LessonProps {
   lesson: LessonDoc;
   index: number;
   displayIndex: number;
-  className?: string;
   setIsDeleting: Dispatch<SetStateAction<boolean>>;
   setIsLessonFormOpen: Dispatch<SetStateAction<boolean>>;
   setEditingIndex: Dispatch<SetStateAction<number>>;
@@ -28,7 +27,6 @@ interface LessonProps {
 const LessonCard = ({
   lesson,
   index,
-  className,
   setIsDeleting,
   setIsLessonFormOpen,
   setEditingIndex,
@@ -53,13 +51,16 @@ const LessonCard = ({
 
   return (
     <div
-      className={`flex flex-col gap-2 rounded-md bg-white p-4 text-sm drop-shadow-lg ${className}`}>
+      className={`flex flex-col gap-2 rounded-md bg-white p-4 text-sm drop-shadow-lg`}>
       <div className="flex justify-between">
         <Link
           className="flex items-center gap-2 text-sm text-slate-500"
           href={`/dashboard/classes/${lesson.classId}/lessons/${lesson._id}`}
           passHref>
-          <FontAwesomeIcon style={{ paddingBottom: "2px" }} icon={faCalendar} />
+          <FontAwesomeIcon
+            style={{ paddingBottom: "2px" }}
+            icon={faCalendarDays}
+          />
           <p>{new Date(lesson.date).toDateString()}</p>
         </Link>
         <button

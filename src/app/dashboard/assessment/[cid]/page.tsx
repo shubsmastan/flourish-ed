@@ -9,6 +9,9 @@ import { toast } from "react-toastify";
 import Spinner from "@/components/Spinner";
 import StudentForm from "@/components/StudentForm";
 import StudentCard from "@/components/StudentCard";
+import { faChevronLeft, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Link from "next/link";
 
 const ClassAssessment = ({ params }: { params: { cid: string } }) => {
   const { data: session } = useSession();
@@ -87,6 +90,12 @@ const ClassAssessment = ({ params }: { params: { cid: string } }) => {
     );
   }
 
+  const filteredStudents = students.sort((a, b) => {
+    if (a.name < b.name) return -1;
+    if (b.name < a.name) return -1;
+    return 0;
+  });
+
   return (
     <main className="flex-1 px-7 py-5 text-slate-900">
       <div className="flex flex-col justify-between gap-5 border-b-[0.5px] border-b-slate-500 pb-3 md:flex-row">
@@ -97,31 +106,42 @@ const ClassAssessment = ({ params }: { params: { cid: string } }) => {
           <select
             value={filter}
             onChange={(e) => {
-              console.log(e.target.value);
+              setFilter(e.target.value);
             }}
             className="rounded-md border-2 border-slate-900 px-1 lg:ml-0">
             <option value="">-- Sort students --</option>
             <option value="alphAsc">A-Z</option>
-            <option value="alphDesc">This month</option>
-            <option value="scoreAsc">This term</option>
-            <option value="scoreDesc">Past lessons</option>
+            <option value="alphDesc">Z-A</option>
           </select>
         </div>
         <button
-          className="btn-primary h-[32px] md:mr-5"
           onClick={() => {
             setEditingIndex(-1);
             setIsDeleting(false);
             setIsFormOpen(true);
-          }}>
-          + Add Student
+          }}
+          className="btn-primary mb-3 flex max-h-10 items-center justify-center md:w-[140px] lg:mb-0">
+          <FontAwesomeIcon className="mr-2" icon={faPlus} color="#0f172a" />
+          <p>Add Student</p>
         </button>
       </div>
-      <div className="grid grid-cols-1 gap-5 py-8 md:grid-cols-2 md:px-5 lg:grid-cols-3 2xl:grid-cols-4">
-        {currentClass.students?.length === 0 && (
-          <p>No students in this class.</p>
+      <div className="grid grid-cols-1 gap-5 py-8 md:mb-5 md:grid-cols-2 md:px-5 lg:grid-cols-3 2xl:grid-cols-4">
+        {filteredStudents.length === 0 && (
+          <div className="md:ml-10">
+            <p className="mb-10">No students in this class.</p>
+            <Link
+              href={`/dashboard/assessment`}
+              className="btn-primary mb-3 flex max-h-10 items-center justify-center md:w-[160px] lg:mb-0">
+              <FontAwesomeIcon
+                className="mr-2"
+                icon={faChevronLeft}
+                color="#0f172a"
+              />
+              <p>Back to Classes</p>
+            </Link>
+          </div>
         )}
-        {currentClass.students?.map((student) => {
+        {filteredStudents.map((student) => {
           return (
             <div key={student._id}>
               <StudentCard
@@ -137,6 +157,16 @@ const ClassAssessment = ({ params }: { params: { cid: string } }) => {
           );
         })}
       </div>
+      <Link
+        href={`/dashboard/assessment`}
+        className="btn-primary mb-3 flex max-h-10 items-center justify-center md:ml-5 md:w-[160px] lg:mb-0">
+        <FontAwesomeIcon
+          className="mr-2"
+          icon={faChevronLeft}
+          color="#0f172a"
+        />
+        <p>Back to Classes</p>
+      </Link>
       <StudentForm
         student={
           editingIndex === -1

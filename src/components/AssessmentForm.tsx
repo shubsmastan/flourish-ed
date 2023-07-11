@@ -100,6 +100,11 @@ const StudentForm = ({
       return;
     }
     student.assessments.push(assessmentData);
+    student.assessments.sort((a, b) => {
+      if (a.date < b.date) return 1;
+      if (b.date < a.date) return -1;
+      return 0;
+    });
     try {
       if (!userId) return;
       if (student.name === "") {
