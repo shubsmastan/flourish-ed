@@ -159,6 +159,6 @@ export async function POST(
     return NextResponse.json(cls.lessons);
   } catch (err) {
     console.log(err);
-    return NextResponse.json({ error: "Server error." });
+    return NextResponse.json({ error: "Server error." }, { status: 500 });
   }
 }
