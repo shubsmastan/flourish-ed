@@ -71,7 +71,7 @@ export async function GET(
         { status: 401 }
       );
     }
-    if (!student || !cls.lessons.includes(studentId)) {
+    if (!student || !cls.students.includes(studentId)) {
       return NextResponse.json(
         {
           error: "That student does not exist.",
@@ -96,7 +96,7 @@ export async function PUT(
   { params }: { params: { cid: string; sid: string } }
 ) {
   const body = await req.json();
-  const { name, date, result } = body;
+  const { name, assessments } = body;
   try {
     const token = req.headers.get("Authorization");
     let verified;
@@ -159,7 +159,7 @@ export async function PUT(
         { status: 401 }
       );
     }
-    if (!student || !cls.lessons.includes(studentId)) {
+    if (!student || !cls.students.includes(studentId)) {
       return NextResponse.json(
         {
           error: "That student does not exist.",
@@ -168,7 +168,7 @@ export async function PUT(
       );
     }
     student.name = name;
-    if (date && result) student.assessments.push({ date, result });
+    if (assessments) student.assessments = assessments;
     await student.save();
     return NextResponse.json(student);
   } catch (err) {
@@ -231,7 +231,7 @@ export async function DELETE(
     }
     await dbConnect();
     const cls = await Class.findById(classId);
-    const lesson = await Student.findById(studentId);
+    const student = await Student.findById(studentId);
     if (!cls) {
       return NextResponse.json(
         {
@@ -248,7 +248,7 @@ export async function DELETE(
         { status: 401 }
       );
     }
-    if (!lesson || !cls.lessons.includes(studentId)) {
+    if (!student || !cls.students.includes(studentId)) {
       return NextResponse.json(
         {
           error: "That student does not exist.",
@@ -256,10 +256,10 @@ export async function DELETE(
         { status: 404 }
       );
     }
-    cls.students.pull({ _id: studentId });
+    cls.students.pull(studentId);
     await cls.save;
     await Student.deleteOne({ _id: studentId });
-    return NextResponse.json(cls.lessons);
+    return NextResponse.json(cls.students);
   } catch (err) {
     console.log(err);
     return NextResponse.json(

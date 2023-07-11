@@ -4,11 +4,9 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
 
 interface DropdownProps {
-  type: "class" | "lesson";
-
+  type: "class" | "lesson" | "student";
   handleEditClick: () => void;
   handleDeleteClick: () => void;
 }

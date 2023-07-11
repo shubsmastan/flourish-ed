@@ -259,7 +259,7 @@ export async function DELETE(
         { status: 404 }
       );
     }
-    cls.lessons.pull({ _id: lessonId });
+    cls.lessons.pull(lessonId);
     await cls.save;
     await Lesson.deleteOne({ _id: lessonId });
     return NextResponse.json(cls.lessons);

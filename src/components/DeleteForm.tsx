@@ -1,10 +1,9 @@
 import { figtree } from "@/libs/fonts";
 import { Fade, Modal } from "@mui/material";
-import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
 
 interface DeleteFormProps {
-  type: "lesson" | "class";
+  type: "lesson" | "class" | "student";
   open: boolean;
   error: string;
   handleDelete: () => Promise<void>;
@@ -20,7 +19,6 @@ const DeleteForm = ({
   error,
   handleDelete,
   handleClose,
-  classId,
   setEditingIndex,
   setDeleted,
 }: DeleteFormProps) => {
@@ -37,7 +35,7 @@ const DeleteForm = ({
           </button>
           <form className="px-12 pb-5 pt-10">
             <h1 className="mb-10 text-2xl font-bold">
-              Delete {type === "class" ? "Class" : "Lesson"}
+              Delete {type[0].toUpperCase() + type.slice(1)}
             </h1>
             <p className="absolute top-20 text-rose-800">{error}</p>
             <p className="text-lg">

@@ -5,7 +5,7 @@ export interface StudentDoc extends Document {
   _id: string;
   name: string;
   classId: ClassDoc;
-  asssessments: Assessment[];
+  assessments: Assessment[];
 }
 
 interface Assessment {
@@ -17,11 +17,10 @@ const StudentSchema = new mongoose.Schema<StudentDoc>(
   {
     name: { type: String, required: true },
     classId: { type: mongoose.Types.ObjectId, ref: "Class", required: true },
-    asssessments: [
+    assessments: [
       {
         date: { type: Date },
-        results: { type: Number },
-        default: [],
+        result: { type: Number, min: 0, max: 100 },
       },
     ],
   },

@@ -169,7 +169,7 @@ const LessonForm = ({
         setError(err.response.data.error);
         return;
       }
-      notify("error", "Error creating class.");
+      notify("error", "Error creating lesson.");
     }
   };
 
