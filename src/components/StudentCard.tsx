@@ -86,7 +86,7 @@ const StudentCard = ({
             return idx < 3;
           })
           .map((ass, idx) => (
-            <div key={idx} className="flex gap-5">
+            <div key={idx} className="grid grid-cols-[130px,_50px] gap-5">
               <div className="text-md mb-3 flex items-center gap-2 text-slate-500">
                 <FontAwesomeIcon
                   style={{ paddingBottom: "2px" }}

@@ -154,6 +154,12 @@ export async function DELETE(
     await user.save();
     cls.teachers.pull({ _id: user._id });
     await cls.save();
+    if (cls.lessons.length !== 0) {
+      await Lesson.deleteMany({ classId });
+    }
+    if (cls.students.length !== 0) {
+      await Student.deleteMany({ classId });
+    }
     if (cls.teachers.length === 0) await Class.deleteOne({ _id: classId });
     const classes = user.classes;
     return NextResponse.json(classes);

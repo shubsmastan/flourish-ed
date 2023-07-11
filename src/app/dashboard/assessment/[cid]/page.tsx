@@ -127,18 +127,8 @@ const ClassAssessment = ({ params }: { params: { cid: string } }) => {
       </div>
       <div className="grid grid-cols-1 gap-5 py-8 md:mb-5 md:grid-cols-2 md:px-5 lg:grid-cols-3 2xl:grid-cols-4">
         {filteredStudents.length === 0 && (
-          <div className="md:ml-10">
+          <div className="md:ml-5">
             <p className="mb-10">No students in this class.</p>
-            <Link
-              href={`/dashboard/assessment`}
-              className="btn-primary mb-3 flex max-h-10 items-center justify-center md:w-[160px] lg:mb-0">
-              <FontAwesomeIcon
-                className="mr-2"
-                icon={faChevronLeft}
-                color="#0f172a"
-              />
-              <p>Back to Classes</p>
-            </Link>
           </div>
         )}
         {filteredStudents.map((student) => {
@@ -159,7 +149,7 @@ const ClassAssessment = ({ params }: { params: { cid: string } }) => {
       </div>
       <Link
         href={`/dashboard/assessment`}
-        className="btn-primary mb-3 flex max-h-10 items-center justify-center md:ml-5 md:w-[160px] lg:mb-0">
+        className="btn-primary mb-3 flex max-h-10 items-center justify-center md:ml-10 md:w-[160px] lg:mb-0">
         <FontAwesomeIcon
           className="mr-2"
           icon={faChevronLeft}

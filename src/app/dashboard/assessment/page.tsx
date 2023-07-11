@@ -101,7 +101,7 @@ const Assessment = () => {
             <Link
               href={`/dashboard/assessment/${cls._id}`}
               key={cls._id}
-              className="rounded-md border-[1.5px] border-slate-900 p-3 text-center text-lg font-semibold hover:bg-sky-200">
+              className="rounded-md bg-white p-3 text-center text-lg font-semibold drop-shadow-lg">
               {cls.name}
             </Link>
           ))}
