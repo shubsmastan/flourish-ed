@@ -168,7 +168,7 @@ export async function PUT(
       );
     }
     student.name = name;
-    student.assessments.push({ date, result });
+    if (date && result) student.assessments.push({ date, result });
     await student.save();
     return NextResponse.json(student);
   } catch (err) {

@@ -1,6 +1,7 @@
 import { Class } from "@/models/Class";
 import { User } from "@/models/User";
 import { Lesson } from "@/models/Lesson";
+import { Student } from "@/models/Student";
 import { dbConnect } from "@/libs/dbConnect";
 import { NextRequest, NextResponse } from "next/server";
 import { verifyJwt } from "@/libs/jwtHelper";
@@ -32,9 +33,12 @@ export async function GET(
         { status: 404 }
       );
     }
-    const cls = await Class.findById(classId).populate({
-      path: "lessons",
-    });
+    const cls = await Class.findById(classId)
+      .populate({
+        path: "lessons",
+        model: Lesson,
+      })
+      .populate({ path: "students", model: Student });
     if (!cls) {
       return NextResponse.json(
         {
