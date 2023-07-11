@@ -1,12 +1,14 @@
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document, mongo } from "mongoose";
 import { LessonDoc } from "./Lesson";
 import { UserDoc } from "./User";
+import { StudentDoc } from "./Student";
 
 export interface ClassDoc extends Document {
   _id: string;
   name: string;
   lessons: LessonDoc[];
   teachers: UserDoc[];
+  students: StudentDoc[];
 }
 
 const ClassSchema = new mongoose.Schema<ClassDoc>(
@@ -23,6 +25,11 @@ const ClassSchema = new mongoose.Schema<ClassDoc>(
       type: [mongoose.Types.ObjectId],
       ref: "User",
       required: true,
+    },
+    students: {
+      type: [mongoose.Types.ObjectId],
+      ref: "Student",
+      default: [],
     },
   },
   { timestamps: true }
