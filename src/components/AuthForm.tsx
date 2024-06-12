@@ -48,44 +48,32 @@ export const AuthForm = () => {
 	};
 
 	return (
-		<>
-			<div className='flex flex-col gap-3 justify-centre p-10 text-center'>
-				<p>
-					Welcome to FlourishEd - the productivity app for teachers.
-				</p>
-				<p>Please log in to continue.</p>
-			</div>
+		<div className='flex flex-col gap-3 justify-centre p-20 text-center max-w-96'>
+			<p>Welcome to FlourishEd - the productivity app for teachers.</p>
+			<p>Please log in to continue.</p>
 			<form className='flex flex-col gap-4'>
 				<Input
 					type='text'
 					placeholder='Email'
-					required={true}
+					// required={true}
 					onChange={e => setEmail(e.target.value)}
 				/>
 				<Input
 					type='password'
 					placeholder='Password'
-					required={true}
+					// required={true}
 					onChange={e => setPwd(e.target.value)}
 				/>
-				<Button
-					variant='default'
-					onClick={e => {
-						logIn(e, false);
-					}}
-					disabled={isLoading}>
-					Log In
+				<Button variant='default' disabled={isLoading}>
+					<Link href='/dashboard'>Log In</Link>
 				</Button>
-				<Button
-					onClick={e => {
-						logIn(e, true);
-					}}
-					disabled={isLoading}>
-					Guest Login
+				<Button disabled={isLoading}>
+					{' '}
+					<Link href='/dashboard'>Guest Login</Link>
 				</Button>
 			</form>
 			{error && <p className='mb-1 text-rose-800'>{error}</p>}
 			{/* <Loading open={open} /> */}
-		</>
+		</div>
 	);
 };

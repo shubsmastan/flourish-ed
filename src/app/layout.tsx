@@ -3,6 +3,7 @@ import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Header } from '@/components/Header';
 import { inter } from '@/lib/fonts';
+import { TanstackQueryClient } from '@/components/query-client-provider';
 
 export const metadata: Metadata = {
 	title: 'FlourishEd',
@@ -15,18 +16,20 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang='en'>
+		<html lang='en' suppressHydrationWarning>
 			<body className={`${inter.className} h-screen`}>
-				<ThemeProvider
-					attribute='class'
-					defaultTheme='system'
-					enableSystem
-					disableTransitionOnChange>
-					<Header />
-					<main className='flex flex-1 flex-col items-center justify-center gap-4 h-[calc(100%-3.5rem)]'>
-						{children}
-					</main>
-				</ThemeProvider>
+				<TanstackQueryClient>
+					<ThemeProvider
+						attribute='class'
+						defaultTheme='system'
+						enableSystem
+						disableTransitionOnChange>
+						<Header />
+						<main className='flex items-center h-[calc(100%-3.5rem)]'>
+							{children}
+						</main>
+					</ThemeProvider>
+				</TanstackQueryClient>
 			</body>
 		</html>
 	);
