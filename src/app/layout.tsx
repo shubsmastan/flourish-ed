@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { ThemeProvider } from '@/components/theme-provider';
 import { Header } from '@/components/Header';
+import { TanstackQueryClient } from '@/components/utils/QueryClientProvider';
+import { ThemeProvider } from '@/components/utils/ThemeProvider';
 import { inter } from '@/lib/fonts';
-import { TanstackQueryClient } from '@/components/query-client-provider';
 
 export const metadata: Metadata = {
 	title: 'FlourishEd',
