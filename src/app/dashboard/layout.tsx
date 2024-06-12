@@ -6,7 +6,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<div className='flex w-full justify-between'>
+		<div className='w-full flex justify-between'>
 			<Sidebar />
 			{children}
 		</div>

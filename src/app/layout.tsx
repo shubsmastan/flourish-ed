@@ -25,7 +25,7 @@ export default function RootLayout({
 						enableSystem
 						disableTransitionOnChange>
 						<Header />
-						<main className='flex items-center h-[calc(100%-3.5rem)]'>
+						<main className='flex items-center justify-center h-[calc(100%-3.5rem)]'>
 							{children}
 						</main>
 					</ThemeProvider>
