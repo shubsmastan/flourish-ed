@@ -6,10 +6,11 @@ import axios from 'axios';
 import { useState } from 'react';
 import {
 	NavigationMenu,
-	NavigationMenuContent,
 	NavigationMenuItem,
 	NavigationMenuList,
 } from './ui/navigation-menu';
+import { Dialog, DialogTrigger } from './ui/dialog';
+import ClassForm from './ClassForm';
 
 export const Sidebar = () => {
 	const [open, setOpen] = useState(true);
@@ -73,8 +74,9 @@ export const Sidebar = () => {
 				<NavigationMenuItem>
 					<Link href={`/dashboard`}>Last Week</Link>
 				</NavigationMenuItem>
-				<NavigationMenuItem className='font-bold mt-5'>
-					Your Classes
+				<NavigationMenuItem className='flex justify-between font-bold mt-5 w-full'>
+					<h3>Your Classes</h3>
+					<ClassForm trigger={'+'} type='class' />
 				</NavigationMenuItem>
 				{classList}
 			</NavigationMenuList>
