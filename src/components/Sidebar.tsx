@@ -10,7 +10,7 @@ import {
 	NavigationMenuList,
 } from './ui/navigation-menu';
 import ClassForm from './ClassForm';
-import { PiPlusBold } from 'react-icons/pi';
+import { Plus } from 'lucide-react';
 
 export const Sidebar = () => {
 	const {
@@ -74,11 +74,7 @@ export const Sidebar = () => {
 					<h3>Your Classes</h3>
 					<ClassForm
 						disabled={isLoading || isError}
-						trigger={
-							<PiPlusBold
-								style={{ color: 'white', fontSize: '1rem' }}
-							/>
-						}
+						trigger={<Plus size={22} />}
 						type='class'
 					/>
 				</NavigationMenuItem>

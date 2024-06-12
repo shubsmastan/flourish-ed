@@ -121,7 +121,7 @@ const ClassForm = ({
 		<Dialog>
 			<DialogTrigger asChild>
 				<Button
-					className='p-0 m-0 h-5 w-5'
+					className='p-0 m-0 h-6 w-6'
 					variant={'ghost'}
 					disabled={disabled}>
 					{trigger}

@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -55,24 +54,29 @@ export const AuthForm = () => {
 				<Input
 					type='text'
 					placeholder='Email'
-					// required={true}
+					required={true}
 					onChange={e => setEmail(e.target.value)}
 				/>
 				<Input
 					type='password'
 					placeholder='Password'
-					// required={true}
+					required={true}
 					onChange={e => setPwd(e.target.value)}
 				/>
 				<Button variant='default' disabled={isLoading}>
-					<Link href='/dashboard'>Log In</Link>
+					Log In
 				</Button>
-				<Button disabled={isLoading}>
-					{' '}
-					<Link href='/dashboard'>Guest Login</Link>
+				<Button
+					onClick={e => {
+						logIn(e, true);
+					}}
+					disabled={isLoading}>
+					Guest Login
 				</Button>
 			</form>
-			{error && <p className='mb-1 text-rose-800'>{error}</p>}
+			{error && (
+				<p className='mb-1 text-rose-700 dark:text-rose-300'>{error}</p>
+			)}
 			{/* <Loading open={open} /> */}
 		</div>
 	);

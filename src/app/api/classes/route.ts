@@ -21,7 +21,7 @@ export async function GET(_: NextRequest) {
 		//   );
 		// }
 		await dbConnect();
-		const user = await User.findById('6669de10c421d4bf9cbd4b8e').populate({
+		const user = await User.findById('6669ee73fe2bd993e4932bdd').populate({
 			path: 'classes',
 			populate: { path: 'lessons', model: Lesson },
 		});
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
 				{ status: 400 }
 			);
 		}
-		const user = await User.findById('6669de10c421d4bf9cbd4b8e').populate({
+		const user = await User.findById('6669ee73fe2bd993e4932bdd').populate({
 			path: 'classes',
 		});
 		const newClass = await Class.create({

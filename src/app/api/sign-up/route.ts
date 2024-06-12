@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { User } from '@/models/User';
 import { dbConnect } from '@/lib/dbConnect';
-// import bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 
 export async function POST(req: Request) {
 	const body = await req.json();
@@ -15,13 +15,13 @@ export async function POST(req: Request) {
 				{ status: 400 }
 			);
 		}
-		// const salt = await bcrypt.genSalt(10);
-		// const encryptedPwd = await bcrypt.hash(password, salt);
+		const salt = await bcrypt.genSalt(10);
+		const encryptedPwd = await bcrypt.hash(password, salt);
 		const newUser = await User.create({
 			firstName,
 			lastName,
 			email,
-			password,
+			password: encryptedPwd,
 		});
 		return NextResponse.json(newUser, { status: 201 });
 	} catch (err) {
