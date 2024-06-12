@@ -1,7 +1,7 @@
 import { Lesson } from '@/models/Lesson';
-import { dbConnect } from '@/libs/dbConnect';
+import { dbConnect } from '@/lib/dbConnect';
 import { NextResponse } from 'next/server';
-import { verifyJwt } from '@/libs/jwtHelper';
+// import { verifyJwt } from '@/lib/jwtHelper';
 import { Class } from '@/models/Class';
 import mongoose from 'mongoose';
 
@@ -63,7 +63,7 @@ export async function GET(
 				{ status: 404 }
 			);
 		}
-		if (!cls.teachers.includes('649b0efa480465e863f2115c')) {
+		if (!cls.teachers.includes('6669de10c421d4bf9cbd4b8e')) {
 			return NextResponse.json(
 				{
 					error: 'You are not authorised to change this class.',
@@ -151,7 +151,7 @@ export async function PUT(
 				{ status: 404 }
 			);
 		}
-		if (!cls.teachers.includes('649b0efa480465e863f2115c')) {
+		if (!cls.teachers.includes('6669de10c421d4bf9cbd4b8e')) {
 			return NextResponse.json(
 				{
 					error: 'You are not authorised to change this class.',
@@ -243,7 +243,7 @@ export async function DELETE(
 				{ status: 404 }
 			);
 		}
-		if (!cls.teachers.includes('649b0efa480465e863f2115c')) {
+		if (!cls.teachers.includes('6669de10c421d4bf9cbd4b8e')) {
 			return NextResponse.json(
 				{
 					error: 'You are not authorised to change this class.',

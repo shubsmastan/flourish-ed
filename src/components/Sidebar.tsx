@@ -35,6 +35,18 @@ export const Sidebar = () => {
 	// 	},
 	// });
 
+	const dashboardMenuItems = ['Today', 'Upcoming', 'Last Week'].map(
+		(str: string, index) => (
+			<NavigationMenuItem
+				key={str}
+				className={`${index === 0 && 'translate-x-1'}`}>
+				<NavigationMenuLink asChild>
+					<Link href={`/dashboard`}>{str}</Link>
+				</NavigationMenuLink>
+			</NavigationMenuItem>
+		)
+	);
+
 	let classList;
 
 	if (classes && classes.length > 0)
@@ -49,6 +61,7 @@ export const Sidebar = () => {
 				</NavigationMenuItem>
 			);
 		});
+	else if (classes && classes.list === 0) return <p>NO CLASSES</p>;
 	else if (isLoading)
 		classList = (
 			<>
@@ -65,24 +78,11 @@ export const Sidebar = () => {
 	return (
 		<NavigationMenu className='-translate-x-64 h-[calc(100vh-3.5rem)] flex flex-col justify-start border-r-[0.5px] text-sm shadow-md transition-transform duration-200 sm:translate-x-0'>
 			<NavigationMenuList className='flex flex-col gap-4 items-start w-64 p-4 justify-start'>
-				<NavigationMenuItem className='translate-x-1'>
-					<NavigationMenuLink asChild>
-						<Link href={`/dashboard`}>Today</Link>
-					</NavigationMenuLink>
-				</NavigationMenuItem>
-				<NavigationMenuItem>
-					<NavigationMenuLink asChild>
-						<Link href={`/dashboard`}>Upcoming</Link>
-					</NavigationMenuLink>
-				</NavigationMenuItem>
-				<NavigationMenuItem>
-					<NavigationMenuLink asChild>
-						<Link href={`/dashboard`}>Last Week</Link>
-					</NavigationMenuLink>
-				</NavigationMenuItem>
+				{dashboardMenuItems}
 				<NavigationMenuItem className='flex justify-between items-center font-bold mt-5 h-8 w-full'>
 					<h3>Your Classes</h3>
 					<ClassForm
+						disabled={isLoading || isError}
 						trigger={
 							<PiPlusBold
 								style={{ color: 'white', fontSize: '1rem' }}

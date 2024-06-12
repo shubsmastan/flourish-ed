@@ -1,11 +1,11 @@
 import { Class } from '@/models/Class';
 import { Lesson } from '@/models/Lesson';
-import { dbConnect } from '@/libs/dbConnect';
+import { dbConnect } from '@/lib/dbConnect';
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyJwt } from '@/libs/jwtHelper';
+// import { verifyJwt } from '@/lib/jwtHelper';
 import { User } from '@/models/User';
 
-export async function GET(req: NextRequest) {
+export async function GET(_: NextRequest) {
 	try {
 		// const token = req.headers.get("Authorization");
 		// let verified;
@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
 		//   );
 		// }
 		await dbConnect();
-		const user = await User.findById('649b0efa480465e863f2115c').populate({
+		const user = await User.findById('6669de10c421d4bf9cbd4b8e').populate({
 			path: 'classes',
 			populate: { path: 'lessons', model: Lesson },
 		});
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
 				{ status: 400 }
 			);
 		}
-		const user = await User.findById('649b0efa480465e863f2115c').populate({
+		const user = await User.findById('6669de10c421d4bf9cbd4b8e').populate({
 			path: 'classes',
 		});
 		const newClass = await Class.create({

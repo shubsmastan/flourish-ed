@@ -28,6 +28,7 @@ interface ClassFormProps {
 	type: 'class' | 'lesson' | 'student';
 	trigger: string | ReactNode;
 	currentClass?: string;
+	disabled?: boolean;
 	deleting?: boolean;
 	classId?: string;
 }
@@ -37,6 +38,7 @@ const ClassForm = ({
 	trigger,
 	currentClass,
 	deleting,
+	disabled,
 	classId,
 }: ClassFormProps) => {
 	// const { data: session } = useSession();
@@ -120,7 +122,10 @@ const ClassForm = ({
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button className='p-0 m-0 h-5 w-5' variant={'ghost'}>
+				<Button
+					className='p-0 m-0 h-5 w-5'
+					variant={'ghost'}
+					disabled={disabled}>
 					{trigger}
 				</Button>
 			</DialogTrigger>
