@@ -61,19 +61,10 @@ export const Sidebar = () => {
 				</NavigationMenuItem>
 			);
 		});
-	else if (classes && classes.list === 0) return <p>NO CLASSES</p>;
-	else if (isLoading)
-		classList = (
-			<>
-				<p>Loading...</p>
-			</>
-		);
-	else
-		classList = (
-			<>
-				<p>Error</p>
-			</>
-		);
+	else if (classes && classes.length === 0)
+		classList = <p>You have no classes yet.</p>;
+	else if (isLoading) classList = <p>Loading...</p>;
+	else classList = <p>Error</p>;
 
 	return (
 		<NavigationMenu className='-translate-x-64 h-[calc(100vh-3.5rem)] flex flex-col justify-start border-r-[0.5px] text-sm shadow-md transition-transform duration-200 sm:translate-x-0'>

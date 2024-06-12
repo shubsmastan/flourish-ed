@@ -117,8 +117,6 @@ const ClassForm = ({
 	// 	);
 	// }
 
-	console.log(className);
-
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
