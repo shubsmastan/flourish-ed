@@ -1,24 +1,20 @@
-'use client';
+import { Suspense } from 'react';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 
-import { useSession } from 'next-auth/react';
-
-export const Main = () => {
-	const { data: session, status } = useSession({ required: true });
+export const Main = async () => {
+	const session = await getServerSession(authOptions);
 	const user = session?.user;
 	const name = user?.firstName;
 
-	if (status === 'loading') {
-		return (
-			<div className='flex-1 px-7 py-5 -translate-x-64 sm:translate-x-0'>
-				<p>Loading...</p>
-			</div>
-		);
-	}
+	console.log(session?.user);
 
 	return (
 		<div className='flex-1 px-7 py-5'>
-			<p className='mb-5'>Hello {name}!</p>
-			<div className='grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'></div>
+			<Suspense fallback={<p>Loading</p>}>
+				<p className='mb-5'>Hello {name}!</p>
+				<div className='grid grid-cols-1 gap-5 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'></div>
+			</Suspense>
 		</div>
 	);
 };

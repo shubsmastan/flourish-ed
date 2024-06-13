@@ -13,19 +13,19 @@ import ClassForm from '@/components/ClassForm';
 import { Plus } from 'lucide-react';
 
 export const Sidebar = () => {
-	const {
-		data: classes,
-		isLoading,
-		isError,
-	} = useQuery({
-		queryKey: ['classes'],
-		queryFn: async () => {
-			const { data } = await axios.get(
-				`${process.env.NEXT_PUBLIC_BASE_URL}/api/classes`
-			);
-			return data;
-		},
-	});
+	// const {
+	// 	data: classes,
+	// 	isLoading,
+	// 	isError,
+	// } = useQuery({
+	// 	queryKey: ['classes'],
+	// 	queryFn: async () => {
+	// 		const { data } = await axios.get(
+	// 			`${process.env.NEXT_PUBLIC_BASE_URL}/api/classes`
+	// 		);
+	// 		return data;
+	// 	},
+	// });
 
 	// const mutation = useMutation({
 	// 	mutationFn: () => {},
@@ -34,6 +34,8 @@ export const Sidebar = () => {
 	// 		queryClient.invalidateQueries({ queryKey: ['todos'] });
 	// 	},
 	// });
+
+	const classes: any[] = [];
 
 	const dashboardMenuItems = ['Today', 'Upcoming', 'Last Week'].map(
 		(str: string, index) => (
@@ -63,7 +65,7 @@ export const Sidebar = () => {
 		});
 	else if (classes && classes.length === 0)
 		classList = <p>You have no classes yet.</p>;
-	else if (isLoading) classList = <p>Loading...</p>;
+	// else if (isLoading) classList = <p>Loading...</p>;
 	else classList = <p>Error</p>;
 
 	return (
@@ -73,7 +75,7 @@ export const Sidebar = () => {
 				<NavigationMenuItem className='flex justify-between items-center font-bold mt-5 h-8 w-full'>
 					<h3>Your Classes</h3>
 					<ClassForm
-						disabled={isLoading || isError}
+						disabled={false}
 						trigger={<Plus size={20} />}
 						type='class'
 					/>
