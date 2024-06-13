@@ -8,8 +8,8 @@ import {
 	NavigationMenuItem,
 	NavigationMenuLink,
 	NavigationMenuList,
-} from './ui/navigation-menu';
-import ClassForm from './ClassForm';
+} from '@/components/ui/navigation-menu';
+import ClassForm from '@/components/ClassForm';
 import { Plus } from 'lucide-react';
 
 export const Sidebar = () => {

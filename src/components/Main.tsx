@@ -1,7 +1,6 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { Card } from './Card';
 
 export const Main = () => {
 	const { data: session, status } = useSession({ required: true });

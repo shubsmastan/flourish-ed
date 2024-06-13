@@ -1,10 +1,10 @@
 'use client';
 
-import Image from 'next/image';
-import { ThemeToggle } from '@/components/ThemeToggle';
-import { josefinSans } from '@/lib/fonts';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useTheme } from 'next-themes';
+import { ThemeToggle } from '@/components/utils/ThemeToggle';
+import { josefinSans } from '@/lib/fonts';
 
 export const Header = () => {
 	const x = useTheme();

@@ -20,9 +20,9 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from './ui/dialog';
-import { Input } from './ui/input';
-import { Button } from './ui/button';
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 interface ClassFormProps {
 	type: 'class' | 'lesson' | 'student';
