@@ -45,7 +45,7 @@ export const Main = () => {
 			return <li>No lessons in this class.</li>;
 		else {
 			const lessonList = lessons.map((lesson: any) => {
-				return <Card key={lesson._id} />;
+				return <Card key={lesson._id} lesson={lesson} />;
 			});
 			return lessonList;
 		}

@@ -1,25 +1,40 @@
 import {
-	Card as UiCard,
+	Card as CardUi,
 	CardContent,
 	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card';
+import { CalendarDays } from 'lucide-react';
 
-export const Card = () => {
+export const Card = ({ lesson }: { lesson: any }) => {
 	return (
-		<UiCard className='shadow-md'>
+		<CardUi className='shadow-md h-72'>
 			<CardHeader>
-				<CardDescription>Card Description</CardDescription>
-				<CardTitle>Card Title</CardTitle>
+				<CardDescription className='flex gap-2'>
+					<CalendarDays size={20} />
+					{new Date(lesson.date).toDateString()}
+				</CardDescription>
+				<CardTitle className='text-md'>{lesson.objective}</CardTitle>
 			</CardHeader>
 			<CardContent>
-				<p>Card Content</p>
+				{lesson.resources && (
+					<div className='flex flex-col gap-1 mb-1'>
+						<h4 className='font-semibold'>Resources</h4>
+						<p className='truncate'>{lesson.resources}</p>
+					</div>
+				)}
+				{lesson.differentiation && (
+					<div className='flex flex-col gap-1'>
+						<h4 className='font-semibold'>Differentiation</h4>
+						<p className='truncate'>{lesson.differentiation}</p>
+					</div>
+				)}
+				<div className='flex flex-col gap-1'>
+					<h4 className='font-semibold'>Content</h4>
+					<p className='truncate'>{lesson.content}</p>
+				</div>
 			</CardContent>
-			<CardFooter>
-				<p>Card Footer</p>
-			</CardFooter>
-		</UiCard>
+		</CardUi>
 	);
 };

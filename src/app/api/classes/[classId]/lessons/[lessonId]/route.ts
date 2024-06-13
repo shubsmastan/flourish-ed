@@ -94,7 +94,7 @@ export async function PUT(
 		if (!classId) {
 			return NextResponse.json(
 				{
-					error: 'Please use a valid class.',
+					error: 'Please provide a valid class.',
 				},
 				{ status: 400 }
 			);
@@ -102,20 +102,20 @@ export async function PUT(
 		if (!lessonId) {
 			return NextResponse.json(
 				{
-					error: 'Please use a valid lesson.',
+					error: 'Please provide a valid lesson.',
 				},
 				{ status: 400 }
 			);
 		}
 		if (!mongoose.Types.ObjectId.isValid(classId)) {
 			return NextResponse.json(
-				{ error: 'Not a valid class ID.' },
+				{ error: 'Please provide a valid class.' },
 				{ status: 404 }
 			);
 		}
 		if (!mongoose.Types.ObjectId.isValid(lessonId)) {
 			return NextResponse.json(
-				{ error: 'Not a valid lesson ID.' },
+				{ error: 'Please provide a valid lesson.' },
 				{ status: 404 }
 			);
 		}
@@ -125,7 +125,7 @@ export async function PUT(
 		if (!cls) {
 			return NextResponse.json(
 				{
-					error: 'That class does not exist.',
+					error: 'Please provide a valid class.',
 				},
 				{ status: 404 }
 			);
@@ -141,7 +141,7 @@ export async function PUT(
 		if (!lesson || !cls.lessons.includes(lessonId)) {
 			return NextResponse.json(
 				{
-					error: 'That lesson does not exist.',
+					error: 'Please provide a valid lesson.',
 				},
 				{ status: 404 }
 			);
@@ -174,7 +174,7 @@ export async function DELETE(
 		if (!classId) {
 			return NextResponse.json(
 				{
-					error: 'Please use a valid class.',
+					error: 'Please provide a valid class.',
 				},
 				{ status: 400 }
 			);
@@ -182,20 +182,20 @@ export async function DELETE(
 		if (!lessonId) {
 			return NextResponse.json(
 				{
-					error: 'Please use a valid lesson.',
+					error: 'Please pride a valid lesson.',
 				},
 				{ status: 400 }
 			);
 		}
 		if (!mongoose.Types.ObjectId.isValid(classId)) {
 			return NextResponse.json(
-				{ error: 'Not a valid class ID.' },
+				{ error: 'Please provide a valid class.' },
 				{ status: 404 }
 			);
 		}
 		if (!mongoose.Types.ObjectId.isValid(lessonId)) {
 			return NextResponse.json(
-				{ error: 'Not a valid lesson ID.' },
+				{ error: 'Please pride a valid lesson.' },
 				{ status: 404 }
 			);
 		}
@@ -205,7 +205,7 @@ export async function DELETE(
 		if (!cls) {
 			return NextResponse.json(
 				{
-					error: 'That class does not exist.',
+					error: 'Please provide a valid class.',
 				},
 				{ status: 404 }
 			);
@@ -221,7 +221,7 @@ export async function DELETE(
 		if (!lesson || !cls.lessons.includes(lessonId)) {
 			return NextResponse.json(
 				{
-					error: 'That lesson does not exist.',
+					error: 'Please pride a valid lesson.',
 				},
 				{ status: 404 }
 			);
