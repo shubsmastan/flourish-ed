@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Header } from '@/components/Header';
-import { TanstackQueryClient } from '@/components/utils/QueryClientProvider';
-import { ThemeProvider } from '@/components/utils/ThemeProvider';
+import { TanstackQueryClient } from '@/components/providers/QueryClientProvider';
+import { ThemeProvider } from '@/components/providers/ThemeProvider';
 import { inter } from '@/lib/fonts';
-import { AuthSessionProvider } from '@/components/utils/AuthSessionProvider';
+import { AuthSessionProvider } from '@/components/providers/AuthSessionProvider';
 
 export const metadata: Metadata = {
 	title: 'FlourishEd | Lesson Planning and Productivity for Teachers',

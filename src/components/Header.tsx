@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ThemeToggle } from '@/components/utils/ThemeToggle';
+import { ThemeToggle } from '@/components/providers/ThemeToggle';
 import { josefinSans } from '@/lib/fonts';
 
 export const Header = () => {
