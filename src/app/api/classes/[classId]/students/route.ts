@@ -9,11 +9,11 @@ const secret = process.env.JWT_SECRET!;
 
 export async function GET(
 	req: NextRequest,
-	{ params }: { params: { cid: string } }
+	{ params }: { params: { classId: string } }
 ) {
 	try {
 		const token = await getToken({ req, secret });
-		const { cid: classId } = params;
+		const { classId } = params;
 		if (!classId) {
 			return NextResponse.json(
 				{
@@ -62,13 +62,13 @@ export async function GET(
 
 export async function POST(
 	req: NextRequest,
-	{ params }: { params: { cid: string } }
+	{ params }: { params: { classId: string } }
 ) {
 	const body = await req.json();
 	const { name } = body;
 	try {
 		const token = await getToken({ req, secret });
-		const { cid: classId } = params;
+		const { classId } = params;
 		if (!classId) {
 			return NextResponse.json(
 				{

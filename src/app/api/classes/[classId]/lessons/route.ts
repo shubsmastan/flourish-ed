@@ -9,22 +9,22 @@ const secret = process.env.JWT_SECRET!;
 
 export async function GET(
 	req: NextRequest,
-	{ params }: { params: { cid: string } }
+	{ params }: { params: { classId: string } }
 ) {
 	try {
 		const token = await getToken({ req, secret });
-		const { cid: classId } = params;
+		const { classId } = params;
 		if (!classId) {
 			return NextResponse.json(
 				{
-					error: 'Please use a valid class.',
+					error: 'Please provide a class ID.',
 				},
 				{ status: 400 }
 			);
 		}
 		if (!mongoose.Types.ObjectId.isValid(classId)) {
 			return NextResponse.json(
-				{ error: 'Not a valid class ID.' },
+				{ error: 'Please provide a class ID.' },
 				{ status: 404 }
 			);
 		}
@@ -33,7 +33,7 @@ export async function GET(
 		if (!cls) {
 			return NextResponse.json(
 				{
-					error: 'That class does not exist.',
+					error: 'Not a valid class ID.',
 				},
 				{ status: 404 }
 			);
@@ -60,41 +60,25 @@ export async function GET(
 
 export async function POST(
 	req: NextRequest,
-	{ params }: { params: { cid: string } }
+	{ params }: { params: { classId: string } }
 ) {
 	const body = await req.json();
 	const { date, objective, resources, content, differentiation } = body;
 	try {
 		const token = await getToken({ req, secret });
-		const { cid: classId } = params;
+		const { classId } = params;
 		if (!classId) {
 			return NextResponse.json(
 				{
-					error: 'Please use a valid class.',
+					error: 'Please provide a class ID.',
 				},
 				{ status: 400 }
 			);
 		}
-		if (!date) {
+		if (!date || !objective || !content) {
 			return NextResponse.json(
 				{
-					error: 'Please provide a date.',
-				},
-				{ status: 400 }
-			);
-		}
-		if (!objective) {
-			return NextResponse.json(
-				{
-					error: 'Please provide a lesson objective.',
-				},
-				{ status: 400 }
-			);
-		}
-		if (!content) {
-			return NextResponse.json(
-				{
-					error: 'Please provide lesson content.',
+					error: 'Please provide lesson date, objective and content.',
 				},
 				{ status: 400 }
 			);
@@ -110,7 +94,7 @@ export async function POST(
 		if (!cls) {
 			return NextResponse.json(
 				{
-					error: 'That class does not exist.',
+					error: 'Not a valid class ID.',
 				},
 				{ status: 404 }
 			);
@@ -130,11 +114,16 @@ export async function POST(
 			resources,
 			content,
 			differentiation,
+			createdBy: token!._id,
+			teachers: [token!._id],
 		};
 		const lesson = await Lesson.create(newLesson);
 		cls.lessons.push(lesson._id);
 		await cls.save();
-		return NextResponse.json(cls.lessons);
+		return NextResponse.json(
+			{ message: 'Lesson posted successfully.' },
+			{ status: 200 }
+		);
 	} catch (err) {
 		console.log(err);
 		return NextResponse.json({ error: 'Server error.' }, { status: 500 });

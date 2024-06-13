@@ -1,32 +1,31 @@
 import mongoose from 'mongoose';
-import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 import { dbConnect } from '@/lib/dbConnect';
-import { Lesson } from '@/models/Lesson';
 import { Class } from '@/models/Class';
+import { Student } from '@/models/Student';
 
 const secret = process.env.JWT_SECRET!;
 
 export async function GET(
 	req: NextRequest,
-	{ params }: { params: { cid: string; lid: string } }
+	{ params }: { params: { classId: string; studentId: string } }
 ) {
 	try {
 		const token = await getToken({ req, secret });
-
-		const { cid: classId, lid: lessonId } = params;
+		const { classId, studentId } = params;
 		if (!classId) {
 			return NextResponse.json(
 				{
-					error: 'Please use a valid class.',
+					error: 'Please provide a class id.',
 				},
 				{ status: 400 }
 			);
 		}
-		if (!lessonId) {
+		if (!studentId) {
 			return NextResponse.json(
 				{
-					error: 'Please use a valid lesson.',
+					error: 'Please provide a student id.',
 				},
 				{ status: 400 }
 			);
@@ -37,15 +36,15 @@ export async function GET(
 				{ status: 404 }
 			);
 		}
-		if (!mongoose.Types.ObjectId.isValid(lessonId)) {
+		if (!mongoose.Types.ObjectId.isValid(studentId)) {
 			return NextResponse.json(
-				{ error: 'Not a valid lesson ID.' },
+				{ error: 'Not a valid student ID.' },
 				{ status: 404 }
 			);
 		}
 		await dbConnect();
 		const cls = await Class.findById(classId);
-		const lesson = await Lesson.findById(lessonId);
+		const student = await Student.findById(studentId);
 		if (!cls) {
 			return NextResponse.json(
 				{
@@ -62,15 +61,15 @@ export async function GET(
 				{ status: 401 }
 			);
 		}
-		if (!lesson || !cls.lessons.includes(lessonId)) {
+		if (!student || !cls.students.includes(studentId)) {
 			return NextResponse.json(
 				{
-					error: 'That lesson does not exist.',
+					error: 'That student does not exist.',
 				},
 				{ status: 404 }
 			);
 		}
-		return NextResponse.json(lesson);
+		return NextResponse.json(student);
 	} catch (err) {
 		console.log(err);
 		return NextResponse.json(
@@ -84,13 +83,13 @@ export async function GET(
 
 export async function PUT(
 	req: NextRequest,
-	{ params }: { params: { cid: string; lid: string } }
+	{ params }: { params: { classId: string; studentId: string } }
 ) {
 	const body = await req.json();
-	const { date, objective, resources, content, differentiation } = body;
+	const { name, assessments } = body;
 	try {
 		const token = await getToken({ req, secret });
-		const { cid: classId, lid: lessonId } = params;
+		const { classId, studentId } = params;
 		if (!classId) {
 			return NextResponse.json(
 				{
@@ -99,10 +98,10 @@ export async function PUT(
 				{ status: 400 }
 			);
 		}
-		if (!lessonId) {
+		if (!studentId) {
 			return NextResponse.json(
 				{
-					error: 'Please use a valid lesson.',
+					error: 'Please provide a student ID.',
 				},
 				{ status: 400 }
 			);
@@ -113,15 +112,15 @@ export async function PUT(
 				{ status: 404 }
 			);
 		}
-		if (!mongoose.Types.ObjectId.isValid(lessonId)) {
+		if (!mongoose.Types.ObjectId.isValid(studentId)) {
 			return NextResponse.json(
-				{ error: 'Not a valid lesson ID.' },
+				{ error: 'Not a valid student ID.' },
 				{ status: 404 }
 			);
 		}
 		await dbConnect();
 		const cls = await Class.findById(classId);
-		const lesson = await Lesson.findById(lessonId);
+		const student = await Student.findById(studentId);
 		if (!cls) {
 			return NextResponse.json(
 				{
@@ -138,21 +137,18 @@ export async function PUT(
 				{ status: 401 }
 			);
 		}
-		if (!lesson || !cls.lessons.includes(lessonId)) {
+		if (!student || !cls.students.includes(studentId)) {
 			return NextResponse.json(
 				{
-					error: 'That lesson does not exist.',
+					error: 'That student does not exist.',
 				},
 				{ status: 404 }
 			);
 		}
-		lesson.date = date;
-		lesson.objective = objective;
-		lesson.resources = resources;
-		lesson.content = content;
-		lesson.differentiation = differentiation;
-		await lesson.save();
-		return NextResponse.json(lesson);
+		student.name = name;
+		if (assessments) student.assessments = assessments;
+		await student.save();
+		return NextResponse.json(student);
 	} catch (err) {
 		console.log(err);
 		return NextResponse.json(
@@ -166,11 +162,11 @@ export async function PUT(
 
 export async function DELETE(
 	req: NextRequest,
-	{ params }: { params: { cid: string; lid: string } }
+	{ params }: { params: { classId: string; studentId: string } }
 ) {
 	try {
 		const token = await getToken({ req, secret });
-		const { cid: classId, lid: lessonId } = params;
+		const { classId, studentId } = params;
 		if (!classId) {
 			return NextResponse.json(
 				{
@@ -179,10 +175,10 @@ export async function DELETE(
 				{ status: 400 }
 			);
 		}
-		if (!lessonId) {
+		if (!studentId) {
 			return NextResponse.json(
 				{
-					error: 'Please use a valid lesson.',
+					error: 'Please provide a student ID.',
 				},
 				{ status: 400 }
 			);
@@ -193,15 +189,15 @@ export async function DELETE(
 				{ status: 404 }
 			);
 		}
-		if (!mongoose.Types.ObjectId.isValid(lessonId)) {
+		if (!mongoose.Types.ObjectId.isValid(studentId)) {
 			return NextResponse.json(
-				{ error: 'Not a valid lesson ID.' },
+				{ error: 'Not a valid student ID.' },
 				{ status: 404 }
 			);
 		}
 		await dbConnect();
 		const cls = await Class.findById(classId);
-		const lesson = await Lesson.findById(lessonId);
+		const student = await Student.findById(studentId);
 		if (!cls) {
 			return NextResponse.json(
 				{
@@ -218,18 +214,18 @@ export async function DELETE(
 				{ status: 401 }
 			);
 		}
-		if (!lesson || !cls.lessons.includes(lessonId)) {
+		if (!student || !cls.students.includes(studentId)) {
 			return NextResponse.json(
 				{
-					error: 'That lesson does not exist.',
+					error: 'That student does not exist.',
 				},
 				{ status: 404 }
 			);
 		}
-		cls.lessons.pull(lessonId);
+		cls.students.pull(studentId);
 		await cls.save;
-		await Lesson.deleteOne({ _id: lessonId });
-		return NextResponse.json(cls.lessons);
+		await Student.deleteOne({ _id: studentId });
+		return NextResponse.json(cls.students);
 	} catch (err) {
 		console.log(err);
 		return NextResponse.json(

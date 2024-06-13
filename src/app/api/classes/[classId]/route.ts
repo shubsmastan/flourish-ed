@@ -11,12 +11,12 @@ const secret = process.env.JWT_SECRET!;
 
 export async function GET(
 	req: NextRequest,
-	{ params }: { params: { cid: string } }
+	{ params }: { params: { classId: string } }
 ) {
 	try {
 		const token = await getToken({ req, secret });
 		await dbConnect();
-		const { cid: classId } = params;
+		const { classId } = params;
 		if (!mongoose.Types.ObjectId.isValid(classId)) {
 			return NextResponse.json(
 				{ error: 'Not a valid class ID.' },
@@ -52,14 +52,14 @@ export async function GET(
 
 export async function PUT(
 	req: NextRequest,
-	{ params }: { params: { cid: string } }
+	{ params }: { params: { classId: string } }
 ) {
 	const body = await req.json();
 	const { name } = body;
 	try {
 		const token = await getToken({ req, secret });
 		dbConnect();
-		const { cid: classId } = params;
+		const { classId } = params;
 		if (!mongoose.Types.ObjectId.isValid(classId)) {
 			return NextResponse.json(
 				{ error: 'Not a valid class ID.' },
@@ -99,12 +99,12 @@ export async function PUT(
 
 export async function DELETE(
 	req: NextRequest,
-	{ params }: { params: { cid: string } }
+	{ params }: { params: { classId: string } }
 ) {
 	try {
 		const token = await getToken({ req, secret });
 		dbConnect();
-		const { cid: classId } = params;
+		const { classId } = params;
 		if (!mongoose.Types.ObjectId.isValid(classId)) {
 			return NextResponse.json(
 				{ error: 'Not a valid class ID.' },

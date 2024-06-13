@@ -1,4 +1,4 @@
-import mongoose, { Document, ObjectId } from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 import { ClassDoc } from './Class';
 
 export interface LessonDoc {
