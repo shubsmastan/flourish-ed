@@ -10,16 +10,8 @@ const secret = process.env.JWT_SECRET!;
 export async function GET(req: NextRequest) {
 	try {
 		const token = await getToken({ req, secret });
-		if (!token) {
-			return NextResponse.json(
-				{
-					error: 'Not authorised to make this request.',
-				},
-				{ status: 401 }
-			);
-		}
 		await dbConnect();
-		const user = await User.findById(token._id).populate({
+		const user = await User.findById(token!._id).populate({
 			path: 'classes',
 			populate: { path: 'lessons', model: Lesson },
 		});
@@ -41,14 +33,6 @@ export async function POST(req: NextRequest) {
 	const { name } = body;
 	try {
 		const token = await getToken({ req, secret });
-		if (!token) {
-			return NextResponse.json(
-				{
-					error: 'Not authorised to make this request.',
-				},
-				{ status: 401 }
-			);
-		}
 		if (!name) {
 			return NextResponse.json(
 				{ error: 'Please provide a class name.' },
@@ -56,7 +40,7 @@ export async function POST(req: NextRequest) {
 			);
 		}
 		await dbConnect();
-		const user = await User.findById('6669ee73fe2bd993e4932bdd').populate({
+		const user = await User.findById(token!._id).populate({
 			path: 'classes',
 		});
 		const newClass = await Class.create({

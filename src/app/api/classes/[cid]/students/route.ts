@@ -13,14 +13,6 @@ export async function GET(
 ) {
 	try {
 		const token = await getToken({ req, secret });
-		if (!token) {
-			return NextResponse.json(
-				{
-					error: 'Not authorised to make this request.',
-				},
-				{ status: 401 }
-			);
-		}
 		const { cid: classId } = params;
 		if (!classId) {
 			return NextResponse.json(
@@ -48,7 +40,7 @@ export async function GET(
 				{ status: 404 }
 			);
 		}
-		if (!cls.teachers.includes('6669de10c421d4bf9cbd4b8e')) {
+		if (!cls.teachers.includes(token!._id)) {
 			return NextResponse.json(
 				{
 					error: 'You are not authorised to view this class.',
@@ -76,14 +68,6 @@ export async function POST(
 	const { name } = body;
 	try {
 		const token = await getToken({ req, secret });
-		if (!token) {
-			return NextResponse.json(
-				{
-					error: 'Not authorised to make this request.',
-				},
-				{ status: 401 }
-			);
-		}
 		const { cid: classId } = params;
 		if (!classId) {
 			return NextResponse.json(
@@ -117,7 +101,7 @@ export async function POST(
 				{ status: 404 }
 			);
 		}
-		if (!cls.teachers.includes('6669de10c421d4bf9cbd4b8e')) {
+		if (!cls.teachers.includes(token!._id)) {
 			return NextResponse.json(
 				{
 					error: 'You are not authorised to change this class.',

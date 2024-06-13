@@ -13,14 +13,6 @@ export async function GET(
 ) {
 	try {
 		const token = await getToken({ req, secret });
-		if (!token) {
-			return NextResponse.json(
-				{
-					error: 'Not authorised to make this request.',
-				},
-				{ status: 401 }
-			);
-		}
 		const { cid: classId, sid: studentId } = params;
 		if (!classId) {
 			return NextResponse.json(
@@ -61,7 +53,7 @@ export async function GET(
 				{ status: 404 }
 			);
 		}
-		if (!cls.teachers.includes('6669de10c421d4bf9cbd4b8e')) {
+		if (!cls.teachers.includes(token!._id)) {
 			return NextResponse.json(
 				{
 					error: 'You are not authorised to change this class.',
@@ -97,14 +89,6 @@ export async function PUT(
 	const { name, assessments } = body;
 	try {
 		const token = await getToken({ req, secret });
-		if (!token) {
-			return NextResponse.json(
-				{
-					error: 'Not authorised to make this request.',
-				},
-				{ status: 401 }
-			);
-		}
 		const { cid: classId, sid: studentId } = params;
 		if (!classId) {
 			return NextResponse.json(
@@ -145,7 +129,7 @@ export async function PUT(
 				{ status: 404 }
 			);
 		}
-		if (!cls.teachers.includes('6669de10c421d4bf9cbd4b8e')) {
+		if (!cls.teachers.includes(token!._id)) {
 			return NextResponse.json(
 				{
 					error: 'You are not authorised to change this class.',
@@ -177,23 +161,11 @@ export async function PUT(
 }
 
 export async function DELETE(
-	req: Request,
+	req: NextRequest,
 	{ params }: { params: { cid: string; sid: string } }
 ) {
 	try {
-		// const token = req.headers.get('Authorization');
-		// let verified;
-		// if (token) {
-		// 	verified = verifyJwt(token);
-		// }
-		// if (!token || !verified) {
-		// 	return NextResponse.json(
-		// 		{
-		// 			error: 'Not authorised to make this request.',
-		// 		},
-		// 		{ status: 401 }
-		// 	);
-		// }
+		const token = await getToken({ req, secret });
 		const { cid: classId, sid: studentId } = params;
 		if (!classId) {
 			return NextResponse.json(
@@ -234,7 +206,7 @@ export async function DELETE(
 				{ status: 404 }
 			);
 		}
-		if (!cls.teachers.includes('6669de10c421d4bf9cbd4b8e')) {
+		if (!cls.teachers.includes(token!._id)) {
 			return NextResponse.json(
 				{
 					error: 'You are not authorised to change this class.',
