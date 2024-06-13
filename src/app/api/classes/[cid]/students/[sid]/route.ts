@@ -1,28 +1,26 @@
 import mongoose from 'mongoose';
-import { NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 import { dbConnect } from '@/lib/dbConnect';
-// import { verifyJwt } from '@/lib/jwtHelper';
 import { Class } from '@/models/Class';
 import { Student } from '@/models/Student';
 
+const secret = process.env.JWT_SECRET!;
+
 export async function GET(
-	req: Request,
+	req: NextRequest,
 	{ params }: { params: { cid: string; sid: string } }
 ) {
 	try {
-		// const token = req.headers.get("Authorization");
-		// let verified;
-		// if (token) {
-		//   verified = verifyJwt(token);
-		// }
-		// if (!token || !verified) {
-		//   return NextResponse.json(
-		//     {
-		//       error: "Not authorised to make this request.",
-		//     },
-		//     { status: 401 }
-		//   );
-		// }
+		const token = await getToken({ req, secret });
+		if (!token) {
+			return NextResponse.json(
+				{
+					error: 'Not authorised to make this request.',
+				},
+				{ status: 401 }
+			);
+		}
 		const { cid: classId, sid: studentId } = params;
 		if (!classId) {
 			return NextResponse.json(
@@ -92,25 +90,21 @@ export async function GET(
 }
 
 export async function PUT(
-	req: Request,
+	req: NextRequest,
 	{ params }: { params: { cid: string; sid: string } }
 ) {
 	const body = await req.json();
 	const { name, assessments } = body;
 	try {
-		// const token = req.headers.get('Authorization');
-		// let verified;
-		// if (token) {
-		// 	verified = verifyJwt(token);
-		// }
-		// if (!token || !verified) {
-		// 	return NextResponse.json(
-		// 		{
-		// 			error: 'Not authorised to make this request.',
-		// 		},
-		// 		{ status: 401 }
-		// 	);
-		// }
+		const token = await getToken({ req, secret });
+		if (!token) {
+			return NextResponse.json(
+				{
+					error: 'Not authorised to make this request.',
+				},
+				{ status: 401 }
+			);
+		}
 		const { cid: classId, sid: studentId } = params;
 		if (!classId) {
 			return NextResponse.json(

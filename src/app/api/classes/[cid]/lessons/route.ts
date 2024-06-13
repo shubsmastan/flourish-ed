@@ -1,28 +1,26 @@
 import mongoose from 'mongoose';
-import { NextResponse } from 'next/server';
-import { Lesson } from '@/models/Lesson';
+import { NextRequest, NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
 import { dbConnect } from '@/lib/dbConnect';
-// import { verifyJwt } from '@/libs/jwtHelper';
+import { Lesson } from '@/models/Lesson';
 import { Class } from '@/models/Class';
 
+const secret = process.env.JWT_SECRET!;
+
 export async function GET(
-	req: Request,
+	req: NextRequest,
 	{ params }: { params: { cid: string } }
 ) {
 	try {
-		// const token = req.headers.get('Authorization');
-		// let verified;
-		// if (token) {
-		// 	verified = verifyJwt(token);
-		// }
-		// if (!token || !verified) {
-		// 	return NextResponse.json(
-		// 		{
-		// 			error: 'Not authorised to make this request.',
-		// 		},
-		// 		{ status: 401 }
-		// 	);
-		// }
+		const token = await getToken({ req, secret });
+		if (!token) {
+			return NextResponse.json(
+				{
+					error: 'Not authorised to make this request.',
+				},
+				{ status: 401 }
+			);
+		}
 		const { cid: classId } = params;
 		if (!classId) {
 			return NextResponse.json(
@@ -69,25 +67,21 @@ export async function GET(
 }
 
 export async function POST(
-	req: Request,
+	req: NextRequest,
 	{ params }: { params: { cid: string } }
 ) {
 	const body = await req.json();
 	const { date, objective, resources, content, differentiation } = body;
 	try {
-		// const token = req.headers.get('Authorization');
-		// let verified;
-		// if (token) {
-		// 	verified = verifyJwt(token);
-		// }
-		// if (!token || !verified) {
-		// 	return NextResponse.json(
-		// 		{
-		// 			error: 'Not authorised to make this request.',
-		// 		},
-		// 		{ status: 401 }
-		// 	);
-		// }
+		const token = await getToken({ req, secret });
+		if (!token) {
+			return NextResponse.json(
+				{
+					error: 'Not authorised to make this request.',
+				},
+				{ status: 401 }
+			);
+		}
 		const { cid: classId } = params;
 		if (!classId) {
 			return NextResponse.json(

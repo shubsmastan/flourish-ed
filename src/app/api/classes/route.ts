@@ -1,8 +1,8 @@
+import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import { Class } from '@/models/Class';
 import { Lesson } from '@/models/Lesson';
 import { dbConnect } from '@/lib/dbConnect';
-import { NextRequest, NextResponse } from 'next/server';
 import { User } from '@/models/User';
 
 const secret = process.env.JWT_SECRET!;

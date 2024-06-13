@@ -1,25 +1,26 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import { dbConnect } from '@/lib/dbConnect';
-// import { verifyJwt } from '@/libs/jwtHelper';
 import { Class } from '@/models/Class';
 import { Student } from '@/models/Student';
+import { getToken } from 'next-auth/jwt';
 
-export async function GET(_: Request, { params }: { params: { cid: string } }) {
+const secret = process.env.JWT_SECRET!;
+
+export async function GET(
+	req: NextRequest,
+	{ params }: { params: { cid: string } }
+) {
 	try {
-		// const token = req.headers.get('Authorization');
-		// let verified;
-		// if (token) {
-		// 	verified = verifyJwt(token);
-		// }
-		// if (!token || !verified) {
-		// 	return NextResponse.json(
-		// 		{
-		// 			error: 'Not authorised to make this request.',
-		// 		},
-		// 		{ status: 401 }
-		// 	);
-		// }
+		const token = await getToken({ req, secret });
+		if (!token) {
+			return NextResponse.json(
+				{
+					error: 'Not authorised to make this request.',
+				},
+				{ status: 401 }
+			);
+		}
 		const { cid: classId } = params;
 		if (!classId) {
 			return NextResponse.json(
@@ -68,25 +69,21 @@ export async function GET(_: Request, { params }: { params: { cid: string } }) {
 }
 
 export async function POST(
-	req: Request,
+	req: NextRequest,
 	{ params }: { params: { cid: string } }
 ) {
 	const body = await req.json();
 	const { name } = body;
 	try {
-		// const token = req.headers.get('Authorization');
-		// let verified;
-		// if (token) {
-		// 	verified = verifyJwt(token);
-		// }
-		// if (!token || !verified) {
-		// 	return NextResponse.json(
-		// 		{
-		// 			error: 'Not authorised to make this request.',
-		// 		},
-		// 		{ status: 401 }
-		// 	);
-		// }
+		const token = await getToken({ req, secret });
+		if (!token) {
+			return NextResponse.json(
+				{
+					error: 'Not authorised to make this request.',
+				},
+				{ status: 401 }
+			);
+		}
 		const { cid: classId } = params;
 		if (!classId) {
 			return NextResponse.json(

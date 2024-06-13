@@ -1,28 +1,26 @@
-import { NextResponse } from 'next/server';
-import { Lesson } from '@/models/Lesson';
 import mongoose from 'mongoose';
+import { NextRequest, NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
 import { dbConnect } from '@/lib/dbConnect';
-// import { verifyJwt } from '@/lib/jwtHelper';
+import { Lesson } from '@/models/Lesson';
 import { Class } from '@/models/Class';
 
+const secret = process.env.JWT_SECRET!;
+
 export async function GET(
-	req: Request,
+	req: NextRequest,
 	{ params }: { params: { cid: string; lid: string } }
 ) {
 	try {
-		// const token = req.headers.get("Authorization");
-		// let verified;
-		// if (token) {
-		//   verified = verifyJwt(token);
-		// }
-		// if (!token || !verified) {
-		//   return NextResponse.json(
-		//     {
-		//       error: "Not authorised to make this request.",
-		//     },
-		//     { status: 401 }
-		//   );
-		// }
+		const token = await getToken({ req, secret });
+		if (!token) {
+			return NextResponse.json(
+				{
+					error: 'Not authorised to make this request.',
+				},
+				{ status: 401 }
+			);
+		}
 		const { cid: classId, lid: lessonId } = params;
 		if (!classId) {
 			return NextResponse.json(
@@ -92,25 +90,21 @@ export async function GET(
 }
 
 export async function PUT(
-	req: Request,
+	req: NextRequest,
 	{ params }: { params: { cid: string; lid: string } }
 ) {
 	const body = await req.json();
 	const { date, objective, resources, content, differentiation } = body;
 	try {
-		// const token = req.headers.get('Authorization');
-		// let verified;
-		// if (token) {
-		// 	verified = verifyJwt(token);
-		// }
-		// if (!token || !verified) {
-		// 	return NextResponse.json(
-		// 		{
-		// 			error: 'Not authorised to make this request.',
-		// 		},
-		// 		{ status: 401 }
-		// 	);
-		// }
+		const token = await getToken({ req, secret });
+		if (!token) {
+			return NextResponse.json(
+				{
+					error: 'Not authorised to make this request.',
+				},
+				{ status: 401 }
+			);
+		}
 		const { cid: classId, lid: lessonId } = params;
 		if (!classId) {
 			return NextResponse.json(
