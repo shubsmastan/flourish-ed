@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { quotes } from '@/data/quotes';
 import { Card } from '@/components/Card';
+import { Breadcrumbs } from '@/components/providers/Breadcrumbs';
 
 export const Main = () => {
 	const { data: session } = useSession();
@@ -55,6 +56,7 @@ export const Main = () => {
 
 	return (
 		<div className='flex-1 px-7 py-5'>
+			<Breadcrumbs />
 			<div className='mb-5 border-b-[0.5px] border-b-slate-500'>
 				{isMainDashboard && (
 					<p className='text-sm'>Hi {user?.firstName}</p>
