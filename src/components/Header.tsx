@@ -2,13 +2,10 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useTheme } from 'next-themes';
 import { ThemeToggle } from '@/components/utils/ThemeToggle';
 import { josefinSans } from '@/lib/fonts';
 
 export const Header = () => {
-	const x = useTheme();
-	console.log(x.theme === 'dark');
 	return (
 		<header className='sticky top-0 z-20 flex justify-between p-2 border-b-[0.5px] h-14 bg-inherit bg-sky-900'>
 			<Link
