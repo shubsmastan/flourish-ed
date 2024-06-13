@@ -1,9 +1,9 @@
-import { Student } from '@/models/Student';
-import { dbConnect } from '@/lib/dbConnect';
+import mongoose from 'mongoose';
 import { NextResponse } from 'next/server';
+import { dbConnect } from '@/lib/dbConnect';
 // import { verifyJwt } from '@/lib/jwtHelper';
 import { Class } from '@/models/Class';
-import mongoose from 'mongoose';
+import { Student } from '@/models/Student';
 
 export async function GET(
 	req: Request,

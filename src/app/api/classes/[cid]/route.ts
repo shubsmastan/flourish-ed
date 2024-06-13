@@ -1,30 +1,30 @@
+import { NextRequest, NextResponse } from 'next/server';
+import mongoose from 'mongoose';
+import { dbConnect } from '@/lib/dbConnect';
+// import { verifyJwt } from '@/libs/jwtHelper';
 import { Class } from '@/models/Class';
 import { User } from '@/models/User';
 import { Lesson } from '@/models/Lesson';
 import { Student } from '@/models/Student';
-import { dbConnect } from '@/lib/dbConnect';
-import { NextRequest, NextResponse } from 'next/server';
-import { verifyJwt } from '@/libs/jwtHelper';
-import mongoose from 'mongoose';
 
 export async function GET(
 	req: NextRequest,
 	{ params }: { params: { cid: string } }
 ) {
 	try {
-		const token = req.headers.get('Authorization');
-		let verified;
-		if (token) {
-			verified = verifyJwt(token);
-		}
-		if (!token || !verified) {
-			return NextResponse.json(
-				{
-					error: 'Not authorised to make this request.',
-				},
-				{ status: 401 }
-			);
-		}
+		// const token = req.headers.get('Authorization');
+		// let verified;
+		// if (token) {
+		// 	verified = verifyJwt(token);
+		// }
+		// if (!token || !verified) {
+		// 	return NextResponse.json(
+		// 		{
+		// 			error: 'Not authorised to make this request.',
+		// 		},
+		// 		{ status: 401 }
+		// 	);
+		// }
 		await dbConnect();
 		const { cid: classId } = params;
 		if (!mongoose.Types.ObjectId.isValid(classId)) {
@@ -47,7 +47,7 @@ export async function GET(
 				{ status: 404 }
 			);
 		}
-		if (!cls.teachers.includes(verified._id)) {
+		if (!cls.teachers.includes('6669de10c421d4bf9cbd4b8e')) {
 			return NextResponse.json(
 				{ error: 'You are not a member of that class.' },
 				{ status: 403 }
@@ -67,19 +67,19 @@ export async function PUT(
 	const body = await req.json();
 	const { name } = body;
 	try {
-		const token = req.headers.get('Authorization');
-		let verified;
-		if (token) {
-			verified = verifyJwt(token);
-		}
-		if (!token || !verified) {
-			return NextResponse.json(
-				{
-					error: 'Not authorised to make this request.',
-				},
-				{ status: 401 }
-			);
-		}
+		// const token = req.headers.get('Authorization');
+		// let verified;
+		// if (token) {
+		// 	verified = verifyJwt(token);
+		// }
+		// if (!token || !verified) {
+		// 	return NextResponse.json(
+		// 		{
+		// 			error: 'Not authorised to make this request.',
+		// 		},
+		// 		{ status: 401 }
+		// 	);
+		// }
 		dbConnect();
 		const { cid: classId } = params;
 		if (!mongoose.Types.ObjectId.isValid(classId)) {
@@ -116,19 +116,19 @@ export async function DELETE(
 	{ params }: { params: { cid: string } }
 ) {
 	try {
-		const token = req.headers.get('Authorization');
-		let verified;
-		if (token) {
-			verified = verifyJwt(token);
-		}
-		if (!token || !verified) {
-			return NextResponse.json(
-				{
-					error: 'Not authorised to make this request.',
-				},
-				{ status: 401 }
-			);
-		}
+		// const token = req.headers.get('Authorization');
+		// let verified;
+		// if (token) {
+		// 	verified = verifyJwt(token);
+		// }
+		// if (!token || !verified) {
+		// 	return NextResponse.json(
+		// 		{
+		// 			error: 'Not authorised to make this request.',
+		// 		},
+		// 		{ status: 401 }
+		// 	);
+		// }
 		dbConnect();
 		const { cid: classId } = params;
 		if (!mongoose.Types.ObjectId.isValid(classId)) {
@@ -146,7 +146,7 @@ export async function DELETE(
 				{ status: 404 }
 			);
 		}
-		const user = await User.findById(verified._id).populate({
+		const user = await User.findById('6669de10c421d4bf9cbd4b8e').populate({
 			path: 'classes',
 			model: Lesson,
 		});

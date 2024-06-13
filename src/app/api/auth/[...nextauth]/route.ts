@@ -1,6 +1,6 @@
-import axios from 'axios';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import axios from 'axios';
 
 const handler = NextAuth({
 	providers: [
