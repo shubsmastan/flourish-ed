@@ -153,39 +153,6 @@ const ClassForm = ({
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
-
-		// 	<form className='px-12 pb-5 pt-10'>
-		// 		<p className='absolute top-20 text-rose-800'>{error}</p>
-		// 		<div className='grid grid-cols-[1fr_6fr] gap-x-3 gap-y-5'>
-		// 			<label>Name:</label>
-		// 			<input
-		// 				ref={inputRef}
-		// 				required
-		// 				type='text'
-		// 				name='name'
-		// 				value={className}
-		// 				onChange={handleInputChange}
-		// 				className='flex-1 rounded-md bg-slate-200 px-2 py-1'
-		// 			/>
-		// 		</div>
-		// 		<div className='mt-5 flex justify-end gap-5 border-t-[1px] border-t-slate-300'>
-		// 			<button
-		// 				type='button'
-		// 				className='btn-cancel mt-5'
-		// 				onClick={() => {}}>
-		// 				Cancel
-		// 			</button>
-		// 			<button
-		// 				className='btn-primary mt-5'
-		// 				onClick={e => {
-		// 					e.preventDefault();
-		// 					handleSave();
-		// 				}}>
-		// 				Save
-		// 			</button>
-		// 		</div>
-		// 	</form>
-		// </div>
 	);
 };
 

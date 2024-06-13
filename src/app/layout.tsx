@@ -7,7 +7,7 @@ import { inter } from '@/lib/fonts';
 import { AuthSessionProvider } from '@/components/utils/AuthSessionProvider';
 
 export const metadata: Metadata = {
-	title: 'FlourishEd',
+	title: 'FlourishEd | Lesson Planning and Productivity for Teachers',
 	description: 'An productivity app for teachers by teachers',
 };
 
@@ -18,7 +18,8 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en' suppressHydrationWarning>
-			<body className={`${inter.className} h-screen`}>
+			<body
+				className={`${inter.className} flex flex-col min-h-screen antialiased`}>
 				<AuthSessionProvider>
 					<TanstackQueryClient>
 						<ThemeProvider
@@ -27,9 +28,7 @@ export default function RootLayout({
 							enableSystem
 							disableTransitionOnChange>
 							<Header />
-							<main className='flex items-center justify-center h-[calc(100%-3.5rem)]'>
-								{children}
-							</main>
+							<main className='flex flex-1'>{children}</main>
 						</ThemeProvider>
 					</TanstackQueryClient>
 				</AuthSessionProvider>

@@ -47,37 +47,43 @@ export const AuthForm = () => {
 	};
 
 	return (
-		<div className='flex flex-col gap-3 justify-centre p-20 text-center max-w-96'>
-			<p>Welcome to FlourishEd - the productivity app for teachers.</p>
-			<p>Please log in to continue.</p>
-			<form className='flex flex-col gap-4'>
-				<Input
-					type='text'
-					placeholder='Email'
-					required={true}
-					onChange={e => setEmail(e.target.value)}
-				/>
-				<Input
-					type='password'
-					placeholder='Password'
-					required={true}
-					onChange={e => setPwd(e.target.value)}
-				/>
-				<Button variant='default' disabled={isLoading}>
-					Log In
-				</Button>
-				<Button
-					onClick={e => {
-						logIn(e, true);
-					}}
-					disabled={isLoading}>
-					Guest Login
-				</Button>
-			</form>
-			{error && (
-				<p className='mb-1 text-rose-700 dark:text-rose-300'>{error}</p>
-			)}
-			{/* <Loading open={open} /> */}
+		<div className='flex flex-1 justify-center items-center'>
+			<div className='flex flex-col gap-3 justify-centre p-20 text-center'>
+				<p>
+					Welcome to FlourishEd - the productivity app for teachers.
+				</p>
+				<p>Please log in to continue.</p>
+				<form className='flex flex-col gap-4'>
+					<Input
+						type='text'
+						placeholder='Email'
+						required={true}
+						onChange={e => setEmail(e.target.value)}
+					/>
+					<Input
+						type='password'
+						placeholder='Password'
+						required={true}
+						onChange={e => setPwd(e.target.value)}
+					/>
+					<Button variant='default' disabled={isLoading}>
+						Log In
+					</Button>
+					<Button
+						onClick={e => {
+							logIn(e, true);
+						}}
+						disabled={isLoading}>
+						Guest Login
+					</Button>
+				</form>
+				{error && (
+					<p className='mb-1 text-rose-700 dark:text-rose-300'>
+						{error}
+					</p>
+				)}
+				{/* <Loading open={open} /> */}
+			</div>
 		</div>
 	);
 };

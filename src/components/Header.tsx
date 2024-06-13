@@ -1,17 +1,22 @@
+'use client';
+
 import Image from 'next/image';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { josefinSans } from '@/lib/fonts';
 import Link from 'next/link';
+import { useTheme } from 'next-themes';
 
 export const Header = () => {
+	const x = useTheme();
+	console.log(x.theme === 'dark');
 	return (
-		<header className='flex justify-between p-2 border-b-[0.5px] h-14'>
+		<header className='sticky top-0 z-20 flex justify-between p-2 border-b-[0.5px] h-14 bg-inherit bg-sky-900'>
 			<Link
 				href='/'
-				className='flex gap-2 rounded-lg items-center justify-center px-4 pb-2 pt-1 text-white bg-primary select-none'>
-				<Image src={'/logo.png'} width={25} height={25} alt='' />
+				className='flex gap-2 rounded-lg items-center justify-center select-none'>
+				<Image src={'/logo.png'} width={22} height={22} alt='' />
 				<h1
-					className={`text-lg font-semibold mt-1 ${josefinSans.className}`}>
+					className={`text-lg font-semibold text-white mt-1 ${josefinSans.className}`}>
 					FlourishEd
 				</h1>
 			</Link>

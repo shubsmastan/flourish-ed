@@ -67,14 +67,14 @@ export const Sidebar = () => {
 	else classList = <p>Error</p>;
 
 	return (
-		<NavigationMenu className='-translate-x-64 h-[calc(100vh-3.5rem)] flex flex-col justify-start border-r-[0.5px] text-sm shadow-md transition-transform duration-200 sm:translate-x-0'>
+		<NavigationMenu className='-translate-x-64 fixed top-14 z-10 flex flex-col justify-start text-sm shadow-md transition-transform duration-200 sm:sticky sm:translate-x-0 bg-slate-100 dark:bg-slate-900'>
 			<NavigationMenuList className='flex flex-col gap-4 items-start w-64 p-4 justify-start'>
 				{dashboardMenuItems}
 				<NavigationMenuItem className='flex justify-between items-center font-bold mt-5 h-8 w-full'>
 					<h3>Your Classes</h3>
 					<ClassForm
 						disabled={isLoading || isError}
-						trigger={<Plus size={22} />}
+						trigger={<Plus size={20} />}
 						type='class'
 					/>
 				</NavigationMenuItem>
